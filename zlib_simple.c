@@ -19,12 +19,6 @@ Bytef input_buf[INPUT_BUF_SIZE];
 Bytef output_buf[OUTPUT_BUF_SIZE];
 
 void InflateEnd(z_stream *stream) {
-  int ret = inflateEnd(stream);
-  if (ret != Z_OK) {
-    // deflateEnd() はエラーが起きても .msg を更新しません．
-    // エラーメッセージの取得には zError() を利用することになります．
-    ERROR("%s", zError(ret));
-  }
 }
 
 void Inflate(FILE *input_file, FILE *output_file) {
@@ -94,7 +88,13 @@ void Inflate(FILE *input_file, FILE *output_file) {
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
 
-  InflateEnd(&stream);
+  int retEnd = inflateEnd(&stream);
+  if (retEnd != Z_OK) {
+    // deflateEnd() はエラーが起きても .msg を更新しません．
+    // エラーメッセージの取得には zError() を利用することになります．
+    ERROR("%s", zError(retEnd));
+  }
+
 }
 
 int main(int argc, char *argv[]) {
