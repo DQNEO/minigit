@@ -1,5 +1,5 @@
 // Copyright 2010 Susumu Yata <syata@acm.org>
-
+// Usage: gcc zlib_simple.c -std=c99 -lz -o zlib_simple ; ./zlib_simple -i hello.blob
 #include <errno.h>
 #include <error.h>
 #include <getopt.h>
