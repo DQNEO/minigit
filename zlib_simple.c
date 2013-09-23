@@ -199,22 +199,6 @@ void Inflate(FILE *input_file, FILE *output_file) {
   InflateEnd(&stream);
 }
 
-void Code(FILE *input_file, FILE *output_file) {
-  switch (run_mode) {
-    case DEFLATE_MODE: {
-      Deflate(input_file, output_file);
-      break;
-    }
-    case INFLATE_MODE: {
-      Inflate(input_file, output_file);
-      break;
-    }
-    default: {
-      ERROR("invalid mode: %d", run_mode);
-    }
-  }
-}
-
 int main(int argc, char *argv[]) {
   run_mode = INFLATE_MODE;
   FILE *output_file = stdout;
@@ -232,7 +216,7 @@ int main(int argc, char *argv[]) {
       ERROR("%s", input_file_name);
     }
 
-    Code(input_file, output_file);
+    Inflate(input_file, output_file);
     if (fclose(input_file) != 0) {
       ERROR("%s", input_file_name);
     }
