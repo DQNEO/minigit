@@ -282,12 +282,6 @@ int main(int argc, char *argv[]) {
   ParseOptions(argc, argv);
 
   FILE *output_file = stdout;
-  if (output_file_name != NULL) {
-    output_file = fopen(output_file_name, "wb");
-    if (output_file == NULL) {
-      ERROR("%s", output_file_name);
-    }
-  }
 
   // 入力ファイルの指定がなければ，標準入力を使います．
   if (optind >= argc) {
