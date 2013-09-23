@@ -11,7 +11,7 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-void unpack(FILE *input_file, FILE *output_file) {
+void unpack_header(FILE *input_file, FILE *output_file) {
 
   Bytef input_buf[65536];
   char output_buf[65536];
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     ERROR("%s", input_file_name);
   }
 
-  unpack(input_file, output_file);
+  unpack_header(input_file, output_file);
   if (fclose(input_file) != 0) {
     ERROR("%s", input_file_name);
   }
