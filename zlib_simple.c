@@ -34,7 +34,7 @@ void Inflate(FILE *input_file, FILE *output_file) {
   stream.next_in = Z_NULL;
   stream.avail_in = 0;
 
-  int retInit = inflateInit2(&stream, 47);
+  int retInit = inflateInit(&stream);
   if (retInit != Z_OK) {
     // inflateInit(), inflateInit2() はエラーが起きても .msg を更新しません．
     // エラーメッセージの取得には zError() を利用することになります．
