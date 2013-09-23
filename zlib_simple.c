@@ -221,13 +221,5 @@ int main(int argc, char *argv[]) {
       ERROR("%s", input_file_name);
     }
 
-
-
-  if (output_file != stdout) {
-    if (fclose(output_file) != 0) {
-      ERROR("%s", output_file_name);
-    }
-  }
-
   return 0;
 }
