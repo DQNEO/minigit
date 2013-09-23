@@ -10,10 +10,11 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-Bytef input_buf[65536];
-char output_buf[65536];
-
 void unpack(FILE *input_file, FILE *output_file) {
+
+  Bytef input_buf[65536];
+  char output_buf[65536];
+
   z_stream stream;
 
   // メモリの確保・解放は zlib に任せます．
