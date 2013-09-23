@@ -48,7 +48,6 @@ void unpack_header(FILE *input_file) {
     }
     stream.next_in = input_buf;
     while ((stream.avail_out == 0) && (ret != Z_STREAM_END)) {
-      // 出力バッファを再設定して伸長の続きをおこないます．
       stream.next_out = output_buf;
       stream.avail_out = sizeof(output_buf);
       ret = inflate(&stream, Z_NO_FLUSH);
