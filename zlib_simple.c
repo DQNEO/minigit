@@ -11,7 +11,7 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-void unpack_header(FILE *input_file, FILE *output_file) {
+void unpack_header(FILE *input_file) {
 
   Bytef input_buf[65536];
   char output_buf[65536];
@@ -56,13 +56,6 @@ void unpack_header(FILE *input_file, FILE *output_file) {
           ERROR("%s", stream.msg);
       }
 
-      /*
-      fwrite(output_buf, sizeof(output_buf) - stream.avail_out,
-          1, output_file);
-      if (ferror(output_file) != 0) {
-        ERROR("failed to write into file");
-	}*/
-
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
 
@@ -84,15 +77,13 @@ int main(int argc, char *argv[]) {
     ERROR("no file name input");
   }
 
-  FILE *output_file = stdout;
-
   const char *input_file_name = argv[1];
   FILE *input_file = fopen(input_file_name, "rb");
   if (input_file == NULL) {
     ERROR("%s", input_file_name);
   }
 
-  unpack_header(input_file, output_file);
+  unpack_header(input_file);
   if (fclose(input_file) != 0) {
     ERROR("%s", input_file_name);
   }
