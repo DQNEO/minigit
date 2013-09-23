@@ -102,7 +102,6 @@ int main(int argc, char *argv[]) {
   // 入力ファイルの指定がなければ，エラー
   if (argc < 2) {
     ERROR("no file name input");
-    return 1;
   }
 
   FILE *output_file = stdout;
