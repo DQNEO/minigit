@@ -13,9 +13,6 @@
 Bytef input_buf[65536];
 char output_buf[65536];
 
-void InflateEnd(z_stream *stream) {
-}
-
 void Inflate(FILE *input_file, FILE *output_file) {
   z_stream stream;
 
