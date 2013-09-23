@@ -15,9 +15,9 @@ void unpack_header(FILE *input_file) {
 
   Bytef input_buf[65536];
   char output_buf[65536];
-
+  char *cp;
   z_stream stream;
-
+  cp = output_buf;
   // メモリの確保・解放は zlib に任せます．
   stream.zalloc = Z_NULL;
   stream.zfree = Z_NULL;
@@ -48,7 +48,7 @@ void unpack_header(FILE *input_file) {
     }
     stream.next_in = input_buf;
     while ((stream.avail_out == 0) && (ret != Z_STREAM_END)) {
-      stream.next_out = output_buf;
+      stream.next_out = cp;
       stream.avail_out = sizeof(output_buf);
       ret = inflate(&stream, Z_NO_FLUSH);
       if (ret == Z_MEM_ERROR) {
@@ -58,7 +58,7 @@ void unpack_header(FILE *input_file) {
     } ;
   };
 
-  printf("%s\n", output_buf);
+  printf("%s\n", cp);
 
   int retEnd = inflateEnd(&stream);
   if (retEnd != Z_OK) {
@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
     ERROR("%s", input_file_name);
   }
 
+  
   unpack_header(input_file);
   if (fclose(input_file) != 0) {
     ERROR("%s", input_file_name);
