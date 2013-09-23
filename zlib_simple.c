@@ -74,17 +74,7 @@ void Inflate(FILE *input_file, FILE *output_file) {
       if (ferror(output_file) != 0) {
         ERROR("failed to write into file");
       }
-      // 一つのファイルに複数のデータが格納されているかもしれないので，
-      // 返り値が Z_STREAM_END であっても，入力が残っている状態であれば，
-      // 内部状態をリセットして伸長を継続します．
-      if ((ret == Z_STREAM_END) &&
-          ((stream.avail_in != 0) || (feof(input_file) == 0))) {
-        ret = inflateReset(&stream);
-        if (ret != Z_OK) {
-          ERROR("%s", zError(ret));
-        }
-        stream.avail_out = 0;
-      }
+
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
 
