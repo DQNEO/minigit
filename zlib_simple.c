@@ -111,13 +111,13 @@ void Inflate(FILE *input_file, FILE *output_file) {
 
 int main(int argc, char *argv[]) {
 
-  FILE *output_file = stdout;
-
   // 入力ファイルの指定がなければ，エラー
   if (argc < 2) {
     ERROR("no file name input");
     return 1;
   }
+
+  FILE *output_file = stdout;
 
   const char *input_file_name = argv[1];
   FILE *input_file = fopen(input_file_name, "rb");
