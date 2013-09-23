@@ -53,17 +53,10 @@ void Inflate(FILE *input_file, FILE *output_file) {
       stream.next_out = output_buf;
       stream.avail_out = sizeof(output_buf);
       ret = inflate(&stream, Z_NO_FLUSH);
-      switch (ret) {
-        case Z_NEED_DICT: {
-          // 辞書がなければ伸長できないのでエラーにします．
-          ERROR("%s", zError(Z_DATA_ERROR));
-        }
-        case Z_STREAM_ERROR:
-        case Z_DATA_ERROR:
-        case Z_MEM_ERROR: {
+      if (ret == Z_MEM_ERROR) {
           ERROR("%s", stream.msg);
-        }
       }
+
       fwrite(output_buf, sizeof(output_buf) - stream.avail_out,
           1, output_file);
       if (ferror(output_file) != 0) {
