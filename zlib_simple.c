@@ -36,7 +36,7 @@ void unpack_header(FILE *input_file) {
   }
 
   int ret = Z_OK;
-  do {
+  while (ret != Z_STREAM_END) {
     stream.avail_in = fread(input_buf, 1, sizeof(input_buf), input_file);
     if (ferror(input_file) != 0) {
       ERROR("failed to read from file");
@@ -47,7 +47,7 @@ void unpack_header(FILE *input_file) {
       ERROR("unexpected end of file");
     }
     stream.next_in = input_buf;
-    do {
+    while ((stream.avail_out == 0) && (ret != Z_STREAM_END)) {
       // 出力バッファを再設定して伸長の続きをおこないます．
       stream.next_out = output_buf;
       stream.avail_out = sizeof(output_buf);
@@ -56,8 +56,8 @@ void unpack_header(FILE *input_file) {
           ERROR("%s", stream.msg);
       }
 
-    } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
-  } while (ret != Z_STREAM_END);
+    } ;
+  };
 
   printf("%s\n", output_buf);
 
