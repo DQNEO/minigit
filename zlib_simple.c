@@ -28,7 +28,7 @@ enum IOBufSize {
   OUTPUT_BUF_SIZE = 65536  // 出力に使うバッファのサイズ
 };
 
-enum RunMode test_mode = DEFAULT_MODE;
+enum RunMode run_mode = DEFAULT_MODE;
 enum OutputFormat output_format = DEFAULT_FORMAT;
 const char *output_file_name = NULL;
 int compression_level = Z_DEFAULT_COMPRESSION;
@@ -57,11 +57,11 @@ void ParseOptions(int argc, char *argv[]) {
       "digzl:o:h", long_options, NULL)) != -1) {
     switch (value) {
       case 'd': {
-        test_mode = DEFLATE_MODE;
+        run_mode = DEFLATE_MODE;
         break;
       }
       case 'i': {
-        test_mode = INFLATE_MODE;
+        run_mode = INFLATE_MODE;
         break;
       }
       case 'g': {
@@ -89,7 +89,7 @@ void ParseOptions(int argc, char *argv[]) {
         break;
       }
       case 'h': {
-        test_mode = HELP_MODE;
+        run_mode = HELP_MODE;
         break;
       }
       default: {
@@ -263,7 +263,7 @@ void Inflate(FILE *input_file, FILE *output_file) {
 }
 
 void Code(FILE *input_file, FILE *output_file) {
-  switch (test_mode) {
+  switch (run_mode) {
     case DEFLATE_MODE: {
       Deflate(input_file, output_file);
       break;
@@ -273,7 +273,7 @@ void Code(FILE *input_file, FILE *output_file) {
       break;
     }
     default: {
-      ERROR("invalid mode: %d", test_mode);
+      ERROR("invalid mode: %d", run_mode);
     }
   }
 }
