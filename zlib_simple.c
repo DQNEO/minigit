@@ -280,20 +280,6 @@ void Code(FILE *input_file, FILE *output_file) {
 
 int main(int argc, char *argv[]) {
   ParseOptions(argc, argv);
-  if (test_mode == HELP_MODE) {
-    printf("Usage: %s [OPTION]... [FILE]...\n"
-        "Version: zlib-%s\n"
-        "Options:\n"
-        "  -d, --deflate  圧縮します (default)\n"
-        "  -i, --inflate  伸長します\n"
-        "  -g, --gzip     gzip 形式で圧縮します\n"
-        "  -z, --zlib     zlib 形式で圧縮します (default)\n"
-        "  -l, --level=[0-9]    圧縮レベルを指定します (default: 6)\n"
-        "  -o, --output=[FILE]  出力ファイルを指定します (default: stdout)\n"
-        "  -h, --help     このヘルプを表示します\n",
-        argv[0], zlibVersion());
-    return 0;
-  }
 
   FILE *output_file = stdout;
   if (output_file_name != NULL) {
