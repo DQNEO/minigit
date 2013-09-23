@@ -55,47 +55,6 @@ void ParseOptions(int argc, char *argv[]) {
   int value;
   while ((value = getopt_long(argc, argv,
       "digzl:o:h", long_options, NULL)) != -1) {
-    switch (value) {
-      case 'd': {
-        run_mode = DEFLATE_MODE;
-        break;
-      }
-      case 'i': {
-        run_mode = INFLATE_MODE;
-        break;
-      }
-      case 'g': {
-        output_format = GZIP_FORMAT;
-        break;
-      }
-      case 'z': {
-        output_format = ZLIB_FORMAT;
-        break;
-      }
-      case 'l': {
-        // 圧縮レベルは 0 以上 9 以下です．
-        char *end_of_value;
-        long value = strtol(optarg, &end_of_value, 10);
-        if ((*end_of_value != '\0') || (value < 0) || (value > 9)) {
-          ERROR("invalid compression level: %s", optarg);
-        }
-        compression_level = (int)value;
-        break;
-      }
-      case 'o': {
-        // 出力ファイルの名前を設定します．
-        // 指定がなければ標準出力を使います．
-        output_file_name = optarg;
-        break;
-      }
-      case 'h': {
-        run_mode = HELP_MODE;
-        break;
-      }
-      default: {
-        ERROR("invalid option");
-      }
-    }
   }
 }
 
@@ -280,7 +239,7 @@ void Code(FILE *input_file, FILE *output_file) {
 
 int main(int argc, char *argv[]) {
   ParseOptions(argc, argv);
-
+  run_mode = INFLATE_MODE;
   FILE *output_file = stdout;
 
   // 入力ファイルの指定がなければ，標準入力を使います．
