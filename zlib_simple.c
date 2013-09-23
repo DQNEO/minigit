@@ -245,7 +245,8 @@ int main(int argc, char *argv[]) {
   // 入力ファイルの指定がなければ，標準入力を使います．
   if (optind >= argc) {
     ERROR("no file name input");
-  } else {
+    return 1;
+  }
     for (int i = optind; i < argc; ++i) {
       const char *input_file_name = argv[i];
       FILE *input_file = fopen(input_file_name, "rb");
@@ -258,7 +259,7 @@ int main(int argc, char *argv[]) {
         ERROR("%s", input_file_name);
       }
     }
-  }
+
 
   if (output_file != stdout) {
     if (fclose(output_file) != 0) {
