@@ -285,7 +285,7 @@ int main(int argc, char *argv[]) {
 
   // 入力ファイルの指定がなければ，標準入力を使います．
   if (optind >= argc) {
-    Code(stdin, output_file);
+    ERROR("no file name input");
   } else {
     for (int i = optind; i < argc; ++i) {
       const char *input_file_name = argv[i];
