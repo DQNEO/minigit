@@ -11,7 +11,7 @@
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
 Bytef input_buf[65536];
-Bytef output_buf[65536];
+char output_buf[65536];
 
 void InflateEnd(z_stream *stream) {
 }
