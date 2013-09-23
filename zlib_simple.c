@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>
+#include <string.h>
 
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
@@ -55,14 +56,19 @@ void unpack(FILE *input_file, FILE *output_file) {
           ERROR("%s", stream.msg);
       }
 
+      /*
       fwrite(output_buf, sizeof(output_buf) - stream.avail_out,
           1, output_file);
       if (ferror(output_file) != 0) {
         ERROR("failed to write into file");
-      }
+	}*/
 
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
+
+  
+  fwrite(output_buf, strlen(output_buf) ,
+	 1, output_file);
 
   int retEnd = inflateEnd(&stream);
   if (retEnd != Z_OK) {
