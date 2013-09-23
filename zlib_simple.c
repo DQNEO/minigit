@@ -209,17 +209,16 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+  const char *input_file_name = argv[1];
+  FILE *input_file = fopen(input_file_name, "rb");
+  if (input_file == NULL) {
+    ERROR("%s", input_file_name);
+  }
 
-    const char *input_file_name = argv[1];
-    FILE *input_file = fopen(input_file_name, "rb");
-    if (input_file == NULL) {
-      ERROR("%s", input_file_name);
-    }
-
-    Inflate(input_file, output_file);
-    if (fclose(input_file) != 0) {
-      ERROR("%s", input_file_name);
-    }
+  Inflate(input_file, output_file);
+  if (fclose(input_file) != 0) {
+    ERROR("%s", input_file_name);
+  }
 
   return 0;
 }
