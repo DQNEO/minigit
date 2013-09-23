@@ -18,25 +18,6 @@ enum IOBufSize {
 Bytef input_buf[INPUT_BUF_SIZE];
 Bytef output_buf[OUTPUT_BUF_SIZE];
 
-void InflateInit(z_stream *stream) {
-  // メモリの確保・解放は zlib に任せます．
-  stream->zalloc = Z_NULL;
-  stream->zfree = Z_NULL;
-  stream->opaque = Z_NULL;
-
-  // .next_in, .avail_in は inflateInit(), inflateInit2() を呼び出す前に
-  // 初期化しておく必要があります．
-  stream->next_in = Z_NULL;
-  stream->avail_in = 0;
-
-  int ret = inflateInit2(stream, 47);
-  if (ret != Z_OK) {
-    // inflateInit(), inflateInit2() はエラーが起きても .msg を更新しません．
-    // エラーメッセージの取得には zError() を利用することになります．
-    ERROR("%s", zError(ret));
-  }
-}
-
 void InflateEnd(z_stream *stream) {
   int ret = inflateEnd(stream);
   if (ret != Z_OK) {
@@ -48,7 +29,24 @@ void InflateEnd(z_stream *stream) {
 
 void Inflate(FILE *input_file, FILE *output_file) {
   z_stream stream;
-  InflateInit(&stream);
+
+  // メモリの確保・解放は zlib に任せます．
+  stream.zalloc = Z_NULL;
+  stream.zfree = Z_NULL;
+  stream.opaque = Z_NULL;
+
+  // .next_in, .avail_in は inflateInit(), inflateInit2() を呼び出す前に
+  // 初期化しておく必要があります．
+  stream.next_in = Z_NULL;
+  stream.avail_in = 0;
+
+  int retInit = inflateInit2(&stream, 47);
+  if (retInit != Z_OK) {
+    // inflateInit(), inflateInit2() はエラーが起きても .msg を更新しません．
+    // エラーメッセージの取得には zError() を利用することになります．
+    ERROR("%s", zError(retInit));
+  }
+
   int ret = Z_OK;
   do {
     stream.avail_in = fread(input_buf, 1, sizeof(input_buf), input_file);
@@ -95,6 +93,7 @@ void Inflate(FILE *input_file, FILE *output_file) {
       }
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
+
   InflateEnd(&stream);
 }
 
