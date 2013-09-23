@@ -66,9 +66,7 @@ void unpack_header(FILE *input_file, FILE *output_file) {
     } while ((stream.avail_out == 0) && (ret != Z_STREAM_END));
   } while (ret != Z_STREAM_END);
 
-  
-  fwrite(output_buf, strlen(output_buf) ,
-	 1, output_file);
+  printf("%s\n", output_buf);
 
   int retEnd = inflateEnd(&stream);
   if (retEnd != Z_OK) {
