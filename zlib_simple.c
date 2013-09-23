@@ -247,18 +247,19 @@ int main(int argc, char *argv[]) {
     ERROR("no file name input");
     return 1;
   }
-    for (int i = optind; i < argc; ++i) {
-      const char *input_file_name = argv[i];
-      FILE *input_file = fopen(input_file_name, "rb");
-      if (input_file == NULL) {
-        ERROR("%s", input_file_name);
-      }
 
-      Code(input_file, output_file);
-      if (fclose(input_file) != 0) {
-        ERROR("%s", input_file_name);
-      }
+  for (int i = optind; i < argc; ++i) {
+    const char *input_file_name = argv[i];
+    FILE *input_file = fopen(input_file_name, "rb");
+    if (input_file == NULL) {
+      ERROR("%s", input_file_name);
     }
+
+    Code(input_file, output_file);
+    if (fclose(input_file) != 0) {
+      ERROR("%s", input_file_name);
+    }
+  }
 
 
   if (output_file != stdout) {
