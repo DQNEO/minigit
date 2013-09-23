@@ -13,7 +13,7 @@
 Bytef input_buf[65536];
 char output_buf[65536];
 
-void Inflate(FILE *input_file, FILE *output_file) {
+void unpack(FILE *input_file, FILE *output_file) {
   z_stream stream;
 
   // メモリの確保・解放は zlib に任せます．
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
     ERROR("%s", input_file_name);
   }
 
-  Inflate(input_file, output_file);
+  unpack(input_file, output_file);
   if (fclose(input_file) != 0) {
     ERROR("%s", input_file_name);
   }
