@@ -10,7 +10,7 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-enum TestMode {
+enum RunMode {
   DEFLATE_MODE,  // 圧縮モード（デフォルト）
   INFLATE_MODE,  // 伸長モード
   HELP_MODE,     // ヘルプ表示
@@ -28,7 +28,7 @@ enum IOBufSize {
   OUTPUT_BUF_SIZE = 65536  // 出力に使うバッファのサイズ
 };
 
-enum TestMode test_mode = DEFAULT_MODE;
+enum RunMode test_mode = DEFAULT_MODE;
 enum OutputFormat output_format = DEFAULT_FORMAT;
 const char *output_file_name = NULL;
 int compression_level = Z_DEFAULT_COMPRESSION;
