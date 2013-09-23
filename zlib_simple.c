@@ -10,13 +10,6 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-enum RunMode {
-  DEFLATE_MODE,  // 圧縮モード（デフォルト）
-  INFLATE_MODE,  // 伸長モード
-  HELP_MODE,     // ヘルプ表示
-  DEFAULT_MODE = DEFLATE_MODE
-};
-
 enum OutputFormat {
   GZIP_FORMAT,  // gzip 形式
   ZLIB_FORMAT,  // zlib 形式（デフォルト）
@@ -28,7 +21,7 @@ enum IOBufSize {
   OUTPUT_BUF_SIZE = 65536  // 出力に使うバッファのサイズ
 };
 
-enum RunMode run_mode = DEFAULT_MODE;
+
 enum OutputFormat output_format = DEFAULT_FORMAT;
 const char *output_file_name = NULL;
 int compression_level = Z_DEFAULT_COMPRESSION;
@@ -117,7 +110,7 @@ void Inflate(FILE *input_file, FILE *output_file) {
 }
 
 int main(int argc, char *argv[]) {
-  run_mode = INFLATE_MODE;
+
   FILE *output_file = stdout;
 
   // 入力ファイルの指定がなければ，エラー
