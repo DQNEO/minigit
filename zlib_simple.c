@@ -1,5 +1,5 @@
 // Copyright 2010 Susumu Yata <syata@acm.org>
-// Usage: gcc zlib_simple.c -std=c99 -lz -o zlib_simple ; ./zlib_simple -i hello.blob
+// Usage: gcc zlib_simple.c -std=c99 -lz -o zlib_simple ; ./zlib_simple hello.blob
 #include <errno.h>
 #include <error.h>
 #include <getopt.h>
@@ -35,28 +35,6 @@ int compression_level = Z_DEFAULT_COMPRESSION;
 
 Bytef input_buf[INPUT_BUF_SIZE];
 Bytef output_buf[OUTPUT_BUF_SIZE];
-
-void ParseOptions(int argc, char *argv[]) {
-  // getopt_long() で取得するオプションのリストです．
-  // 2 番目のメンバが 1 のオプションは引数を取ります．
-  static const struct option long_options[] = {
-    { "deflate", 0, NULL, 'd' },  // 圧縮モード
-    { "inflate", 0, NULL, 'i' },  // 伸長モード
-    { "gzip", 0, NULL, 'g' },     // gzip 形式
-    { "zlib", 0, NULL, 'z' },     // zlib 形式
-    { "level", 1, NULL, 'l' },    // 圧縮レベル
-    { "output", 1, NULL, 'o' },   // 出力ファイル
-    { "help", 0, NULL, 'h' },     // ヘルプ表示
-    { NULL, 0, NULL, '\0' }
-  };
-
-  // getopt_long() の第 3 引数はオプションのリストを受け取ります．
-  // 引数を取るオプション文字には ':' が後続しています．
-  int value;
-  while ((value = getopt_long(argc, argv,
-      "digzl:o:h", long_options, NULL)) != -1) {
-  }
-}
 
 void DeflateInit(z_stream *stream) {
   // メモリの確保・解放は zlib に任せます．
@@ -238,18 +216,17 @@ void Code(FILE *input_file, FILE *output_file) {
 }
 
 int main(int argc, char *argv[]) {
-  ParseOptions(argc, argv);
   run_mode = INFLATE_MODE;
   FILE *output_file = stdout;
 
-  // 入力ファイルの指定がなければ，標準入力を使います．
-  if (optind >= argc) {
+  // 入力ファイルの指定がなければ，エラー
+  if (argc < 2) {
     ERROR("no file name input");
     return 1;
   }
 
-  for (int i = optind; i < argc; ++i) {
-    const char *input_file_name = argv[i];
+
+    const char *input_file_name = argv[1];
     FILE *input_file = fopen(input_file_name, "rb");
     if (input_file == NULL) {
       ERROR("%s", input_file_name);
@@ -259,7 +236,7 @@ int main(int argc, char *argv[]) {
     if (fclose(input_file) != 0) {
       ERROR("%s", input_file_name);
     }
-  }
+
 
 
   if (output_file != stdout) {
