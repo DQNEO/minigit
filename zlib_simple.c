@@ -10,21 +10,10 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-enum OutputFormat {
-  GZIP_FORMAT,  // gzip 形式
-  ZLIB_FORMAT,  // zlib 形式（デフォルト）
-  DEFAULT_FORMAT = ZLIB_FORMAT
-};
-
 enum IOBufSize {
   INPUT_BUF_SIZE = 65536,  // 入力に使うバッファのサイズ
   OUTPUT_BUF_SIZE = 65536  // 出力に使うバッファのサイズ
 };
-
-
-enum OutputFormat output_format = DEFAULT_FORMAT;
-const char *output_file_name = NULL;
-int compression_level = Z_DEFAULT_COMPRESSION;
 
 Bytef input_buf[INPUT_BUF_SIZE];
 Bytef output_buf[OUTPUT_BUF_SIZE];
