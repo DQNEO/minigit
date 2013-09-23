@@ -10,13 +10,8 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-enum IOBufSize {
-  INPUT_BUF_SIZE = 65536,  // 入力に使うバッファのサイズ
-  OUTPUT_BUF_SIZE = 65536  // 出力に使うバッファのサイズ
-};
-
-Bytef input_buf[INPUT_BUF_SIZE];
-Bytef output_buf[OUTPUT_BUF_SIZE];
+Bytef input_buf[65536];
+Bytef output_buf[65536];
 
 void InflateEnd(z_stream *stream) {
 }
