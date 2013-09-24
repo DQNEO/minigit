@@ -16,7 +16,13 @@ struct _TAG_OBJECT_INFO {
   char size[10];
 } ;
 
-void unpack_header(FILE *input_file,  struct _TAG_OBJECT_INFO *oi) {
+void unpack_header(const char *input_file_name,  struct _TAG_OBJECT_INFO *oi) {
+
+  FILE *input_file = fopen(input_file_name, "rb");
+  if (input_file == NULL) {
+    ERROR("%s", input_file_name);
+  }
+
 
   Bytef input_buf[65536];
   char output_buf[65536];
@@ -83,6 +89,11 @@ void unpack_header(FILE *input_file,  struct _TAG_OBJECT_INFO *oi) {
     ERROR("%s", zError(retEnd));
   }
 
+  if (fclose(input_file) != 0) {
+    ERROR("%s", input_file_name);
+  }
+
+
 }
 
 int main(int argc, char *argv[]) {
@@ -94,17 +105,8 @@ int main(int argc, char *argv[]) {
 
   struct _TAG_OBJECT_INFO *object_info;
   const char *input_file_name = argv[1];
-  FILE *input_file = fopen(input_file_name, "rb");
-  if (input_file == NULL) {
-    ERROR("%s", input_file_name);
-  }
 
-
-  unpack_header(input_file, object_info);
-  if (fclose(input_file) != 0) {
-    ERROR("%s", input_file_name);
-  }
-
+  unpack_header(input_file_name, object_info);
   printf("type:%s\n", object_info->type);
   printf("size:%s\n", object_info->size);
 
