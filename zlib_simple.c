@@ -11,7 +11,12 @@
 #define ERROR(fmt, ...) \
   error_at_line(-(__LINE__), errno, __FILE__, __LINE__, fmt, ## __VA_ARGS__)
 
-void unpack_header(FILE *input_file) {
+struct _TAG_OBJECT_INFO {
+  char type[10];
+  char size[10];
+} ;
+
+void unpack_header(FILE *input_file,  struct _TAG_OBJECT_INFO *oi) {
 
   Bytef input_buf[65536];
   char output_buf[65536];
@@ -58,7 +63,18 @@ void unpack_header(FILE *input_file) {
     } ;
   };
 
-  printf("%s\n", cp);
+  int i = 0;
+  while (*(cp) != ' ') {
+    oi->type[i++] = *(cp++);
+  }
+  oi->type[i] = 0;
+
+
+  i = 0;
+  while (*cp) {
+    oi->size[i++] = *(cp++);
+  }
+  oi->size[i] = 0;
 
   int retEnd = inflateEnd(&stream);
   if (retEnd != Z_OK) {
@@ -76,17 +92,21 @@ int main(int argc, char *argv[]) {
     ERROR("no file name input");
   }
 
+  struct _TAG_OBJECT_INFO *object_info;
   const char *input_file_name = argv[1];
   FILE *input_file = fopen(input_file_name, "rb");
   if (input_file == NULL) {
     ERROR("%s", input_file_name);
   }
 
-  
-  unpack_header(input_file);
+
+  unpack_header(input_file, object_info);
   if (fclose(input_file) != 0) {
     ERROR("%s", input_file_name);
   }
+
+  printf("type:%s\n", object_info->type);
+  printf("size:%s\n", object_info->size);
 
   return 0;
 }
