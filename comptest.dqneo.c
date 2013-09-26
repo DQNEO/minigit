@@ -155,15 +155,14 @@ int main(int argc, char *argv[])
     }
 
     if (strcmp(argv[1], "-c") == 0) {
-        c = 1;
+	do_compress();
     } else if (strcmp(argv[1], "-d") == 0) {
-        c = 0;
+	do_decompress();
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
     }
 
-    if (c) do_compress(); else do_decompress();
     fclose(fin);
 
     return 0;
