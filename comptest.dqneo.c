@@ -17,9 +17,15 @@ char inbuf[INBUFSIZ];           /* 入力バッファ */
 char outbuf[OUTBUFSIZ];         /* 出力バッファ */
 FILE *fin;                      /* 入力・出力ファイル */
 
-void do_compress(void)          /* 圧縮 */
+void do_compress(char in_file_name[])          /* 圧縮 */
 {
     int count, flush, status;
+
+    if ((fin = fopen(in_file_name, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file_name);
+        exit(1);
+    }
+
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -81,9 +87,15 @@ void do_compress(void)          /* 圧縮 */
     }
 }
 
-void do_decompress(void)        /* 展開（復元） */
+void do_decompress(char in_file_name[])        /* 展開（復元） */
 {
     int count, status;
+
+    if ((fin = fopen(in_file_name, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file_name);
+        exit(1);
+    }
+
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -149,15 +161,10 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    if ((fin = fopen(argv[2], "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[2]);
-        exit(1);
-    }
-
     if (strcmp(argv[1], "-c") == 0) {
-	do_compress();
+	do_compress(argv[2]);
     } else if (strcmp(argv[1], "-d") == 0) {
-	do_decompress();
+	do_decompress(argv[2]);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
