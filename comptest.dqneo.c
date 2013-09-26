@@ -154,6 +154,7 @@ void do_decompress(char in_file_name[])        /* Å¸³«¡ÊÉü¸µ¡Ë */
 int main(int argc, char *argv[])
 {
     int c;
+    char *in_file_name;
 
     if (argc != 3) {
         fprintf(stderr, "Usage: comptest -[flag] infile\n");
@@ -161,10 +162,13 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+
+    in_file_name = argv[2];
+
     if (strcmp(argv[1], "-c") == 0) {
-	do_compress(argv[2]);
+        do_compress(in_file_name);
     } else if (strcmp(argv[1], "-d") == 0) {
-	do_decompress(argv[2]);
+        do_decompress(in_file_name);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
