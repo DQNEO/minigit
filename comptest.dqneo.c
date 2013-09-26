@@ -151,6 +151,70 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
     }
 }
 
+void do_decompress2(char in_file_name[])        /* 展開（復元） */
+{
+    int count, status;
+
+    if ((fin = fopen(in_file_name, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file_name);
+        exit(1);
+    }
+
+
+    /* すべてのメモリ管理をライブラリに任せる */
+    z.zalloc = Z_NULL;
+    z.zfree = Z_NULL;
+    z.opaque = Z_NULL;
+
+    /* 初期化 */
+    z.next_in = Z_NULL;
+    z.avail_in = 0;
+    if (inflateInit(&z) != Z_OK) {
+        fprintf(stderr, "inflateInit: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+
+    z.next_out = outbuf;        /* 出力ポインタ */
+    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    status = Z_OK;
+
+    while (status != Z_STREAM_END) {
+        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
+            z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+        }
+        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
+        if (status == Z_STREAM_END) break; /* 完了 */
+        if (status != Z_OK) {   /* エラー */
+            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+            exit(1);
+        }
+        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
+            /* まとめて書き出す */
+            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
+                fprintf(stderr, "Write error\n");
+                exit(1);
+            }
+            z.next_out = outbuf; /* 出力ポインタを元に戻す */
+            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
+        }
+    }
+
+    /* 残りを吐き出す */
+    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
+        if (fwrite(outbuf, 1, count, stdout) != count) {
+            fprintf(stderr, "Write error\n");
+            exit(1);
+        }
+    }
+
+    /* 後始末 */
+    if (inflateEnd(&z) != Z_OK) {
+        fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     int c;
@@ -169,6 +233,7 @@ int main(int argc, char *argv[])
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "-d") == 0) {
         do_decompress(in_file_name);
+        do_decompress2(in_file_name);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
