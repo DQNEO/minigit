@@ -95,7 +95,7 @@ void do_compress(char in_file_name[])          /* 圧縮 */
     fclose(fin);
 }
 
-void do_decompress(char in_file_name[])        /* 展開（復元） */
+void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開（復元） */
 {
     int count, status;
 
@@ -104,6 +104,7 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
   char inbuf[INBUFSIZ];           /* 入力バッファ */
   char outbuf[OUTBUFSIZ];         /* 出力バッファ */
   FILE *fin;                      /* 入力・出力ファイル */
+  int header_skipped = 0;
 
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
@@ -153,7 +154,13 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, stdout) != count) {
+      if (! header_skipped) {
+	if (fwrite(outbuf + oi->header_length, 1, count - oi->header_length, stdout) != count - oi->header_length) {
+            fprintf(stderr, "Write error\n");
+            exit(1);
+        }
+
+      } else if (fwrite(outbuf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
@@ -280,7 +287,7 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      do_decompress(in_file_name);
+      cat_body(in_file_name, &oi);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
