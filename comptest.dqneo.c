@@ -11,14 +11,14 @@
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 
-z_stream z;                     /* ライブラリとやりとりするための構造体 */
-
-char inbuf[INBUFSIZ];           /* 入力バッファ */
-char outbuf[OUTBUFSIZ];         /* 出力バッファ */
-FILE *fin;                      /* 入力・出力ファイル */
-
 void do_compress(char in_file_name[])          /* 圧縮 */
 {
+  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+
+  char inbuf[INBUFSIZ];           /* 入力バッファ */
+  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+  FILE *fin;                      /* 入力・出力ファイル */
+
     int count, flush, status;
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
@@ -85,12 +85,21 @@ void do_compress(char in_file_name[])          /* 圧縮 */
         fprintf(stderr, "deflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
+
+    fclose(fin);
 }
 
 void do_decompress(char in_file_name[])        /* 展開（復元） */
 {
     int count, status;
 
+  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+
+  char inbuf[INBUFSIZ];           /* 入力バッファ */
+  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+  FILE *fin;                      /* 入力・出力ファイル */
+
+
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
         exit(1);
@@ -149,12 +158,21 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
+
+    fclose(fin);
 }
 
 void parse_header(char in_file_name[])        /* 展開（復元） */
 {
     int count, status;
 
+  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+
+  char inbuf[INBUFSIZ];           /* 入力バッファ */
+  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+  FILE *fin;                      /* 入力・出力ファイル */
+
+
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
         exit(1);
@@ -213,6 +231,8 @@ void parse_header(char in_file_name[])        /* 展開（復元） */
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
+
+    fclose(fin);
 }
 
 int main(int argc, char *argv[])
@@ -239,7 +259,6 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    fclose(fin);
 
     return 0;
 }
