@@ -15,7 +15,7 @@ z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
 char inbuf[INBUFSIZ];           /* 入力バッファ */
 char outbuf[OUTBUFSIZ];         /* 出力バッファ */
-FILE *fin, *fout;               /* 入力・出力ファイル */
+FILE *fin;                      /* 入力・出力ファイル */
 
 void do_compress(void)          /* 圧縮 */
 {
@@ -57,7 +57,7 @@ void do_compress(void)          /* 圧縮 */
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
+            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
@@ -68,7 +68,7 @@ void do_compress(void)          /* 圧縮 */
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, fout) != count) {
+        if (fwrite(outbuf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
@@ -115,7 +115,7 @@ void do_decompress(void)        /* 展開（復元） */
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
+            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
@@ -126,7 +126,7 @@ void do_decompress(void)        /* 展開（復元） */
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, fout) != count) {
+        if (fwrite(outbuf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
@@ -143,8 +143,8 @@ int main(int argc, char *argv[])
 {
     int c;
 
-    if (argc != 4) {
-        fprintf(stderr, "Usage: comptest -[flag] infile outfile\n");
+    if (argc != 3) {
+        fprintf(stderr, "Usage: comptest -[flag] infile\n");
         fprintf(stderr, "  flag: -c=compress -dd=decompress\n");
         exit(0);
     }
@@ -157,17 +157,14 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
     }
+
     if ((fin = fopen(argv[2], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
 
-    if ((fout = fopen(argv[3], "w")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[3]);
-        exit(1);
-    }
     if (c) do_compress(); else do_decompress();
     fclose(fin);
-    fclose(fout);
+
     return 0;
 }
