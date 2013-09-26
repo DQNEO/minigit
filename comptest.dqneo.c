@@ -220,10 +220,8 @@ void parse_header(char in_file_name[])        /* 展開（復元） */
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, stdout) != count) {
-            fprintf(stderr, "Write error\n");
-            exit(1);
-        }
+	  printf("output:%s\n", outbuf);
+	  return;
     }
 
     /* 後始末 */
