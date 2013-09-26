@@ -151,7 +151,7 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
     }
 }
 
-void do_decompress2(char in_file_name[])        /* 展開（復元） */
+void parse_header(char in_file_name[])        /* 展開（復元） */
 {
     int count, status;
 
@@ -232,8 +232,8 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "-d") == 0) {
+        parse_header(in_file_name);
         do_decompress(in_file_name);
-        do_decompress2(in_file_name);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
