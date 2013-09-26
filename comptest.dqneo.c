@@ -14,6 +14,7 @@
 struct _TAG_OBJECT_INFO {
   char type[20];
   char size[20];
+  int  header_length; // ヘッダのバイト長
 } ;
 
 void do_compress(char in_file_name[])          /* 圧縮 */
@@ -233,12 +234,16 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
 
       while (*(cp) != ' ') {
 	oi->type[i++] = *(cp++);
+	oi->header_length++;
       }
       oi->type[i] = 0;
+      oi->header_length++;
+
 
       i = 0;
       while (*cp) {
 	oi->size[i++] = *(cp++);
+	oi->header_length++;
       }
       oi->size[i] = 0;
       
@@ -265,6 +270,7 @@ int main(int argc, char *argv[])
     }
 
     struct _TAG_OBJECT_INFO oi;
+    oi.header_length = 0;
     in_file_name = argv[2];
 
     if (strcmp(argv[1], "-c") == 0) {
@@ -273,6 +279,7 @@ int main(int argc, char *argv[])
       parse_header(in_file_name, &oi);
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
+      printf("header_length:%d\n", oi.header_length);
       do_decompress(in_file_name);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
