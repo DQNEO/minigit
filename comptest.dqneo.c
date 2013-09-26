@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>               /* /usr(/local)/include/zlib.h */
+#include <string.h>
 
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
@@ -143,13 +144,14 @@ int main(int argc, char *argv[])
     int c;
 
     if (argc != 4) {
-        fprintf(stderr, "Usage: comptest flag infile outfile\n");
-        fprintf(stderr, "  flag: c=compress d=decompress\n");
+        fprintf(stderr, "Usage: comptest -[flag] infile outfile\n");
+        fprintf(stderr, "  flag: -c=compress -dd=decompress\n");
         exit(0);
     }
-    if (argv[1][0] == 'c') {
+
+    if (strcmp(argv[1], "-c") == 0) {
         c = 1;
-    } else if (argv[1][0] == 'd') {
+    } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
@@ -159,6 +161,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
+
     if ((fout = fopen(argv[3], "w")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[3]);
         exit(1);
