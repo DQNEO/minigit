@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 
     if (argc != 3) {
         fprintf(stderr, "Usage: comptest -[flag] infile\n");
-        fprintf(stderr, "  flag: -c=compress -dd=decompress\n");
+        fprintf(stderr, "  flag: -c=compress -d=decompress\n");
         exit(0);
     }
 
