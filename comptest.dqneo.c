@@ -149,17 +149,17 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    if ((fin = fopen(argv[2], "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", argv[2]);
+        exit(1);
+    }
+
     if (strcmp(argv[1], "-c") == 0) {
         c = 1;
     } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
-        exit(1);
-    }
-
-    if ((fin = fopen(argv[2], "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
 
