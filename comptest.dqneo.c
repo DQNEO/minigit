@@ -11,6 +11,11 @@
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 
+struct _TAG_OBJECT_INFO {
+  char type[20];
+  char size[20];
+} ;
+
 void do_compress(char in_file_name[])          /* 圧縮 */
 {
   z_stream z;                     /* ライブラリとやりとりするための構造体 */
@@ -162,7 +167,7 @@ void do_decompress(char in_file_name[])        /* 展開（復元） */
     fclose(fin);
 }
 
-void parse_header(char in_file_name[])        /* 展開（復元） */
+void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
 {
     int count, status;
 
@@ -171,7 +176,6 @@ void parse_header(char in_file_name[])        /* 展開（復元） */
   char inbuf[INBUFSIZ];           /* 入力バッファ */
   char outbuf[OUTBUFSIZ];         /* 出力バッファ */
   FILE *fin;                      /* 入力・出力ファイル */
-
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
@@ -218,10 +222,26 @@ void parse_header(char in_file_name[])        /* 展開（復元） */
         }
     }
 
+      char *cp;
+      int i = 0;
+
+
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-	  printf("output:%s\n", outbuf);
-	  return;
+
+      cp = outbuf;
+
+      while (*(cp) != ' ') {
+	oi->type[i++] = *(cp++);
+      }
+      oi->type[i] = 0;
+
+      i = 0;
+      while (*cp) {
+	oi->size[i++] = *(cp++);
+      }
+      oi->size[i] = 0;
+      
     }
 
     /* 後始末 */
@@ -244,14 +264,16 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-
+    struct _TAG_OBJECT_INFO oi;
     in_file_name = argv[2];
 
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "-d") == 0) {
-        parse_header(in_file_name);
-        do_decompress(in_file_name);
+      parse_header(in_file_name, &oi);
+      printf("type:%s\n", oi.type);
+      printf("size:%s\n", oi.size);
+      do_decompress(in_file_name);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
