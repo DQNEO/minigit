@@ -3,10 +3,13 @@ use strict;
 use warnings;
 use Test::More;
 
+# make
 `make >/dev/null`;
 
-my $ret1 = `./minigit cat-file-x t/objects/hello_world.blob`;
-my $exp1 = "type:blob
+my ($ret, $exp);
+# cat-file-x
+$ret = `./minigit cat-file-x t/objects/hello_world.blob`;
+$exp = "type:blob
 size: 12
 header_length:8
 hello world
