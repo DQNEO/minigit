@@ -298,7 +298,13 @@ int main(int argc, char *argv[])
       printf("%s\n", oi.type);
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
       parse_header(in_file_name, &oi);
-      cat_body(in_file_name, &oi);
+
+      if (strcmp(oi.type, "tree") == 0) {
+	printf("Cannot cat tree object\n");
+      } else {
+	cat_body(in_file_name, &oi);
+      }
+
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
