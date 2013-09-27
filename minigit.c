@@ -282,7 +282,7 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
-    } else if (strcmp(argv[1], "-d") == 0) {
+    } else if (strcmp(argv[1], "cat-file-x") == 0) {
       parse_header(in_file_name, &oi);
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);

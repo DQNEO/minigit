@@ -5,7 +5,7 @@ use Test::More;
 
 `make >/dev/null`;
 
-my $ret1 = `./minigit -d t/objects/hello_world.blob`;
+my $ret1 = `./minigit cat-file-x t/objects/hello_world.blob`;
 my $exp1 = "type:blob
 size: 12
 header_length:8
