@@ -246,6 +246,8 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
       oi->type[i] = 0;
       oi->header_length++;
 
+      cp++; // skip ' '
+      oi->header_length++;
 
       i = 0;
       while (*cp) {
