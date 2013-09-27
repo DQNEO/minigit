@@ -1,14 +1,18 @@
-# C言語でzlibを使うサンプルコード
+# minigit - yet another git implementation
 
-## コンパイル
-( -lz オプションをつけることで、zlibがリンクされる)
-```sh
-gcc zlib.c -std=c99 -lz -o zlib
+## INSTALL
+
+make
+
+## How to use
+```
+minigit cat-file-s file.blob
+minigit cat-file-t file.blob
+minigit cat-file-p file.blob
 ```
 
-## 使いかた
-```sh
-./zlib --help
-./zlib -i hello.blob
-blob 12hello world
+## Run test
+
+```
+prove
 ```
