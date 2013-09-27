@@ -29,6 +29,13 @@ $exp = "blob\n";
 
 is $ret, $exp;
 
+# cat-file-p
+$ret = `./minigit cat-file-p t/objects/hello_world.blob`;
+$exp = "hello world
+";
+
+is $ret, $exp;
+
 done_testing();
 
 
