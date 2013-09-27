@@ -15,7 +15,13 @@ header_length:8
 hello world
 ";
 
-is $ret1, $exp1;
+is $ret, $exp;
+
+# cat-file-x
+$ret = `./minigit cat-file-s t/objects/hello_world.blob`;
+$exp = " 12\n";
+
+is $ret, $exp;
 
 done_testing();
 

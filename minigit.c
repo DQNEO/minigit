@@ -288,6 +288,9 @@ int main(int argc, char *argv[])
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       cat_body(in_file_name, &oi);
+    } else if (strcmp(argv[1], "cat-file-s") == 0) {
+      parse_header(in_file_name, &oi);
+      printf("%s\n", oi.size);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
