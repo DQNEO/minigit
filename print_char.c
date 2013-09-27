@@ -5,7 +5,7 @@
 
 int main() {
   int i;
-  for (i=0x41;i<=0x66;i++) {
+  for (i=0x20;i<=0x80;i++) {
     printf("%x => %c\n" ,i ,i);
   }
 }
