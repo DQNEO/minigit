@@ -293,6 +293,9 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_header(in_file_name, &oi);
       printf("%s\n", oi.size);
+    } else if (strcmp(argv[1], "cat-file-t") == 0) {
+      parse_header(in_file_name, &oi);
+      printf("%s\n", oi.type);
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
