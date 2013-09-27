@@ -17,7 +17,7 @@ hello world
 
 is $ret, $exp;
 
-# cat-file-x
+# cat-file-s
 $ret = `./minigit cat-file-s t/objects/hello_world.blob`;
 $exp = "12\n";
 
