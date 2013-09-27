@@ -1,2 +1,5 @@
 minigit
+
+# ignore binary executable files
 a.out
+c_samples/comptest
