@@ -121,7 +121,7 @@ void parse_header(char *header, object_info  *oi)
 /**
  * オブジェクトのコンテンツを表示する
  */
-void cat_object_body(char in_file_name[], object_info *oi, char *outbuf)
+void read_object_body(char in_file_name[], object_info *oi, char *outbuf)
 {
     int count, status;
 
@@ -262,7 +262,7 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      cat_object_body(in_file_name, &oi, buf);
+      read_object_body(in_file_name, &oi, buf);
       printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
@@ -274,12 +274,12 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
       parse_object_header(in_file_name, &oi);
       if (strcmp(oi.type, "tree") == 0) {
-	cat_object_body(in_file_name, &oi, buf);
+	read_object_body(in_file_name, &oi, buf);
 	//printf("Cannot cat tree object\n");
 	fwrite(buf + oi.header_length , 1, atoi(oi.size), stdout);
 	//printf("%s\n", buf + oi.header_length + 1);
       } else {
-	cat_object_body(in_file_name, &oi, buf);
+	read_object_body(in_file_name, &oi, buf);
 	fwrite(buf + oi.header_length , 1, atoi(oi.size), stdout);
 
       }
