@@ -15,6 +15,7 @@ typedef struct _TAG_OBJECT_INFO {
   char type[20];
   int  size;
   int  header_length; // ヘッダのバイト長
+  char *buf;
 } object_info;
 
 void do_compress(char in_file_name[])          /* 圧縮 */
@@ -122,14 +123,15 @@ void parse_header(char *header, object_info  *oi)
 /**
  * オブジェクトを丸ごと読み込む
  */
-void read_object_body(char in_file_name[], object_info *oi, char *outbuf)
+void read_object_body(char in_file_name[], object_info *oi)
 {
+
     int count, status;
 
   z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
   char inbuf[INBUFSIZ];           /* 入力バッファ */
-
+  char *outbuf = oi->buf;
   FILE *fin;                      /* 入力・出力ファイル */
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
@@ -256,6 +258,8 @@ int main(int argc, char *argv[])
 
     char buf[OUTBUFSIZ];         /* 出力バッファ */
 
+    oi.buf = buf;
+
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
@@ -263,7 +267,7 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%d\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      read_object_body(in_file_name, &oi, buf);
+      read_object_body(in_file_name, &oi);
       printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
@@ -275,13 +279,13 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
       parse_object_header(in_file_name, &oi);
       if (strcmp(oi.type, "tree") == 0) {
-	read_object_body(in_file_name, &oi, buf);
+	read_object_body(in_file_name, &oi);
 	//printf("Cannot cat tree object\n");
-	fwrite(buf + oi.header_length , 1, oi.size, stdout);
+	fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	//printf("%s\n", buf + oi.header_length + 1);
       } else {
-	read_object_body(in_file_name, &oi, buf);
-	fwrite(buf + oi.header_length , 1, oi.size, stdout);
+	read_object_body(in_file_name, &oi);
+	fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 
       }
 
