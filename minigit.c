@@ -340,6 +340,7 @@ int cmd_cat_file(char *argv[])
 	    read_object_body(in_file_name, &oi);
 	    cat_tree_object(&oi);
 	} else {
+	    // print blob or commit
 	    read_object_body(in_file_name, &oi);
 	    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	}
