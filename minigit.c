@@ -315,13 +315,12 @@ void cat_tree_object(object_info *oi)
 int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
-    oi.header_length = 0;
-
     char *in_file_name;
+
+    char buf[OUTBUFSIZ];
+
+    oi.header_length = 0;
     in_file_name = argv[3];
-
-
-    char buf[OUTBUFSIZ];         /* 出力バッファ */
 
     oi.buf = buf;
 
