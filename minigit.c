@@ -159,6 +159,7 @@ void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開
             fprintf(stderr, "Write error\n");
             exit(1);
         }
+	header_skipped = 1;
 
       } else if (fwrite(outbuf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
