@@ -10,6 +10,7 @@
 
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
+#define PROGNAME "minigit"
 
 typedef struct _TAG_OBJECT_INFO {
     char type[20];
@@ -317,7 +318,7 @@ int main(int argc, char *argv[])
     char *in_file_name;
 
     if (argc != 3) {
-        fprintf(stderr, "Usage: %s option args\n" , "minigit");
+        fprintf(stderr, "Usage: %s option args\n" , PROGNAME);
         fprintf(stderr, "  cat-file: -[s|t|p] object\n");
         exit(0);
     }
