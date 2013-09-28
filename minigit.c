@@ -282,6 +282,8 @@ void cat_tree_object(object_info *oi)
 	    sha1[i] = (unsigned char)*(cp++) ;
 	}
 
+	// pretty print
+	// filemode
 	printf("%06d ", atoi(mode));
 	for (i=0;i<20;i++) {
 	    printf("%02x",sha1[i]);
