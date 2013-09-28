@@ -119,7 +119,7 @@ void parse_header(char *header, object_info  *oi)
 }
 
 
-void cat_body(char in_file_name[], object_info *oi)        /* 展開（復元） */
+void cat_object_body(char in_file_name[], object_info *oi)        /* 展開（復元） */
 {
     int count, status;
 
@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      cat_body(in_file_name, &oi);
+      cat_object_body(in_file_name, &oi);
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_object_header(in_file_name, &oi);
       printf("%s\n", oi.size);
@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
-	cat_body(in_file_name, &oi);
+	cat_object_body(in_file_name, &oi);
       }
 
     } else {
