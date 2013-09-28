@@ -120,7 +120,7 @@ void parse_header(char *header, object_info  *oi)
 }
 
 /**
- * オブジェクトのコンテンツを表示する
+ * オブジェクトを丸ごと読み込む
  */
 void read_object_body(char in_file_name[], object_info *oi, char *outbuf)
 {
