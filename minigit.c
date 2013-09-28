@@ -118,8 +118,10 @@ void parse_header(char *header, object_info  *oi)
 
 }
 
-
-void cat_object_body(char in_file_name[], object_info *oi)        /* 展開（復元） */
+/**
+ * オブジェクトのコンテンツを表示する
+ */
+void cat_object_body(char in_file_name[], object_info *oi)
 {
     int count, status;
 
