@@ -8,6 +8,9 @@
 #include <zlib.h>               /* /usr(/local)/include/zlib.h */
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 #define PROGNAME "minigit"
@@ -316,11 +319,28 @@ int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
     char *filename;
+    char *sha1_short;
 
     char buf[OUTBUFSIZ];
 
     oi.header_length = 0;
-    filename = argv[3];
+
+    char *_argv = argv[3];
+
+    struct stat st;
+    if (stat(_argv, &st) == 0) {
+	//引数をそのままファイル名として使用(gitにはない機能)
+	filename = _argv;	
+    } else {
+	//引数をsha1(の短縮文字列)とみなす
+	sha1_short = _argv;
+	printf("sha1_short:%s\n", sha1_short);
+	
+	// .git/objects/01/2345... を探索すする
+	// なければエラー終了
+	exit(2);
+    }
+
     
     oi.buf = buf;
 
