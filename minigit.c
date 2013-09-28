@@ -97,24 +97,21 @@ void do_compress(char in_file_name[])          /* 圧縮 */
 
 void parse_header(char *header, struct _TAG_OBJECT_INFO *oi)
 {
-    char *cp;
     int i = 0;
 
-    cp = header;
-
-    while (*(cp) != ' ') {
-      oi->type[i++] = *(cp++);
+    while (*(header) != ' ') {
+      oi->type[i++] = *(header++);
       oi->header_length++;
     }
     oi->type[i] = 0;
     oi->header_length++;
 
-    cp++; // skip ' '
+    header++; // skip ' '
     oi->header_length++;
 
     i = 0;
-    while (*cp) {
-      oi->size[i++] = *(cp++);
+    while (*header) {
+      oi->size[i++] = *(header++);
       oi->header_length++;
     }
     oi->size[i] = 0;
