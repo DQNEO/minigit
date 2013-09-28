@@ -320,8 +320,6 @@ void usage() {
 
 int main(int argc, char *argv[])
 {
-    int c;
-
     if (argc == 1) {
 	usage();
     }
