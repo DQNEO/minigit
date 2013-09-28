@@ -176,14 +176,14 @@ void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開
     fclose(fin);
 }
 
-void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
+void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi, char *header)
 {
     int count, status;
 
   z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
   char inbuf[INBUFSIZ];           /* 入力バッファ */
-  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+
   FILE *fin;                      /* 入力・出力ファイル */
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
@@ -205,7 +205,7 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
         exit(1);
     }
 
-    z.next_out = outbuf;        /* 出力ポインタ */
+    z.next_out = header;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
     status = Z_OK;
 
@@ -238,7 +238,7 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
     char *cp;
     int i = 0;
 
-    cp = outbuf;
+    cp = header;
 
     while (*(cp) != ' ') {
       oi->type[i++] = *(cp++);
@@ -274,23 +274,24 @@ int main(int argc, char *argv[])
     oi.header_length = 0;
     in_file_name = argv[2];
 
+    char header[OUTBUFSIZ];
+
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
-      parse_header(in_file_name, &oi);
+      parse_header(in_file_name, &oi, header);
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       cat_body(in_file_name, &oi);
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
-      parse_header(in_file_name, &oi);
+      parse_header(in_file_name, &oi, header);
       printf("%s\n", oi.size);
     } else if (strcmp(argv[1], "cat-file-t") == 0) {
-      parse_header(in_file_name, &oi);
+      parse_header(in_file_name, &oi, header);
       printf("%s\n", oi.type);
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
-      parse_header(in_file_name, &oi);
-
+      parse_header(in_file_name, &oi, header);
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
