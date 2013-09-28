@@ -3,6 +3,9 @@ use strict;
 use warnings;
 use Test::More;
 
+# test blob object
+diag('blob object');
+
 my ($ret, $exp);
 # cat-file-x
 $ret = `./minigit cat-file-x t/objects/hello_world.blob`;
@@ -32,6 +35,22 @@ $exp = "hello world
 ";
 
 is $ret, $exp;
+
+# test tree object
+diag('tree object');
+
+my @sha1_list = ('1e863', '44495', 'f135c');
+
+for my $sha1_short (@sha1_list) {
+$ret = `./minigit cat-file-p t/objects/$sha1_short.tree`;
+
+open my $fh, '<', "t/objects/$sha1_short.tree.txt"
+    or die "failed to open file: $!";
+$exp = do { local $/; <$fh> };
+
+is $ret, $exp, 'tree ' . $sha1_short;
+
+}
 
 done_testing();
 
