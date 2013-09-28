@@ -17,16 +17,22 @@ hello world
 
 is $ret, $exp;
 
-# cat-file-s
+diag 'cat-file -s';
 $ret = `./minigit cat-file-s t/objects/hello_world.blob`;
 $exp = "12\n";
-
 is $ret, $exp;
 
-# cat-file-t
+$ret = `./minigit cat-file-s t/objects/f135c.tree`;
+$exp = "252\n";
+is $ret, $exp;
+
+diag 'cat-file -t';
 $ret = `./minigit cat-file-t t/objects/hello_world.blob`;
 $exp = "blob\n";
+is $ret, $exp;
 
+$ret = `./minigit cat-file-t t/objects/f135c.tree`;
+$exp = "tree\n";
 is $ret, $exp;
 
 # cat-file-p
@@ -37,7 +43,7 @@ $exp = "hello world
 is $ret, $exp;
 
 # test tree object
-diag('tree object');
+diag('cat tree object');
 
 my @sha1_list = ('1e863', '44495', 'f135c');
 
