@@ -121,14 +121,14 @@ void parse_header(char *header, object_info  *oi)
 /**
  * オブジェクトのコンテンツを表示する
  */
-void cat_object_body(char in_file_name[], object_info *oi)
+void cat_object_body(char in_file_name[], object_info *oi, char *outbuf)
 {
     int count, status;
 
   z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
   char inbuf[INBUFSIZ];           /* 入力バッファ */
-  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+
   FILE *fin;                      /* 入力・出力ファイル */
   int header_skipped = 0;
 
@@ -275,6 +275,7 @@ int main(int argc, char *argv[])
     in_file_name = argv[2];
 
 
+    char _outbuf[OUTBUFSIZ];         /* 出力バッファ */
 
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
@@ -283,7 +284,7 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      cat_object_body(in_file_name, &oi);
+      cat_object_body(in_file_name, &oi, _outbuf);
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_object_header(in_file_name, &oi);
       printf("%s\n", oi.size);
@@ -295,7 +296,7 @@ int main(int argc, char *argv[])
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
-	cat_object_body(in_file_name, &oi);
+	cat_object_body(in_file_name, &oi, _outbuf);
       }
 
     } else {
