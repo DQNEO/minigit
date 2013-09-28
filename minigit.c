@@ -312,15 +312,19 @@ void cat_tree_object(object_info *oi)
 
 }
 
+void usage() {
+    fprintf(stderr, "Usage: %s option args\n" , PROGNAME);
+    fprintf(stderr, "  cat-file: -[s|t|p] object\n");
+    exit(0);
+}
+
 int main(int argc, char *argv[])
 {
     int c;
     char *in_file_name;
 
     if (argc == 1) {
-        fprintf(stderr, "Usage: %s option args\n" , PROGNAME);
-        fprintf(stderr, "  cat-file: -[s|t|p] object\n");
-        exit(0);
+	usage();
     }
 
     struct _TAG_OBJECT_INFO oi;
