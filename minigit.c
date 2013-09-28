@@ -250,14 +250,17 @@ void cat_tree_object(object_info *oi)
     char *cp = start;
     //
 
-    int i;
-    char mode[6];
-
     while (cp < end) {
+
+	char mode[6];
+	char *filename;
+	char sha1[20];
+
+	int j = 0;
+	int i = 0;
 
 	// filemode
 	// 6桁または5桁。' 'で終端
-	int j = 0;
 	while (*cp != ' ') {
 	    mode[j++] = *(cp++);
 	}
@@ -268,18 +271,25 @@ void cat_tree_object(object_info *oi)
 
 	// filename
 	// nullで終端
+	filename = cp;
 	while(*cp) {
-	    printf("%c", *(cp++));
+	    //printf("%c", *(cp++));
+	    cp++;
 	}
+
+	printf("%s", filename);
 	printf("\t");
 	cp++;
 
 	//sha1
 	//固定長で20文字
 	for (i=0;i<20;i++) {
-	    printf("%x", (*cp) & 0xff);
-	    cp++;
+	    sha1[i] = *(cp++);
 	}
+	
+	for (i=0;i<20;i++) {
+	    printf("%x",sha1[i] & 0xff);
+	}	
 
 	printf("\n");
 	continue;
