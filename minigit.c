@@ -95,6 +95,33 @@ void do_compress(char in_file_name[])          /* 圧縮 */
     fclose(fin);
 }
 
+void parse_header(char *header, struct _TAG_OBJECT_INFO *oi)
+{
+    char *cp;
+    int i = 0;
+
+    cp = header;
+
+    while (*(cp) != ' ') {
+      oi->type[i++] = *(cp++);
+      oi->header_length++;
+    }
+    oi->type[i] = 0;
+    oi->header_length++;
+
+    cp++; // skip ' '
+    oi->header_length++;
+
+    i = 0;
+    while (*cp) {
+      oi->size[i++] = *(cp++);
+      oi->header_length++;
+    }
+    oi->size[i] = 0;
+
+}
+
+
 void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開（復元） */
 {
     int count, status;
@@ -235,28 +262,7 @@ void unpack_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi, char *heade
 
     fclose(fin);
 
-    char *cp;
-    int i = 0;
-
-    cp = header;
-
-    while (*(cp) != ' ') {
-      oi->type[i++] = *(cp++);
-      oi->header_length++;
-    }
-    oi->type[i] = 0;
-    oi->header_length++;
-
-    cp++; // skip ' '
-    oi->header_length++;
-
-    i = 0;
-    while (*cp) {
-      oi->size[i++] = *(cp++);
-      oi->header_length++;
-    }
-    oi->size[i] = 0;
-
+    parse_header(header, oi);
 }
 
 int main(int argc, char *argv[])
