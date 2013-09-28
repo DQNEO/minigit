@@ -7,15 +7,6 @@ use Test::More;
 diag('blob object');
 
 my ($ret, $exp);
-# cat-file-x
-$ret = `./minigit cat-file -x t/objects/hello_world.blob`;
-$exp = "type:blob
-size:12
-header_length:8
-hello world
-";
-
-is $ret, $exp;
 
 diag 'cat-file -s';
 $ret = `./minigit cat-file -s t/objects/hello_world.blob`;
