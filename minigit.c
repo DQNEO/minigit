@@ -311,25 +311,8 @@ void cat_tree_object(object_info *oi)
   
 
 }
-
-void usage() {
-    fprintf(stderr, "Usage: %s option args\n" , PROGNAME);
-    fprintf(stderr, "  cat-file: -[s|t|p] object\n");
-    exit(0);
-}
-
-int main(int argc, char *argv[])
+int cmd_cat_file(char *argv[])
 {
-    if (argc == 1) {
-	usage();
-    }
-
-    /*
-    if (strcmp(argv[1], "-c") == 0) {
-        do_compress(in_file_name);
-    }
-    */
-    if (strcmp(argv[1], "cat-file") == 0) {
     struct _TAG_OBJECT_INFO oi;
     oi.header_length = 0;
 
@@ -374,6 +357,29 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    return 0;
+}
+
+
+void usage() {
+    fprintf(stderr, "Usage: %s option args\n" , PROGNAME);
+    fprintf(stderr, "  cat-file: -[s|t|p] object\n");
+    exit(0);
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc == 1) {
+	usage();
+    }
+
+    /*
+    if (strcmp(argv[1], "-c") == 0) {
+        do_compress(in_file_name);
+    }
+    */
+    if (strcmp(argv[1], "cat-file") == 0) {
+	return cmd_cat_file(argv);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
