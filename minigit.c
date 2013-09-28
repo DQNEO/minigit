@@ -317,8 +317,8 @@ int main(int argc, char *argv[])
     char *in_file_name;
 
     if (argc != 3) {
-        fprintf(stderr, "Usage: comptest -[flag] infile\n");
-        fprintf(stderr, "  flag: -c=compress -d=decompress\n");
+        fprintf(stderr, "Usage: %s option args\n" , "minigit");
+        fprintf(stderr, "  cat-file: -[s|t|p] object\n");
         exit(0);
     }
 
