@@ -338,13 +338,10 @@ int cmd_cat_file(char *argv[])
 	parse_object_header(in_file_name, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
 	    read_object_body(in_file_name, &oi);
-	    //printf("Cannot cat tree object\n");
 	    cat_tree_object(&oi);
-	    //printf("%s\n", buf + oi.header_length + 1);
 	} else {
 	    read_object_body(in_file_name, &oi);
 	    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
-
 	}
 
     } else {
