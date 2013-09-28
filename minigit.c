@@ -321,20 +321,10 @@ void usage() {
 int main(int argc, char *argv[])
 {
     int c;
-    char *in_file_name;
 
     if (argc == 1) {
 	usage();
     }
-
-    struct _TAG_OBJECT_INFO oi;
-    oi.header_length = 0;
-    in_file_name = argv[3];
-
-
-    char buf[OUTBUFSIZ];         /* 出力バッファ */
-
-    oi.buf = buf;
 
     /*
     if (strcmp(argv[1], "-c") == 0) {
@@ -342,6 +332,17 @@ int main(int argc, char *argv[])
     }
     */
     if (strcmp(argv[1], "cat-file") == 0) {
+    struct _TAG_OBJECT_INFO oi;
+    oi.header_length = 0;
+
+    char *in_file_name;
+    in_file_name = argv[3];
+
+
+    char buf[OUTBUFSIZ];         /* 出力バッファ */
+
+    oi.buf = buf;
+
 
     if (strcmp(argv[2], "-x") == 0) {
 	parse_object_header(in_file_name, &oi);
