@@ -261,14 +261,14 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
       parse_object_header(in_file_name, &oi);
       printf("type:%s\n", oi.type);
-      printf("size:%s\n", oi.size);
+      printf("size:%d\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       read_object_body(in_file_name, &oi, buf);
       printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_object_header(in_file_name, &oi);
-      printf("%s\n", oi.size);
+      printf("%d\n", oi.size);
     } else if (strcmp(argv[1], "cat-file-t") == 0) {
       parse_object_header(in_file_name, &oi);
       printf("%s\n", oi.type);
