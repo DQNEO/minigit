@@ -255,6 +255,8 @@ void cat_tree_object(object_info *oi)
 
   while (cp < end) {
     if (datatype == 0) {
+      // filemode
+      // 6桁または5桁。' 'で終端
       int j = 0;
       while (*cp != ' ') {
 	mode[j++] = *(cp++);
@@ -267,6 +269,8 @@ void cat_tree_object(object_info *oi)
 
       continue;
     } else if (datatype == 1) {
+      // filename
+      // nullで終端
       while(*cp) {
 	printf("%c", *(cp++));
       }
@@ -276,6 +280,7 @@ void cat_tree_object(object_info *oi)
       continue;
     } else if(datatype == 2)  {
       //sha1
+      //固定長で20文字
       for (i=0;i<20;i++) {
 	printf("%x", (*cp) & 0xff);
 	cp++;
