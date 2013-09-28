@@ -254,7 +254,7 @@ void cat_tree_object(object_info *oi)
 
 	char mode[6];
 	char *filename;
-	char sha1[20];
+	unsigned char sha1[20];
 
 	int j = 0;
 	int i = 0;
@@ -279,12 +279,12 @@ void cat_tree_object(object_info *oi)
 	//sha1
 	//固定長で20文字
 	for (i=0;i<20;i++) {
-	    sha1[i] = *(cp++);
+	    sha1[i] = (unsigned char)*(cp++) ;
 	}
 
 	printf("%06d ", atoi(mode));
 	for (i=0;i<20;i++) {
-	    printf("%x",sha1[i] & 0xff);
+	    printf("%02x",sha1[i]);
 	}	
 
 	printf(" %s", filename);
