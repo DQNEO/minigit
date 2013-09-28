@@ -265,32 +265,30 @@ void cat_tree_object(object_info *oi)
 	    mode[j++] = *(cp++);
 	}
 	mode[j] = 0;
-	printf("%06d ", atoi(mode));
-	j = 0;
-	cp++;
+
+	cp++; // skip ' '
 
 	// filename
 	// nullで終端
 	filename = cp;
-	while(*cp) {
-	    //printf("%c", *(cp++));
-	    cp++;
+	while(*cp++) {
 	}
 
-	printf("%s", filename);
-	printf("\t");
-	cp++;
+	//cp++; // skip '\0'
 
 	//sha1
 	//固定長で20文字
 	for (i=0;i<20;i++) {
 	    sha1[i] = *(cp++);
 	}
-	
+
+	printf("%06d ", atoi(mode));
 	for (i=0;i<20;i++) {
 	    printf("%x",sha1[i] & 0xff);
 	}	
 
+	printf(" %s", filename);
+	
 	printf("\n");
 	continue;
 
