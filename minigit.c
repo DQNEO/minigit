@@ -13,7 +13,7 @@
 
 typedef struct _TAG_OBJECT_INFO {
   char type[20];
-  char size[20];
+  int  size;
   int  header_length; // ヘッダのバイト長
 } object_info;
 
@@ -98,6 +98,7 @@ void do_compress(char in_file_name[])          /* 圧縮 */
 void parse_header(char *header, object_info  *oi)
 {
     int i = 0;
+    char size[20];
 
     while (*(header) != ' ') {
       oi->type[i++] = *(header++);
@@ -111,11 +112,11 @@ void parse_header(char *header, object_info  *oi)
 
     i = 0;
     while (*header) {
-      oi->size[i++] = *(header++);
+      size[i++] = *(header++);
       oi->header_length++;
     }
-    oi->size[i] = 0;
-
+    size[i] = 0;
+    oi->size = atoi(size);
 }
 
 /**
@@ -276,11 +277,11 @@ int main(int argc, char *argv[])
       if (strcmp(oi.type, "tree") == 0) {
 	read_object_body(in_file_name, &oi, buf);
 	//printf("Cannot cat tree object\n");
-	fwrite(buf + oi.header_length , 1, atoi(oi.size), stdout);
+	fwrite(buf + oi.header_length , 1, oi.size, stdout);
 	//printf("%s\n", buf + oi.header_length + 1);
       } else {
 	read_object_body(in_file_name, &oi, buf);
-	fwrite(buf + oi.header_length , 1, atoi(oi.size), stdout);
+	fwrite(buf + oi.header_length , 1, oi.size, stdout);
 
       }
 
