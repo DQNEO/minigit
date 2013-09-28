@@ -12,19 +12,19 @@
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 
 typedef struct _TAG_OBJECT_INFO {
-  char type[20];
-  int  size;
-  int  header_length; // ヘッダのバイト長
-  char *buf;
+    char type[20];
+    int  size;
+    int  header_length; // ヘッダのバイト長
+    char *buf;
 } object_info;
 
 void do_compress(char in_file_name[])          /* 圧縮 */
 {
-  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+    z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
-  char inbuf[INBUFSIZ];           /* 入力バッファ */
-  char outbuf[OUTBUFSIZ];         /* 出力バッファ */
-  FILE *fin;                      /* 入力・出力ファイル */
+    char inbuf[INBUFSIZ];           /* 入力バッファ */
+    char outbuf[OUTBUFSIZ];         /* 出力バッファ */
+    FILE *fin;                      /* 入力・出力ファイル */
 
     int count, flush, status;
 
@@ -102,8 +102,8 @@ void parse_header(char *header, object_info  *oi)
     char size[20];
 
     while (*(header) != ' ') {
-      oi->type[i++] = *(header++);
-      oi->header_length++;
+	oi->type[i++] = *(header++);
+	oi->header_length++;
     }
     oi->type[i] = 0;
     oi->header_length++;
@@ -113,8 +113,8 @@ void parse_header(char *header, object_info  *oi)
 
     i = 0;
     while (*header) {
-      size[i++] = *(header++);
-      oi->header_length++;
+	size[i++] = *(header++);
+	oi->header_length++;
     }
     size[i] = 0;
     oi->size = atoi(size);
@@ -128,11 +128,11 @@ void read_object_body(char in_file_name[], object_info *oi)
 
     int count, status;
 
-  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+    z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
-  char inbuf[INBUFSIZ];           /* 入力バッファ */
-  char *outbuf = oi->buf;
-  FILE *fin;                      /* 入力・出力ファイル */
+    char inbuf[INBUFSIZ];           /* 入力バッファ */
+    char *outbuf = oi->buf;
+    FILE *fin;                      /* 入力・出力ファイル */
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
@@ -158,15 +158,15 @@ void read_object_body(char in_file_name[], object_info *oi)
     status = Z_OK;
 
     if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-      z.next_in = inbuf;  /* 入力ポインタを元に戻す */
-      z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+	z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+	z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
     }
 
     /* 展開 */
     status = inflate(&z, Z_NO_FLUSH);
     if (status != Z_STREAM_END) {
-      fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-      exit(1);
+	fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+	exit(1);
     }
 
     /* 後始末 */
@@ -187,12 +187,12 @@ void parse_object_header(char in_file_name[], object_info *oi)
 {
     int count, status;
 
-  z_stream z;                     /* ライブラリとやりとりするための構造体 */
+    z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
-  char inbuf[INBUFSIZ];           /* 入力バッファ */
+    char inbuf[INBUFSIZ];           /* 入力バッファ */
     char header[OUTBUFSIZ];
 
-  FILE *fin;                      /* 入力・出力ファイル */
+    FILE *fin;                      /* 入力・出力ファイル */
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
@@ -218,15 +218,15 @@ void parse_object_header(char in_file_name[], object_info *oi)
     status = Z_OK;
 
     if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-      z.next_in = inbuf;  /* 入力ポインタを元に戻す */
-      z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+	z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+	z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
     }
 
     /* 展開 */
     status = inflate(&z, Z_NO_FLUSH);
     if (status != Z_STREAM_END) {
-      fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-      exit(1);
+	fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+	exit(1);
     }
 
     /* 後始末 */
@@ -243,48 +243,48 @@ void parse_object_header(char in_file_name[], object_info *oi)
 void cat_tree_object(object_info *oi)
 {
 
-  //ヘッダー部は読み飛ばす
-  char *start = oi->buf + oi->header_length;
-  //ボディのサイズはヘッダに書かれてあるのを参照する
-  char *end = oi->buf + oi->header_length + oi->size;
-  char *cp = start;
-  //
+    //ヘッダー部は読み飛ばす
+    char *start = oi->buf + oi->header_length;
+    //ボディのサイズはヘッダに書かれてあるのを参照する
+    char *end = oi->buf + oi->header_length + oi->size;
+    char *cp = start;
+    //
 
-  int i;
-  char mode[6];
+    int i;
+    char mode[6];
 
-  while (cp < end) {
+    while (cp < end) {
 
-      // filemode
-      // 6桁または5桁。' 'で終端
-      int j = 0;
-      while (*cp != ' ') {
-	mode[j++] = *(cp++);
-      }
-      mode[j] = 0;
-      printf("%06d ", atoi(mode));
-      j = 0;
-      cp++;
-
-      // filename
-      // nullで終端
-      while(*cp) {
-	printf("%c", *(cp++));
-      }
-      printf("\t");
-      cp++;
-
-      //sha1
-      //固定長で20文字
-      for (i=0;i<20;i++) {
-	printf("%x", (*cp) & 0xff);
+	// filemode
+	// 6桁または5桁。' 'で終端
+	int j = 0;
+	while (*cp != ' ') {
+	    mode[j++] = *(cp++);
+	}
+	mode[j] = 0;
+	printf("%06d ", atoi(mode));
+	j = 0;
 	cp++;
-      }
 
-      printf("\n");
-      continue;
+	// filename
+	// nullで終端
+	while(*cp) {
+	    printf("%c", *(cp++));
+	}
+	printf("\t");
+	cp++;
 
-  }
+	//sha1
+	//固定長で20文字
+	for (i=0;i<20;i++) {
+	    printf("%x", (*cp) & 0xff);
+	    cp++;
+	}
+
+	printf("\n");
+	continue;
+
+    }
   
 
 }
@@ -312,31 +312,31 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
-      parse_object_header(in_file_name, &oi);
-      printf("type:%s\n", oi.type);
-      printf("size:%d\n", oi.size);
-      printf("header_length:%d\n", oi.header_length);
-      read_object_body(in_file_name, &oi);
-      printf("%s", buf + oi.header_length);
+	parse_object_header(in_file_name, &oi);
+	printf("type:%s\n", oi.type);
+	printf("size:%d\n", oi.size);
+	printf("header_length:%d\n", oi.header_length);
+	read_object_body(in_file_name, &oi);
+	printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
-      parse_object_header(in_file_name, &oi);
-      printf("%d\n", oi.size);
+	parse_object_header(in_file_name, &oi);
+	printf("%d\n", oi.size);
     } else if (strcmp(argv[1], "cat-file-t") == 0) {
-      parse_object_header(in_file_name, &oi);
-      printf("%s\n", oi.type);
+	parse_object_header(in_file_name, &oi);
+	printf("%s\n", oi.type);
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
-      parse_object_header(in_file_name, &oi);
-      if (strcmp(oi.type, "tree") == 0) {
-	read_object_body(in_file_name, &oi);
-	//printf("Cannot cat tree object\n");
-	cat_tree_object(&oi);
-	//printf("%s\n", buf + oi.header_length + 1);
-      } else {
-	read_object_body(in_file_name, &oi);
-	fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
+	parse_object_header(in_file_name, &oi);
+	if (strcmp(oi.type, "tree") == 0) {
+	    read_object_body(in_file_name, &oi);
+	    //printf("Cannot cat tree object\n");
+	    cat_tree_object(&oi);
+	    //printf("%s\n", buf + oi.header_length + 1);
+	} else {
+	    read_object_body(in_file_name, &oi);
+	    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 
-      }
+	}
 
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
