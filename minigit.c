@@ -220,44 +220,35 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
             fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
-                fprintf(stderr, "Write error\n");
-                exit(1);
-            }
-            z.next_out = outbuf; /* 出力ポインタを元に戻す */
-            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
+        if (z.avail_out == 0) {
+	  /* ここで出力バッファが満タンになるはずはない */
+	  fprintf(stderr, "avail_out is zero\n");
+	  exit(1);
         }
     }
 
-      char *cp;
-      int i = 0;
+    char *cp;
+    int i = 0;
 
+    count = OUTBUFSIZ - z.avail_out;
+    cp = outbuf;
 
-    /* 残りを吐き出す */
-    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-
-      cp = outbuf;
-
-      while (*(cp) != ' ') {
-	oi->type[i++] = *(cp++);
-	oi->header_length++;
-      }
-      oi->type[i] = 0;
+    while (*(cp) != ' ') {
+      oi->type[i++] = *(cp++);
       oi->header_length++;
-
-      cp++; // skip ' '
-      oi->header_length++;
-
-      i = 0;
-      while (*cp) {
-	oi->size[i++] = *(cp++);
-	oi->header_length++;
-      }
-      oi->size[i] = 0;
-      
     }
+    oi->type[i] = 0;
+    oi->header_length++;
+
+    cp++; // skip ' '
+    oi->header_length++;
+
+    i = 0;
+    while (*cp) {
+      oi->size[i++] = *(cp++);
+      oi->header_length++;
+    }
+    oi->size[i] = 0;
 
     /* 後始末 */
     if (inflateEnd(&z) != Z_OK) {
