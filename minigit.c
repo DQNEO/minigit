@@ -315,32 +315,32 @@ void cat_tree_object(object_info *oi)
 int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
-    char *in_file_name;
+    char *filename;
 
     char buf[OUTBUFSIZ];
 
     oi.header_length = 0;
-    in_file_name = argv[3];
-
+    filename = argv[3];
+    
     oi.buf = buf;
 
     if (strcmp(argv[2], "-s") == 0) {
 	// show size
-	parse_object_header(in_file_name, &oi);
+	parse_object_header(filename, &oi);
 	printf("%d\n", oi.size);
     } else if (strcmp(argv[2], "-t") == 0) {
 	// show type
-	parse_object_header(in_file_name, &oi);
+	parse_object_header(filename, &oi);
 	printf("%s\n", oi.type);
     } else if (strcmp(argv[2], "-p") == 0) {
 	// pretty print
-	parse_object_header(in_file_name, &oi);
+	parse_object_header(filename, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
-	    read_object_body(in_file_name, &oi);
+	    read_object_body(filename, &oi);
 	    cat_tree_object(&oi);
 	} else {
 	    // print blob or commit
-	    read_object_body(in_file_name, &oi);
+	    read_object_body(filename, &oi);
 	    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	}
 
@@ -367,7 +367,7 @@ int main(int argc, char *argv[])
 
     /*
     if (strcmp(argv[1], "-c") == 0) {
-        do_compress(in_file_name);
+        do_compress(filename);
     }
     */
     if (strcmp(argv[1], "cat-file") == 0) {
