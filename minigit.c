@@ -240,6 +240,28 @@ void parse_object_header(char in_file_name[], object_info *oi)
     parse_header(header, oi);
 }
 
+void cat_tree_object(object_info *oi)
+{
+  char *cp;
+  //ヘッダー部は読み飛ばす
+  char *start = oi->buf + oi->header_length;
+  //ボディのサイズはヘッダに書かれてあるのを参照する
+  char *end = oi->buf + oi->header_length + oi->size;
+
+  
+  for (cp = start; cp <= end ; cp++) {
+    if (*cp == 0) {
+      printf("---");
+    } else if( *cp < ' ')  {
+      printf("%x", (*cp) & 0xff);
+    } else {
+      printf("%c", *cp);
+    }
+  }
+  
+
+}
+
 int main(int argc, char *argv[])
 {
     int c;
@@ -281,7 +303,7 @@ int main(int argc, char *argv[])
       if (strcmp(oi.type, "tree") == 0) {
 	read_object_body(in_file_name, &oi);
 	//printf("Cannot cat tree object\n");
-	fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
+	cat_tree_object(&oi);
 	//printf("%s\n", buf + oi.header_length + 1);
       } else {
 	read_object_body(in_file_name, &oi);
