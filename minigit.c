@@ -232,8 +232,8 @@ void parse_object_header(char in_file_name[], object_info *oi)
         exit(1);
     }
 
-    z.next_out = header;        /* 出力ポインタ */
-    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    z.next_out = header;
+    z.avail_out = sizeof(header);
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
