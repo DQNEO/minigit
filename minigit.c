@@ -227,6 +227,14 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
         }
     }
 
+    /* 後始末 */
+    if (inflateEnd(&z) != Z_OK) {
+        fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+
+    fclose(fin);
+
     char *cp;
     int i = 0;
 
@@ -250,13 +258,6 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
     }
     oi->size[i] = 0;
 
-    /* 後始末 */
-    if (inflateEnd(&z) != Z_OK) {
-        fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
-        exit(1);
-    }
-
-    fclose(fin);
 }
 
 int main(int argc, char *argv[])
