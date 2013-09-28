@@ -242,20 +242,50 @@ void parse_object_header(char in_file_name[], object_info *oi)
 
 void cat_tree_object(object_info *oi)
 {
-  char *cp;
+
   //ヘッダー部は読み飛ばす
   char *start = oi->buf + oi->header_length;
   //ボディのサイズはヘッダに書かれてあるのを参照する
   char *end = oi->buf + oi->header_length + oi->size;
+  char *cp = start;
+  //
+  int datatype = 0; // 0:filemode, 1:filename, 2:sha1
+  int i;
+  char mode[6];
 
-  
-  for (cp = start; cp <= end ; cp++) {
-    if (*cp == 0) {
-      printf("---");
-    } else if( *cp < ' ')  {
-      printf("%x", (*cp) & 0xff);
+  while (cp < end) {
+    if (datatype == 0) {
+      int j = 0;
+      while (*cp != ' ') {
+	mode[j++] = *(cp++);
+      }
+      mode[j] = 0;
+      printf("%06d ", atoi(mode));
+      j = 0;
+      cp++;
+      datatype = 1;
+
+      continue;
+    } else if (datatype == 1) {
+      while(*cp) {
+	printf("%c", *(cp++));
+      }
+      printf("\t");
+      cp++;
+      datatype = 2;
+      continue;
+    } else if(datatype == 2)  {
+      //sha1
+      for (i=0;i<20;i++) {
+	printf("%x", (*cp) & 0xff);
+	cp++;
+      }
+      datatype = 0;
+      printf("\n");
+      continue;
     } else {
-      printf("%c", *cp);
+      cp++;
+      continue;
     }
   }
   
