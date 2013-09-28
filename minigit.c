@@ -130,8 +130,6 @@ void cat_object_body(char in_file_name[], object_info *oi, char *outbuf)
   char inbuf[INBUFSIZ];           /* 入力バッファ */
 
   FILE *fin;                      /* 入力・出力ファイル */
-  int header_skipped = 0;
-
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
@@ -156,41 +154,16 @@ void cat_object_body(char in_file_name[], object_info *oi, char *outbuf)
     z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
     status = Z_OK;
 
-    while (status != Z_STREAM_END) {
-        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-            z.next_in = inbuf;  /* 入力ポインタを元に戻す */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
-        }
-        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
-        if (status == Z_STREAM_END) break; /* 完了 */
-        if (status != Z_OK) {   /* エラー */
-            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-            exit(1);
-        }
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
-                fprintf(stderr, "Write error\n");
-                exit(1);
-            }
-            z.next_out = outbuf; /* 出力ポインタを元に戻す */
-            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
-        }
+    if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
+      z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+      z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
     }
 
-    /* 残りを吐き出す */
-    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-      if (! header_skipped) {
-	if (fwrite(outbuf + oi->header_length, 1, count - oi->header_length, stdout) != count - oi->header_length) {
-            fprintf(stderr, "Write error\n");
-            exit(1);
-        }
-	header_skipped = 1;
-
-      } else if (fwrite(outbuf, 1, count, stdout) != count) {
-            fprintf(stderr, "Write error\n");
-            exit(1);
-        }
+    /* 展開 */
+    status = inflate(&z, Z_NO_FLUSH);
+    if (status != Z_STREAM_END) {
+      fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+      exit(1);
     }
 
     /* 後始末 */
@@ -200,6 +173,11 @@ void cat_object_body(char in_file_name[], object_info *oi, char *outbuf)
     }
 
     fclose(fin);
+
+    //printf("bufsize = %d\n", sizeof(outbuf));
+    //printf("avail_out = %d\n", z.avail_out);
+
+    outbuf[OUTBUFSIZ - z.avail_out] = 0;
 }
 
 void parse_object_header(char in_file_name[], object_info *oi)
@@ -285,6 +263,8 @@ int main(int argc, char *argv[])
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       cat_object_body(in_file_name, &oi, _outbuf);
+      printf("%s", _outbuf + oi.header_length);
+
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_object_header(in_file_name, &oi);
       printf("%s\n", oi.size);
@@ -297,6 +277,7 @@ int main(int argc, char *argv[])
 	printf("Cannot cat tree object\n");
       } else {
 	cat_object_body(in_file_name, &oi, _outbuf);
+	printf("%s", _outbuf + oi.header_length);
       }
 
     } else {
