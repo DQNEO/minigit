@@ -200,13 +200,14 @@ void cat_body(char in_file_name[], object_info *oi)        /* 展開（復元）
     fclose(fin);
 }
 
-void parser_object_header(char in_file_name[], object_info *oi, char *header)
+void parser_object_header(char in_file_name[], object_info *oi)
 {
     int count, status;
 
   z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
   char inbuf[INBUFSIZ];           /* 入力バッファ */
+    char header[OUTBUFSIZ];
 
   FILE *fin;                      /* 入力・出力ファイル */
 
@@ -277,24 +278,24 @@ int main(int argc, char *argv[])
     oi.header_length = 0;
     in_file_name = argv[2];
 
-    char header[OUTBUFSIZ];
+
 
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
-      parser_object_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi);
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       cat_body(in_file_name, &oi);
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
-      parser_object_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi);
       printf("%s\n", oi.size);
     } else if (strcmp(argv[1], "cat-file-t") == 0) {
-      parser_object_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi);
       printf("%s\n", oi.type);
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
-      parser_object_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi);
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
