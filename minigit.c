@@ -238,7 +238,6 @@ void parse_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi)
     char *cp;
     int i = 0;
 
-    count = OUTBUFSIZ - z.avail_out;
     cp = outbuf;
 
     while (*(cp) != ' ') {
