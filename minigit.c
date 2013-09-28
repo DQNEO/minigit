@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
     in_file_name = argv[2];
 
 
-    char _outbuf[OUTBUFSIZ];         /* 出力バッファ */
+    char buf[OUTBUFSIZ];         /* 出力バッファ */
 
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
@@ -262,8 +262,8 @@ int main(int argc, char *argv[])
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
-      cat_object_body(in_file_name, &oi, _outbuf);
-      printf("%s", _outbuf + oi.header_length);
+      cat_object_body(in_file_name, &oi, buf);
+      printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
       parse_object_header(in_file_name, &oi);
@@ -276,8 +276,8 @@ int main(int argc, char *argv[])
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
-	cat_object_body(in_file_name, &oi, _outbuf);
-	printf("%s", _outbuf + oi.header_length);
+	cat_object_body(in_file_name, &oi, buf);
+	printf("%s", buf + oi.header_length);
       }
 
     } else {
