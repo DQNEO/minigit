@@ -300,7 +300,8 @@ void cat_tree_object(object_info *oi)
 	    printf("%02x",sha1[i]);
 	}	
 
-	printf(" %s", filename);
+	printf("    ");
+	printf("%s", filename);
 	
 	printf("\n");
 	continue;
