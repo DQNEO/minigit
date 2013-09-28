@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
 
     struct _TAG_OBJECT_INFO oi;
     oi.header_length = 0;
-    in_file_name = argv[2];
+    in_file_name = argv[3];
 
 
     char buf[OUTBUFSIZ];         /* 出力バッファ */
@@ -341,8 +341,9 @@ int main(int argc, char *argv[])
         do_compress(in_file_name);
     }
     */
+    if (strcmp(argv[1], "cat-file") == 0) {
 
-    if (strcmp(argv[1], "cat-file-x") == 0) {
+    if (strcmp(argv[2], "-x") == 0) {
 	parse_object_header(in_file_name, &oi);
 	printf("type:%s\n", oi.type);
 	printf("size:%d\n", oi.size);
@@ -350,13 +351,13 @@ int main(int argc, char *argv[])
 	read_object_body(in_file_name, &oi);
 	printf("%s", buf + oi.header_length);
 
-    } else if (strcmp(argv[1], "cat-file-s") == 0) {
+    } else if (strcmp(argv[2], "-s") == 0) {
 	parse_object_header(in_file_name, &oi);
 	printf("%d\n", oi.size);
-    } else if (strcmp(argv[1], "cat-file-t") == 0) {
+    } else if (strcmp(argv[2], "-t") == 0) {
 	parse_object_header(in_file_name, &oi);
 	printf("%s\n", oi.type);
-    } else if (strcmp(argv[1], "cat-file-p") == 0) {
+    } else if (strcmp(argv[2], "-p") == 0) {
 	parse_object_header(in_file_name, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
 	    read_object_body(in_file_name, &oi);
@@ -370,10 +371,14 @@ int main(int argc, char *argv[])
 	}
 
     } else {
-        fprintf(stderr, "Unknown flag: %s\n", argv[1]);
+        fprintf(stderr, "Unknown flag: %s\n", argv[2]);
         exit(1);
     }
 
+    } else {
+        fprintf(stderr, "Unknown command: %s\n", argv[1]);
+	usage();
+    }
 
     return 0;
 }
