@@ -200,7 +200,7 @@ void cat_body(char in_file_name[], object_info *oi)        /* 展開（復元）
     fclose(fin);
 }
 
-void unpack_header(char in_file_name[], object_info *oi, char *header)
+void parser_object_header(char in_file_name[], object_info *oi, char *header)
 {
     int count, status;
 
@@ -282,19 +282,19 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-c") == 0) {
         do_compress(in_file_name);
     } else if (strcmp(argv[1], "cat-file-x") == 0) {
-      unpack_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi, header);
       printf("type:%s\n", oi.type);
       printf("size:%s\n", oi.size);
       printf("header_length:%d\n", oi.header_length);
       cat_body(in_file_name, &oi);
     } else if (strcmp(argv[1], "cat-file-s") == 0) {
-      unpack_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi, header);
       printf("%s\n", oi.size);
     } else if (strcmp(argv[1], "cat-file-t") == 0) {
-      unpack_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi, header);
       printf("%s\n", oi.type);
     } else if (strcmp(argv[1], "cat-file-p") == 0) {
-      unpack_header(in_file_name, &oi, header);
+      parser_object_header(in_file_name, &oi, header);
       if (strcmp(oi.type, "tree") == 0) {
 	printf("Cannot cat tree object\n");
       } else {
