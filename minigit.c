@@ -236,22 +236,16 @@ void parse_object_header(char in_file_name[], object_info *oi)
     z.avail_out = sizeof(header);
     status = Z_OK;
 
-    while (status != Z_STREAM_END) {
-        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-            z.next_in = inbuf;  /* 入力ポインタを元に戻す */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
-        }
-        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
-        if (status == Z_STREAM_END) break; /* 完了 */
-        if (status != Z_OK) {   /* エラー */
-            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-            exit(1);
-        }
-        if (z.avail_out == 0) {
-	  /* ここで出力バッファが満タンになるはずはない */
-	  fprintf(stderr, "avail_out is zero\n");
-	  exit(1);
-        }
+    if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
+      z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+      z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+    }
+
+    /* 展開 */
+    status = inflate(&z, Z_NO_FLUSH);
+    if (status != Z_STREAM_END) {
+      fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+      exit(1);
     }
 
     /* 後始末 */
