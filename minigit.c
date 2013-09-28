@@ -311,6 +311,7 @@ void cat_tree_object(object_info *oi)
   
 
 }
+
 int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
@@ -326,6 +327,7 @@ int cmd_cat_file(char *argv[])
 
 
     if (strcmp(argv[2], "-x") == 0) {
+	// just for debug
 	parse_object_header(in_file_name, &oi);
 	printf("type:%s\n", oi.type);
 	printf("size:%d\n", oi.size);
@@ -334,12 +336,15 @@ int cmd_cat_file(char *argv[])
 	printf("%s", buf + oi.header_length);
 
     } else if (strcmp(argv[2], "-s") == 0) {
+	// show size
 	parse_object_header(in_file_name, &oi);
 	printf("%d\n", oi.size);
     } else if (strcmp(argv[2], "-t") == 0) {
+	// show type
 	parse_object_header(in_file_name, &oi);
 	printf("%s\n", oi.type);
     } else if (strcmp(argv[2], "-p") == 0) {
+	// pretty print
 	parse_object_header(in_file_name, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
 	    read_object_body(in_file_name, &oi);
