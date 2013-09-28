@@ -11,11 +11,11 @@
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 
-struct _TAG_OBJECT_INFO {
+typedef struct _TAG_OBJECT_INFO {
   char type[20];
   char size[20];
   int  header_length; // ヘッダのバイト長
-} ;
+} object_info;
 
 void do_compress(char in_file_name[])          /* 圧縮 */
 {
@@ -95,7 +95,7 @@ void do_compress(char in_file_name[])          /* 圧縮 */
     fclose(fin);
 }
 
-void parse_header(char *header, struct _TAG_OBJECT_INFO *oi)
+void parse_header(char *header, object_info  *oi)
 {
     int i = 0;
 
@@ -119,7 +119,7 @@ void parse_header(char *header, struct _TAG_OBJECT_INFO *oi)
 }
 
 
-void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開（復元） */
+void cat_body(char in_file_name[], object_info *oi)        /* 展開（復元） */
 {
     int count, status;
 
@@ -200,7 +200,7 @@ void cat_body(char in_file_name[], struct _TAG_OBJECT_INFO *oi)        /* 展開
     fclose(fin);
 }
 
-void unpack_header(char in_file_name[], struct _TAG_OBJECT_INFO *oi, char *header)
+void unpack_header(char in_file_name[], object_info *oi, char *header)
 {
     int count, status;
 
