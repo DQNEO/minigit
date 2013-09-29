@@ -327,6 +327,8 @@ int cmd_cat_file(char *argv[])
 
     char *_argv = argv[3];
 
+    // statでファイルの存在チェックができる。
+    // http://d.hatena.ne.jp/dew_false/20070726/p1
     struct stat st;
     if (stat(_argv, &st) == 0) {
 	//引数をそのままファイル名として使用(gitにはない機能)
