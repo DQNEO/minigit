@@ -11,6 +11,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+// opendir
+#include <dirent.h>
+
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 #define PROGNAME "minigit"
@@ -343,7 +346,29 @@ int cmd_cat_file(char *argv[])
 	sha1_first2[1] = sha1_short[1];
 	printf("sha1 first2 = %s\n", sha1_first2);
 	
-	
+	char *dir;
+	DIR *dp;
+	struct dirent *entry;
+	struct stat statbuf;
+ 
+	dir = ".git/objects";
+ 
+	if(( dp = opendir(dir) ) == NULL ){
+	  perror("opendir");
+	  exit( EXIT_FAILURE );
+	}
+ 
+	while((entry = readdir(dp)) != NULL){
+	  stat(entry->d_name, &statbuf);
+	  if(S_ISDIR(statbuf.st_mode)){
+	    fprintf(stdout, "%s/\n", entry->d_name);
+	  }else{
+	    fprintf(stdout, "%s\n", entry->d_name);
+	  }
+	}
+ 
+	closedir(dp);
+ 	
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
 	exit(2);
