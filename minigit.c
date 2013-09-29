@@ -337,6 +337,12 @@ int cmd_cat_file(char *argv[])
 	//引数をsha1(の短縮文字列)とみなす
 	sha1_short = _argv;
 	printf("sha1_short:%s\n", sha1_short);
+
+	char sha1_first2[2];
+	sha1_first2[0] = sha1_short[0];
+	sha1_first2[1] = sha1_short[1];
+	printf("sha1 first2 = %s\n", sha1_first2);
+	
 	
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
