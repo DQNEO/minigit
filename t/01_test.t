@@ -49,6 +49,22 @@ is $ret, $exp, 'tree ' . $sha1_short;
 
 }
 
+diag('test commit object');
+
+my @commits = ('0067b', '16a29');
+
+for my $commit (@commits) {
+$ret = `./minigit cat-file -p t/objects/$commit.commit`;
+$ret =~ s/gmail/example/g;
+
+open my $fh, '<', "t/objects/$commit.commit.txt"
+    or die "failed to open file: $!";
+$exp = do { local $/; <$fh> };
+
+is $ret, $exp, 'commit ' . $commit;
+
+}
+
 done_testing();
 
 
