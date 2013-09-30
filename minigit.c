@@ -342,6 +342,9 @@ int cmd_cat_file(char *argv[])
 	printf("sha1_input:%s\n", sha1_input);
 
 	char sha1_input_firsrt2chars[2];
+	char *sha1_input_from3rd = &sha1_input[2];
+
+	printf("3rd = %s\n", sha1_input_from3rd);
 	sha1_input_firsrt2chars[0] = sha1_input[0];
 	sha1_input_firsrt2chars[1] = sha1_input[1];
 	sha1_input_firsrt2chars[2] = 0;
