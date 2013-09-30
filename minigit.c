@@ -337,7 +337,6 @@ int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
     char *filename;
-    char *sha1_input;
 
     char buf[OUTBUFSIZ];
 
@@ -353,6 +352,7 @@ int cmd_cat_file(char *argv[])
 	filename = _argv;	
     } else {
 	//引数をsha1(の短縮文字列)とみなす
+	char *sha1_input;
 	sha1_input = _argv;
 	printf("sha1_input:%s\n", sha1_input);
 
