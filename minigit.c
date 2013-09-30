@@ -330,8 +330,7 @@ int cmd_cat_file(char *argv[])
     } else {
 	//引数をsha1(の短縮文字列)とみなす
 	char found_filename[256];
-	char *sha1_input;
-	sha1_input = _argv;
+	char *sha1_input = _argv;
 	find_file(sha1_input, found_filename);
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
