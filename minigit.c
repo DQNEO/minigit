@@ -257,16 +257,16 @@ int is_substr(const char *s,const char *l)
 
 void find_file(char *sha1_input, char *matched_filename)
 {
-    printf("sha1_input:%s\n", sha1_input);
+    //printf("sha1_input:%s\n", sha1_input);
 
     char sha1_input_firsrt2chars[2];
     char *sha1_input_from3rd = &sha1_input[2];
 
-    printf("3rd = %s\n", sha1_input_from3rd);
+    //printf("3rd = %s\n", sha1_input_from3rd);
     sha1_input_firsrt2chars[0] = sha1_input[0];
     sha1_input_firsrt2chars[1] = sha1_input[1];
     sha1_input_firsrt2chars[2] = 0;
-    printf("sha1 first2 = %s\n", sha1_input_firsrt2chars);
+    //printf("sha1 first2 = %s\n", sha1_input_firsrt2chars);
 
     char dir[256] = ".git/objects/";
     DIR *dp;
@@ -285,17 +285,17 @@ void find_file(char *sha1_input, char *matched_filename)
 	if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0)) {
 	    continue;
 	} else {
-	    printf("entry->d_name =  %s\n", entry->d_name);	    
+	    //printf("entry->d_name =  %s\n", entry->d_name);	    
 
 	    //ユーザ入力のsha1とファイル名を比較して、
 	    //前者が後者の先頭部分一致すればそれが目的のオブジェクトであるとみなす。
 	      if (is_substr(sha1_input_from3rd, entry->d_name)) {
 		  // match!
-		  printf("match :%s\n", entry->d_name );
+		  //printf("match :%s\n", entry->d_name );
 		  strcpy(matched_filename, dir);
 		  strcat(matched_filename, "/");
 		  strcat(matched_filename, entry->d_name);
-		  printf("matched_filename = %s\n", matched_filename);
+		  //printf("matched_filename = %s\n", matched_filename);
 		  //filename = matched_filename;
 		  break;
 	      }
