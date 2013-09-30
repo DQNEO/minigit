@@ -322,7 +322,7 @@ int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
     char *filename;
-    char *sha1_short;
+    char *sha1_input;
 
     char buf[OUTBUFSIZ];
 
@@ -338,12 +338,12 @@ int cmd_cat_file(char *argv[])
 	filename = _argv;	
     } else {
 	//引数をsha1(の短縮文字列)とみなす
-	sha1_short = _argv;
-	printf("sha1_short:%s\n", sha1_short);
+	sha1_input = _argv;
+	printf("sha1_input:%s\n", sha1_input);
 
 	char sha1_first2[2];
-	sha1_first2[0] = sha1_short[0];
-	sha1_first2[1] = sha1_short[1];
+	sha1_first2[0] = sha1_input[0];
+	sha1_first2[1] = sha1_input[1];
 	sha1_first2[2] = 0;
 	printf("sha1 first2 = %s\n", sha1_first2);
 
