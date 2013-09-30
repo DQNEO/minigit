@@ -55,7 +55,7 @@ void parse_header(char *header, object_info  *oi)
 void read_object_body(char in_file_name[], object_info *oi)
 {
 
-    int count, status;
+    int status;
 
     z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
@@ -114,7 +114,7 @@ void read_object_body(char in_file_name[], object_info *oi)
 
 void parse_object_header(char in_file_name[], object_info *oi)
 {
-    int count, status;
+    int status;
 
     z_stream z;                     /* ライブラリとやりとりするための構造体 */
 
