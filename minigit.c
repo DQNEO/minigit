@@ -318,6 +318,21 @@ void cat_tree_object(object_info *oi)
 
 }
 
+/**
+ * test if a string is a substring of another;
+ * @return bool
+ */
+int is_substr(const char *s,const char *l)
+{
+  while (*s) {
+    if (*(s++) != *(l++)) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
 int cmd_cat_file(char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
@@ -367,13 +382,19 @@ int cmd_cat_file(char *argv[])
 	  if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0)) {
 	    continue;
 	  } else {
+	      printf("entry->d_name =  %s\n", entry->d_name);	    
+
 	    //ユーザ入力のsha1とファイル名を比較して、
 	    //前者が後者の先頭部分一致すればそれが目的のオブジェクトであるとみなす。
-	    
-	    
+	      if (is_substr(sha1_input_from3rd, entry->d_name)) {
+		  // match!
+		  printf("match :%s", entry->d_name );
+		  break;
+	      }
+
+
 	  }
 
-	  fprintf(stdout, " %s\n", entry->d_name);
 	}
  
 	closedir(dp);
