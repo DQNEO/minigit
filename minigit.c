@@ -255,27 +255,9 @@ int is_substr(const char *s,const char *l)
   return 1;
 }
 
-int cmd_cat_file(char *argv[])
+void find_file(char *sha1_input, char *matched_filename)
 {
-    struct _TAG_OBJECT_INFO oi;
-    char *filename;
 
-    char buf[OUTBUFSIZ];
-
-    oi.header_length = 0;
-
-    char *_argv = argv[3];
-
-    // statでファイルの存在チェックができる。
-    // http://d.hatena.ne.jp/dew_false/20070726/p1
-    struct stat st;
-    if (stat(_argv, &st) == 0) {
-	//引数をそのままファイル名として使用(gitにはない機能)
-	filename = _argv;	
-    } else {
-	//引数をsha1(の短縮文字列)とみなす
-	char *sha1_input;
-	sha1_input = _argv;
 	printf("sha1_input:%s\n", sha1_input);
 
 	char sha1_input_firsrt2chars[2];
@@ -310,7 +292,12 @@ int cmd_cat_file(char *argv[])
 	    //前者が後者の先頭部分一致すればそれが目的のオブジェクトであるとみなす。
 	      if (is_substr(sha1_input_from3rd, entry->d_name)) {
 		  // match!
-		  printf("match :%s", entry->d_name );
+		  printf("match :%s\n", entry->d_name );
+		  strcpy(matched_filename, dir);
+		  strcat(matched_filename, "/");
+		  strcat(matched_filename, entry->d_name);
+		  printf("matched_filename = %s\n", matched_filename);
+		  //filename = matched_filename;
 		  break;
 	      }
 
@@ -321,8 +308,35 @@ int cmd_cat_file(char *argv[])
  
 	closedir(dp);
  	
+
+}
+
+int cmd_cat_file(char *argv[])
+{
+    struct _TAG_OBJECT_INFO oi;
+    char *filename;
+
+    char buf[OUTBUFSIZ];
+
+    oi.header_length = 0;
+
+    char *_argv = argv[3];
+
+    // statでファイルの存在チェックができる。
+    // http://d.hatena.ne.jp/dew_false/20070726/p1
+    struct stat st;
+    if (stat(_argv, &st) == 0) {
+	//引数をそのままファイル名として使用(gitにはない機能)
+	filename = _argv;	
+    } else {
+	//引数をsha1(の短縮文字列)とみなす
+	char matched_filename[256];
+	char *sha1_input;
+	sha1_input = _argv;
+	find_file(sha1_input, matched_filename);
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
+	printf("final filename = %s\n", matched_filename);
 	exit(2);
     }
 
