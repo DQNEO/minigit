@@ -341,18 +341,18 @@ int cmd_cat_file(char *argv[])
 	sha1_input = _argv;
 	printf("sha1_input:%s\n", sha1_input);
 
-	char sha1_first2[2];
-	sha1_first2[0] = sha1_input[0];
-	sha1_first2[1] = sha1_input[1];
-	sha1_first2[2] = 0;
-	printf("sha1 first2 = %s\n", sha1_first2);
+	char sha1_input_firsrt2chars[2];
+	sha1_input_firsrt2chars[0] = sha1_input[0];
+	sha1_input_firsrt2chars[1] = sha1_input[1];
+	sha1_input_firsrt2chars[2] = 0;
+	printf("sha1 first2 = %s\n", sha1_input_firsrt2chars);
 
 	char dir[256] = ".git/objects/";
 	DIR *dp;
 	struct dirent *entry;
 	struct stat statbuf;
  
-	strcat(dir, sha1_first2);
+	strcat(dir, sha1_input_firsrt2chars);
 
 	if(( dp = opendir(dir) ) == NULL ){
 	  perror("opendir");
@@ -367,7 +367,7 @@ int cmd_cat_file(char *argv[])
 	    //ユーザ入力のsha1とファイル名を比較して、
 	    //前者が後者の先頭部分一致すればそれが目的のオブジェクトであるとみなす。
 	    
-
+	    
 	  }
 
 	  fprintf(stdout, " %s\n", entry->d_name);
