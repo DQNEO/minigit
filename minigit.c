@@ -330,14 +330,14 @@ int cmd_cat_file(char *argv[])
 	filename = _argv;	
     } else {
 	//引数をsha1(の短縮文字列)とみなす
-	char matched_filename[256];
+	char found_filename[256];
 	char *sha1_input;
 	sha1_input = _argv;
-	find_file(sha1_input, matched_filename);
+	find_file(sha1_input, found_filename);
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
-	printf("final filename = %s\n", matched_filename);
-	exit(2);
+	//printf("final filename = %s\n", found_filename);
+	filename = found_filename;
     }
 
     
