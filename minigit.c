@@ -432,6 +432,11 @@ void pretty_print_commit_object(object_info *oi)
     //ボディのサイズはヘッダに書かれてあるのを参照する
     char *end = oi->buf + oi->header_length + oi->size;
 
+    char tree_sha1[100];
+    char *p_tree_sha1 = tree_sha1;
+    char **parents;
+    const char author[256];
+    const char *message;
     /**
      * spec of commit object body
      * -------
@@ -444,10 +449,13 @@ void pretty_print_commit_object(object_info *oi)
      * message
      * --------
      */
-    while (cp < end) {
-	printf("%c", *(cp++));
+    cp += 5;
+    while (*cp != '\n') {
+	*(p_tree_sha1++) = *(cp++);
     }    
-
+    *p_tree_sha1 = 0;
+    printf("tree : %s\n", tree_sha1);
+    
 }
  
 int cat_commit_object(char *sha1_string)
