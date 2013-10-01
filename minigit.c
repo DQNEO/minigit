@@ -329,8 +329,8 @@ int cmd_cat_file(char *argv[])
 
     oi.header_length = 0;
 
-    char *opt = argv[2];
-    char *object_name = argv[3];
+    char *opt = argv[1];
+    char *object_name = argv[2];
 
     // statでファイルの存在チェックができる。
     // http://d.hatena.ne.jp/dew_false/20070726/p1
@@ -400,7 +400,7 @@ int main(int argc, char *argv[])
     }
 
     if (strcmp(argv[1], "cat-file") == 0) {
-	return cmd_cat_file(argv);
+	return cmd_cat_file(argv + 1);
     } else if (strcmp(argv[1], "log") == 0) {
 	return cmd_log(argv);
     } else {
