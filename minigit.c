@@ -196,11 +196,9 @@ void cat_tree_object(object_info *oi)
 {
 
     //ヘッダー部は読み飛ばす
-    char *start = oi->buf + oi->header_length;
+    char *cp = oi->buf + oi->header_length;
     //ボディのサイズはヘッダに書かれてあるのを参照する
     char *end = oi->buf + oi->header_length + oi->size;
-    char *cp = start;
-    //
 
     while (cp < end) {
 
