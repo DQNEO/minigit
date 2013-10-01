@@ -345,7 +345,7 @@ int cmd_rev_parse(int argc, char **argv)
 	return 0;
     }
 
-    char s[256];
+    char sha1_string[256];
     char rev[256];
     strcpy(rev, argv[1]);
 
@@ -353,9 +353,9 @@ int cmd_rev_parse(int argc, char **argv)
 	strcpy(rev, "master");
     }
 
-    _rev_parse(rev, s);
+    _rev_parse(rev, sha1_string);
 
-    printf("%s", s);
+    printf("%s", sha1_string);
 
     return 0;
 }
