@@ -330,7 +330,11 @@ int _rev_parse(char *rev, char *sha1_string)
 
     FILE *fp;
 
-    fp = fopen(filename, "r");
+    if ((fp = fopen(filename, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", filename);
+        exit(1);
+    }
+
     fgets(sha1_string, 256, fp);
     fclose(fp);
 
