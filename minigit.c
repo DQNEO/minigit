@@ -427,7 +427,27 @@ int cmd_cat_file(int argc, char **argv)
 
 void pretty_print_commit_object(object_info *oi)
 {
-    fwrite(oi->buf + oi->header_length , 1, oi->size, stdout);
+    //ヘッダー部は読み飛ばす
+    char *cp = oi->buf + oi->header_length;
+    //ボディのサイズはヘッダに書かれてあるのを参照する
+    char *end = oi->buf + oi->header_length + oi->size;
+
+    /**
+     * spec of commit object body
+     * -------
+     * tree
+     * parent
+     * (parent)
+     * author
+     * committer
+     *
+     * message
+     * --------
+     */
+    while (cp < end) {
+	printf("%c", *(cp++));
+    }    
+
 }
  
 int cat_commit_object(char *sha1_string)
