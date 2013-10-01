@@ -382,6 +382,7 @@ int cmd_cat_file(int argc, char *argv[])
 
 int cmd_log(int argc , char *argv[])
 {
+    printf("argv[1] = %s\n", argv[1]);
     return 0;
 }
 
