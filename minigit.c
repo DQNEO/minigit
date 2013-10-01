@@ -426,6 +426,31 @@ int cmd_cat_file(int argc, char **argv)
 }
 
 
+int cat_commit_object(char *sha1_string)
+{
+    struct _TAG_OBJECT_INFO oi;
+    char buf[OUTBUFSIZ];
+
+    printf("commit %s\n", sha1_string);
+
+    oi.header_length = 0;
+
+    //引数をsha1(の短縮文字列)とみなす
+    char found_filename[256];
+    char *sha1_input = sha1_string;
+    find_file(sha1_input, found_filename);
+
+    oi.buf = buf;
+    parse_object_header(found_filename, &oi);
+    read_object_body(found_filename, &oi);
+
+    // print commit
+    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
+
+    return 0;
+}
+
+
 int cmd_log(int argc , char **argv)
 {
     char *rev;
@@ -438,9 +463,7 @@ int cmd_log(int argc , char **argv)
     char sha1_string[256] = {};
     _rev_parse(rev, sha1_string);
 
-    printf("commit %s\n", sha1_string);
-    char *opt[3] = {"cat-file", "-p", sha1_string};
-    cmd_cat_file(3, opt);
+    cat_commit_object(sha1_string);
     return 0;
 }
 
