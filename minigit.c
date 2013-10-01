@@ -320,7 +320,7 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
-int cmd_cat_file(char *argv[])
+int cmd_cat_file(int argc, char *argv[])
 {
     struct _TAG_OBJECT_INFO oi;
     char *filename;
@@ -380,7 +380,7 @@ int cmd_cat_file(char *argv[])
     return 0;
 }
 
-int cmd_log(char *argv[])
+int cmd_log(int argc , char *argv[])
 {
     return 0;
 }
@@ -400,9 +400,9 @@ int main(int argc, char *argv[])
     }
 
     if (strcmp(argv[1], "cat-file") == 0) {
-	return cmd_cat_file(argv + 1);
+	return cmd_cat_file(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "log") == 0) {
-	return cmd_log(argv);
+	return cmd_log(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
