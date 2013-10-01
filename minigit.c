@@ -192,7 +192,7 @@ void parse_object_header(char in_file_name[], object_info *oi)
     parse_header(header, oi);
 }
 
-void cat_tree_object(object_info *oi)
+void pretty_print_tree_object(object_info *oi)
 {
 
     //ヘッダー部は読み飛ばす
@@ -410,7 +410,7 @@ int cmd_cat_file(int argc, char **argv)
 	parse_object_header(filename, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
 	    read_object_body(filename, &oi);
-	    cat_tree_object(&oi);
+	    pretty_print_tree_object(&oi);
 	} else {
 	    // print blob or commit
 	    read_object_body(filename, &oi);
