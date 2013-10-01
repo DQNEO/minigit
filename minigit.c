@@ -330,7 +330,7 @@ int cmd_cat_file(char *argv[])
     oi.header_length = 0;
 
     char *object_name = argv[3];
-
+    char *opt = argv[2];
     // statでファイルの存在チェックができる。
     // http://d.hatena.ne.jp/dew_false/20070726/p1
     struct stat st;
@@ -351,15 +351,15 @@ int cmd_cat_file(char *argv[])
     
     oi.buf = buf;
 
-    if (strcmp(argv[2], "-s") == 0) {
+    if (strcmp(opt, "-s") == 0) {
 	// show size
 	parse_object_header(filename, &oi);
 	printf("%d\n", oi.size);
-    } else if (strcmp(argv[2], "-t") == 0) {
+    } else if (strcmp(opt, "-t") == 0) {
 	// show type
 	parse_object_header(filename, &oi);
 	printf("%s\n", oi.type);
-    } else if (strcmp(argv[2], "-p") == 0) {
+    } else if (strcmp(opt, "-p") == 0) {
 	// pretty print
 	parse_object_header(filename, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
@@ -372,7 +372,7 @@ int cmd_cat_file(char *argv[])
 	}
 
     } else {
-        fprintf(stderr, "Unknown flag: %s\n", argv[2]);
+        fprintf(stderr, "Unknown flag: %s\n", opt);
         exit(1);
     }
 
