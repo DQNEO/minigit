@@ -228,8 +228,6 @@ void cat_tree_object(object_info *oi)
 	while(*cp++) {
 	}
 
-	//cp++; // skip '\0'
-
 	//sha1
 	//固定長で20文字
 	char *sha1_string = sha1_to_hex((unsigned char *)cp);
