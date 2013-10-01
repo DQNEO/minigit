@@ -4,4 +4,5 @@ minigit : minigit.c
 
 test :
 	prove
-
+clean :
+	rm minigit
