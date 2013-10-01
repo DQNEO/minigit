@@ -25,6 +25,29 @@ typedef struct _TAG_OBJECT_INFO {
     char *buf;
 } object_info;
 
+/**
+ * get into string sha1 from binary sha1
+ *
+ * this function is totally borrowed from hex.c of git :)
+ */
+char *sha1_to_hex(const unsigned char *sha1)
+{
+	static int bufno;
+	static char hexbuffer[4][50];
+	static const char hex[] = "0123456789abcdef";
+	char *buffer = hexbuffer[3 & ++bufno], *buf = buffer;
+	int i;
+
+	for (i = 0; i < 20; i++) {
+		unsigned int val = *sha1++;
+		*buf++ = hex[val >> 4];
+		*buf++ = hex[val & 0xf];
+	}
+	*buf = '\0';
+
+	return buffer;
+}
+
 void parse_header(char *header, object_info  *oi)
 {
     int i = 0;
@@ -183,10 +206,8 @@ void cat_tree_object(object_info *oi)
 
 	char mode[6];
 	char *filename;
-	unsigned char sha1[20];
 
 	int j = 0;
-	int i = 0;
 
 	int is_tree;
 
@@ -211,9 +232,9 @@ void cat_tree_object(object_info *oi)
 
 	//sha1
 	//固定長で20文字
-	for (i=0;i<20;i++) {
-	    sha1[i] = (unsigned char)*(cp++) ;
-	}
+	char *sha1_string = sha1_to_hex((unsigned char *)cp);
+
+	cp += 20;
 
 	// pretty print
 	// filemode
@@ -225,10 +246,7 @@ void cat_tree_object(object_info *oi)
 	    printf("blob ");
 	}
 
-	for (i=0;i<20;i++) {
-	    printf("%02x",sha1[i]);
-	}	
-
+	printf("%s", sha1_string);
 	printf("\t");
 	printf("%s", filename);
 	
