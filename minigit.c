@@ -437,7 +437,10 @@ int cmd_log(int argc , char **argv)
 
     char sha1_string[256] = {};
     _rev_parse(rev, sha1_string);
-    printf("sha1=%s\n", sha1_string);
+
+    printf("commit %s\n", sha1_string);
+    char *opt[3] = {"cat-file", "-p", sha1_string};
+    cmd_cat_file(3, opt);
     return 0;
 }
 
