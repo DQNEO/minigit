@@ -329,8 +329,9 @@ int cmd_cat_file(char *argv[])
 
     oi.header_length = 0;
 
-    char *object_name = argv[3];
     char *opt = argv[2];
+    char *object_name = argv[3];
+
     // statでファイルの存在チェックができる。
     // http://d.hatena.ne.jp/dew_false/20070726/p1
     struct stat st;
