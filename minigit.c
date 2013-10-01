@@ -425,7 +425,11 @@ int cmd_cat_file(int argc, char **argv)
     return 0;
 }
 
-
+void pretty_print_commit_object(object_info *oi)
+{
+    fwrite(oi->buf + oi->header_length , 1, oi->size, stdout);
+}
+ 
 int cat_commit_object(char *sha1_string)
 {
     struct _TAG_OBJECT_INFO oi;
@@ -445,7 +449,7 @@ int cat_commit_object(char *sha1_string)
     read_object_body(found_filename, &oi);
 
     // print commit
-    fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
+    pretty_print_commit_object(&oi);
 
     return 0;
 }
