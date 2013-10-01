@@ -320,11 +320,24 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
-int _rev_parse(const char *rev, char *ret)
+int _rev_parse(const char *rev, char *sha1_string)
 {
-    strcpy(ret,"badcafe");
+    char filename[256] = {};
+    const char *dir = ".git/refs/heads/";
+
+    strcat(filename, dir);
+    strcat(filename, rev);
+
+    FILE *fp;
+
+    fp = fopen(filename, "r");
+    fgets(sha1_string, 256, fp);
+    fclose(fp);
+
     return 0;
 }
+
+
 
 int cmd_rev_parse(int argc, char **argv)
 {
@@ -332,27 +345,18 @@ int cmd_rev_parse(int argc, char **argv)
 	return 0;
     }
 
+    char s[256];
     char rev[256];
-    char filename[256] = {};
-    const char *dir = ".git/refs/heads/";
-
     strcpy(rev, argv[1]);
 
     if (strcmp(rev, "HEAD") == 0) {
 	strcpy(rev, "master");
     }
 
-    strcat(filename, dir);
-    strcat(filename, rev);
-
-    FILE *fp;
-    char s[256];
-
-    fp = fopen(filename, "r");
-    fgets(s, 256, fp);
-    fclose(fp);
+    _rev_parse(rev, s);
 
     printf("%s", s);
+
     return 0;
 }
 
