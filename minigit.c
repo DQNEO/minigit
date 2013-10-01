@@ -325,6 +325,11 @@ int _rev_parse(char *rev, char *sha1_string)
     char filename[256] = {};
     const char *dir = ".git/refs/heads/";
 
+    if (strcmp(rev, "HEAD") == 0) {
+	strcpy(rev, "master");
+    }
+
+
     strcat(filename, dir);
     strcat(filename, rev);
 
@@ -352,10 +357,6 @@ int cmd_rev_parse(int argc, char **argv)
     char sha1_string[256];
     char rev[256];
     strcpy(rev, argv[1]);
-
-    if (strcmp(rev, "HEAD") == 0) {
-	strcpy(rev, "master");
-    }
 
     _rev_parse(rev, sha1_string);
 
