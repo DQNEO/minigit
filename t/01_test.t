@@ -77,6 +77,12 @@ $ret = `./minigit $cmd`;
 $exp = "";
 is $ret , $exp, $cmd;
 
+$cmd = 'rev-parse br_caa88';
+$ret = `./minigit $cmd`;
+$exp = `git $cmd`;
+is $ret , $exp, $cmd;
+
+
 done_testing();
 
 =pod

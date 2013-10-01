@@ -332,9 +332,27 @@ int cmd_rev_parse(int argc, char **argv)
 	return 0;
     }
 
-    char *rev = argv[1];
-    system("cat .git/refs/heads/master");
+    char rev[256];
+    char filename[256] = {};
+    const char *dir = ".git/refs/heads/";
 
+    strcpy(rev, argv[1]);
+
+    if (strcmp(rev, "HEAD") == 0) {
+	strcpy(rev, "master");
+    }
+
+    strcat(filename, dir);
+    strcat(filename, rev);
+
+    FILE *fp;
+    char s[256];
+
+    fp = fopen(filename, "r");
+    fgets(s, 256, fp);
+    fclose(fp);
+
+    printf("%s", s);
     return 0;
 }
 
