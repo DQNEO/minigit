@@ -209,7 +209,7 @@ void cat_tree_object(object_info *oi)
 
 	int j = 0;
 
-	int is_tree;
+	char *obj_type;
 
 	// filemode
 	// 6桁または5桁。' 'で終端
@@ -218,7 +218,11 @@ void cat_tree_object(object_info *oi)
 	}
 	mode[j] = 0;
 
-	is_tree = (strlen(mode) == 5) ? 1 : 0;
+	if (strlen(mode) == 5) {
+	    obj_type = "tree";
+	} else {
+	    obj_type = "blob";
+	}
 
 	cp++; // skip ' '
 
@@ -238,7 +242,6 @@ void cat_tree_object(object_info *oi)
 	// filemode
 	printf("%06d ", atoi(mode));
 
-	char *obj_type = is_tree ? "tree" : "blob";
 
 	printf("%s ", obj_type);
 	printf("%s", sha1_string);
