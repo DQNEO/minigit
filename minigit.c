@@ -320,7 +320,7 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
-int _rev_parse(const char *rev, char *sha1_string)
+int _rev_parse(char *rev, char *sha1_string)
 {
     char filename[256] = {};
     const char *dir = ".git/refs/heads/";
