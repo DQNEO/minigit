@@ -69,7 +69,7 @@ is $ret, $exp, 'commit ' . $commit;
 diag('rev-parse');
 $cmd ='rev-parse HEAD';
 $ret = `./minigit $cmd`;
-$exp = "badcafe\n";
+$exp = "HEAD\n";
 is $ret , $exp, $cmd;
 
 $cmd = 'rev-parse';

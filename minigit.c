@@ -332,7 +332,8 @@ int cmd_rev_parse(int argc, char **argv)
 	return 0;
     }
 
-    printf("badcafe\n");
+    char *rev = argv[1];
+    printf("%s\n" ,rev);
     return 0;
 }
 
