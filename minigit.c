@@ -82,12 +82,12 @@ void read_object_body(char in_file_name[], object_info *oi)
         exit(1);
     }
 
-    z.next_out = outbuf;        /* 出力ポインタ */
+    z.next_out = (Bytef *) outbuf;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
     status = Z_OK;
 
     if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-	z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+	z.next_in = (Bytef *) inbuf;  /* 入力ポインタを元に戻す */
 	z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
     }
 
@@ -142,12 +142,12 @@ void parse_object_header(char in_file_name[], object_info *oi)
         exit(1);
     }
 
-    z.next_out = header;
+    z.next_out = (Bytef *) header;
     z.avail_out = sizeof(header);
     status = Z_OK;
 
     if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-	z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+	z.next_in = (Bytef *) inbuf;  /* 入力ポインタを元に戻す */
 	z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
     }
 
