@@ -382,7 +382,13 @@ int cmd_cat_file(int argc, char **argv)
 
 int cmd_log(int argc , char **argv)
 {
-    printf("log %s\n", argv[1]);
+    char *rev;
+    if (argc > 1) {
+	rev = argv[1];
+    } else {
+	rev = "HEAD";
+    }
+    printf("log %s\n", rev);
     return 0;
 }
 
