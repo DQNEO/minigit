@@ -373,7 +373,7 @@ int cmd_cat_file(char *argv[])
 void usage() {
     fprintf(stderr, "Usage: %s <command> [<args>]\n" , PROGNAME);
     fprintf(stderr, "  cat-file: -[s|t|p] object\n");
-    exit(0);
+    exit(1);
 }
 
 int main(int argc, char *argv[])
