@@ -329,18 +329,18 @@ int cmd_cat_file(char *argv[])
 
     oi.header_length = 0;
 
-    char *_argv = argv[3];
+    char *object_name = argv[3];
 
     // statでファイルの存在チェックができる。
     // http://d.hatena.ne.jp/dew_false/20070726/p1
     struct stat st;
-    if (stat(_argv, &st) == 0) {
+    if (stat(object_name, &st) == 0) {
 	//引数をそのままファイル名として使用(gitにはない機能)
-	filename = _argv;	
+	filename = object_name;
     } else {
 	//引数をsha1(の短縮文字列)とみなす
 	char found_filename[256];
-	char *sha1_input = _argv;
+	char *sha1_input = object_name;
 	find_file(sha1_input, found_filename);
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
