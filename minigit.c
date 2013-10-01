@@ -241,16 +241,13 @@ void cat_tree_object(object_info *oi)
 	// pretty print
 	// filemode
 	printf("%06d ", atoi(mode));
-
-
 	printf("%s ", obj_type);
 	printf("%s", sha1_string);
 	printf("\t");
 	printf("%s", filename);
-	
 	printf("\n");
-	continue;
 
+	continue;
     }
   
 
