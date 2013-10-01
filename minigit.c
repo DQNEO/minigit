@@ -320,7 +320,7 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
-int cmd_cat_file(int argc, char *argv[])
+int cmd_cat_file(int argc, char **argv)
 {
     struct _TAG_OBJECT_INFO oi;
     char *filename;
@@ -380,7 +380,7 @@ int cmd_cat_file(int argc, char *argv[])
     return 0;
 }
 
-int cmd_log(int argc , char *argv[])
+int cmd_log(int argc , char **argv)
 {
     printf("log %s\n", argv[1]);
     return 0;
