@@ -67,13 +67,13 @@ is $ret, $exp, 'commit ' . $commit;
 
 diag('test log HEAD');
 $ret = `./minigit log HEAD`;
-$exp = "log HEAD\n";
+$exp = "sha1=badcafe\n";
 
 is $ret , $exp, 'log HEAD';
 
 diag('test log');
 $ret = `./minigit log`;
-$exp = "log HEAD\n";
+$exp = "sha1=badcafe\n";
 
 is $ret , $exp, 'log';
 

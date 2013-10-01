@@ -320,6 +320,12 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
+int _rev_parse(const char *rev, char *ret)
+{
+    strcpy(ret,"badcafe");
+    return 0;
+}
+
 int cmd_cat_file(int argc, char **argv)
 {
     struct _TAG_OBJECT_INFO oi;
@@ -380,6 +386,7 @@ int cmd_cat_file(int argc, char **argv)
     return 0;
 }
 
+
 int cmd_log(int argc , char **argv)
 {
     char *rev;
@@ -388,7 +395,10 @@ int cmd_log(int argc , char **argv)
     } else {
 	rev = "HEAD";
     }
-    printf("log %s\n", rev);
+
+    char sha1_string[40];
+    _rev_parse(rev, sha1_string);
+    printf("sha1=%s\n", sha1_string);
     return 0;
 }
 
