@@ -340,7 +340,7 @@ int _rev_parse(char *rev, char *sha1_string)
         exit(1);
     }
 
-    fgets(sha1_string, 256, fp);
+    fgets(sha1_string, 41, fp);
     fclose(fp);
 
     return 0;
@@ -360,7 +360,7 @@ int cmd_rev_parse(int argc, char **argv)
 
     _rev_parse(rev, sha1_string);
 
-    printf("%s", sha1_string);
+    printf("%s\n", sha1_string);
 
     return 0;
 }
@@ -435,7 +435,7 @@ int cmd_log(int argc , char **argv)
 	rev = "HEAD";
     }
 
-    char sha1_string[40];
+    char sha1_string[256] = {};
     _rev_parse(rev, sha1_string);
     printf("sha1=%s\n", sha1_string);
     return 0;
