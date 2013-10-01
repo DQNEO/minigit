@@ -239,12 +239,8 @@ void cat_tree_object(object_info *oi)
 	printf("%06d ", atoi(mode));
 
 	char *obj_type = is_tree ? "tree" : "blob";
-	if (is_tree) {
-	    printf("%s ", obj_type);
-	} else {
-	    printf("%s ", obj_type);
-	}
 
+	printf("%s ", obj_type);
 	printf("%s", sha1_string);
 	printf("\t");
 	printf("%s", filename);
