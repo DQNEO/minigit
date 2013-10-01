@@ -379,6 +379,13 @@ int cmd_cat_file(char *argv[])
     return 0;
 }
 
+int cmd_log(char *argv[])
+{
+    //return cmd_cat_file();
+    return 0;
+}
+
+
 
 void usage() {
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
@@ -394,6 +401,8 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[1], "cat-file") == 0) {
 	return cmd_cat_file(argv);
+    } else if (strcmp(argv[1], "log") == 0) {
+	return cmd_log(argv);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
