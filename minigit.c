@@ -382,8 +382,6 @@ int cmd_cat_file(char *argv[])
 
 int cmd_log(char *argv[])
 {
-    
-    cmd_cat_file();
     return 0;
 }
 
