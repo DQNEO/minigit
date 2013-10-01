@@ -65,6 +65,12 @@ is $ret, $exp, 'commit ' . $commit;
 
 }
 
+diag('test log HEAD');
+$ret = `./minigit log HEAD`;
+$exp = "log HEAD\n";
+
+is $ret , $exp, 'log HEAD';
+
 done_testing();
 
 
