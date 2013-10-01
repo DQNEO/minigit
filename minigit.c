@@ -333,7 +333,8 @@ int cmd_rev_parse(int argc, char **argv)
     }
 
     char *rev = argv[1];
-    printf("%s\n" ,rev);
+    system("cat .git/refs/heads/master");
+
     return 0;
 }
 
