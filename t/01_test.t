@@ -6,7 +6,7 @@ use Test::More;
 # test blob object
 diag('blob object');
 
-my ($ret, $exp);
+my ($ret, $exp, $cmd);
 
 diag 'cat-file -s';
 $ret = `./minigit cat-file -s t/objects/hello_world.blob`;
@@ -65,6 +65,21 @@ is $ret, $exp, 'commit ' . $commit;
 
 }
 
+
+diag('rev-parse');
+$cmd ='rev-parse HEAD';
+$ret = `./minigit $cmd`;
+$exp = "badcafe\n";
+is $ret , $exp, $cmd;
+
+$cmd = 'rev-parse';
+$ret = `./minigit $cmd`;
+$exp = "";
+is $ret , $exp, $cmd;
+
+done_testing();
+
+=pod
 diag('test log HEAD');
 $ret = `./minigit log HEAD`;
 $exp = "sha1=badcafe\n";
@@ -76,8 +91,9 @@ $ret = `./minigit log`;
 $exp = "sha1=badcafe\n";
 
 is $ret , $exp, 'log';
+=end
 
-done_testing();
+
 
 
 

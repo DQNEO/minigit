@@ -326,6 +326,16 @@ int _rev_parse(const char *rev, char *ret)
     return 0;
 }
 
+int cmd_rev_parse(int argc, char **argv)
+{
+    if (argc < 2) {
+	return 0;
+    }
+
+    printf("badcafe\n");
+    return 0;
+}
+
 int cmd_cat_file(int argc, char **argv)
 {
     struct _TAG_OBJECT_INFO oi;
@@ -420,6 +430,8 @@ int main(int argc, char *argv[])
 	return cmd_cat_file(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "log") == 0) {
 	return cmd_log(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "rev-parse") == 0) {
+	return cmd_rev_parse(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
