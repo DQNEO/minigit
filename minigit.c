@@ -382,7 +382,7 @@ int cmd_cat_file(char *argv[])
 
 void usage() {
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
-    fprintf(stdout, "  cat-file: -[s|t|p] object\n");
+    fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     exit(1);
 }
 
