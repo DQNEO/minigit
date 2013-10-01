@@ -449,6 +449,8 @@ int cmd_log(int argc , char **argv)
 void usage() {
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
+    fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
+    fprintf(stdout, "  log: (HEAD|branchname)\n");
     exit(1);
 }
 
