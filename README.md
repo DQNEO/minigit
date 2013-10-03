@@ -19,8 +19,10 @@ objectfile can be a commit, tree , or blob.
 prove
 ```
 
+## DONE
+* ls-tree
+
 ## TODO
 * enable to take sha1 argument
-* ls-tree
 * show
 * log -1
