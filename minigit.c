@@ -430,13 +430,13 @@ void pretty_print_commit_object(object_info *oi)
     //ヘッダー部は読み飛ばす
     char *cp = oi->buf + oi->header_length;
     //ボディのサイズはヘッダに書かれてあるのを参照する
-    char *end = oi->buf + oi->header_length + oi->size;
+    //char *end = oi->buf + oi->header_length + oi->size;
 
-    char tree_sha1[100];
-    char *p_tree_sha1 = tree_sha1;
-    char **parents;
-    const char author[256];
-    const char *message;
+    char tree_sha1[41];
+
+    //char **parents;
+    char author_name[256];
+    char *message;
     /**
      * spec of commit object body
      * -------
@@ -449,12 +449,63 @@ void pretty_print_commit_object(object_info *oi)
      * message
      * --------
      */
+
+    // skip 'tree '
     cp += 5;
+    int i = 0;
+
     while (*cp != '\n') {
-	*(p_tree_sha1++) = *(cp++);
+	tree_sha1[i++] = *(cp++);
     }    
-    *p_tree_sha1 = 0;
-    printf("tree : %s\n", tree_sha1);
+    tree_sha1[40] = '\0';
+    cp++;
+
+    char parent_sha1[41];
+
+    // skip 'parent '
+    cp += 7;
+    i = 0;
+    while (*cp != '\n') {
+	parent_sha1[i++] = *(cp++);
+    }
+    parent_sha1[40] = '\0';
+
+    //マージコミットの場合はまたparentがある。
+
+    cp += 8; // skip 'author '
+    i = 0;
+    while (*cp != '>') {
+	author_name[i++] = *(cp++);
+    }
+
+    author_name[i++] = *(cp++);
+    author_name[i] = '\0';
+
+    cp++;  //skip ' '
+    char timestamp[11];
+    for (i=0;i<10;i++) {
+	timestamp[i] = *(cp++);
+    }
+    timestamp[10] = '\0';
+    char timediff[6];
+    cp++; //skip ' '
+
+    for (i=0;i<5;i++) {
+	timediff[i] = *(cp++);
+    }
+    timediff[5] = '\0';
+
+    while (*(++cp) != '\n') ;
+    cp+=2; //skip \n and \n
+
+    message = cp;
+    char *time_formatted = "Thu Oct 3 13:52:38 2013 +0000";
+
+    printf("Author: %s\n", author_name);
+    printf("Date:   %s\n", time_formatted);
+    printf("\n    %s\n", cp);
+    //printf("tree : %s\n", tree_sha1);
+    //printf("parent : %s\n", parent_sha1);
     
 }
  
@@ -463,7 +514,7 @@ int cat_commit_object(char *sha1_string)
     struct _TAG_OBJECT_INFO oi;
     char buf[OUTBUFSIZ];
 
-    printf("commit %s\n", sha1_string);
+    //printf("commit %s\n", sha1_string);
 
     oi.header_length = 0;
 
