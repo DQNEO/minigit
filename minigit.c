@@ -440,11 +440,11 @@ void pretty_print_commit_object(object_info *oi)
     /**
      * spec of commit object body
      * -------
-     * tree
-     * parent
-     * (parent)
-     * author
-     * committer
+     * tree <sha1>
+     * parent <sha1>
+     * [parent <sha1>
+     * author  ....
+     * committer ....
      *
      * message
      * --------
