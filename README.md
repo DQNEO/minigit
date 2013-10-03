@@ -20,9 +20,9 @@ prove
 ```
 
 ## DONE
+* enable to take sha1 argument
 * ls-tree
 
 ## TODO
-* enable to take sha1 argument
 * show
 * log -1
