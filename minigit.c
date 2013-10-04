@@ -482,11 +482,11 @@ void pretty_print_commit_object(object_info *oi)
     author_name[i] = '\0';
 
     cp++;  //skip ' '
-    char timestamp[11];
+    char str_timestamp[11];
     for (i=0;i<10;i++) {
-	timestamp[i] = *(cp++);
+	str_timestamp[i] = *(cp++);
     }
-    timestamp[10] = '\0';
+    str_timestamp[10] = '\0';
     char timediff[6];
     cp++; //skip ' '
 
