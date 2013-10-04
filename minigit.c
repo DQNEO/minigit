@@ -13,7 +13,7 @@
 
 // opendir
 #include <dirent.h>
-
+#include <time.h>
 #define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 #define PROGNAME "minigit"
@@ -487,6 +487,9 @@ void pretty_print_commit_object(object_info *oi)
 	str_timestamp[i] = *(cp++);
     }
     str_timestamp[10] = '\0';
+
+    time_t t;
+    t = atoi(str_timestamp);
     char timediff[6];
     cp++; //skip ' '
 
@@ -499,10 +502,9 @@ void pretty_print_commit_object(object_info *oi)
     cp+=2; //skip \n and \n
 
     message = cp;
-    char *time_formatted = "Thu Oct 3 13:52:38 2013 +0000";
 
     printf("Author: %s\n", author_name);
-    printf("Date:   %s\n", time_formatted);
+    printf("Date:   %d\n", (int)t);
     printf("\n    %s\n", cp);
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
