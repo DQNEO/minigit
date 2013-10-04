@@ -490,6 +490,9 @@ void pretty_print_commit_object(object_info *oi)
 
     time_t t;
     t = atoi(str_timestamp);
+    struct tm *ptm;
+    ptm = localtime(&t);
+
     char timediff[6];
     cp++; //skip ' '
 
@@ -503,8 +506,11 @@ void pretty_print_commit_object(object_info *oi)
 
     message = cp;
 
+    char frmted_time[256];
+    strftime(frmted_time, 255, "%a %b%e %H:%M:%S %Y", ptm);
+
     printf("Author: %s\n", author_name);
-    printf("Date:   %d\n", (int)t);
+    printf("Date:   %s %s\n", frmted_time, timediff);
     printf("\n    %s\n", cp);
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
