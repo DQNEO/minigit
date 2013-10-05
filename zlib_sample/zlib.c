@@ -1,68 +1,68 @@
-/* zlib ╓Р╩х╓╕нЦ */
+/* zlib Ц┌▓Д╫©Ц│├Д╬▀ */
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>               /* /usr(/local)/include/zlib.h */
 
-#define INBUFSIZ   1024         /* фЧно╔п╔ц╔у╔║╔╣╔╓╔╨║йг╓╟у║к */
-#define OUTBUFSIZ  1024         /* ╫пно╔п╔ц╔у╔║╔╣╔╓╔╨║йг╓╟у║к */
+#define INBUFSIZ   1024         /* Е┘╔Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц┌╣Ц┌╓Ц┌╨О╪┬Д╩╩Ф└▐О╪┴ */
+#define OUTBUFSIZ  1024         /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц┌╣Ц┌╓Ц┌╨О╪┬Д╩╩Ф└▐О╪┴ */
 
-z_stream z;                     /* ╔И╔╓╔ж╔И╔Й╓х╓Д╓Й╓х╓Й╓╧╓К╓©╓А╓н╧╫б╓бн */
+z_stream z;                     /* Ц┐╘Ц┌╓Ц┐√Ц┐╘Ц┐╙Ц│╗Ц┌└Ц┌┼Ц│╗Ц┌┼Ц│≥Ц┌▀Ц│÷Ц┌│Ц│╝Ф╖▀И─═Д╫⌠ */
 
-char inbuf[INBUFSIZ];           /* фЧно╔п╔ц╔у╔║ */
-char outbuf[OUTBUFSIZ];         /* ╫пно╔п╔ц╔у╔║ */
-FILE *fin, *fout;               /* фЧно║╕╫пно╔у╔║╔╓╔К */
+char inbuf[INBUFSIZ];           /* Е┘╔Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║ */
+char outbuf[OUTBUFSIZ];         /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║ */
+FILE *fin, *fout;               /* Е┘╔Е┼⌡Ц┐╩Е┤╨Е┼⌡Ц┐∙Ц┌║Ц┌╓Ц┐╚ */
 
-void do_compress(void)          /* ╟╣╫л */
+void do_compress(void)          /* Е°╖Г╦╝ */
 {
     int count, flush, status;
 
-    /* ╓╧╓ы╓ф╓н╔А╔Б╔Й╢имЩ╓Р╔И╔╓╔ж╔И╔Й╓кг╓╓╩╓К */
+    /* Ц│≥Ц│╧Ц│╕Ц│╝Ц┐║Ц┐╒Ц┐╙Г╝║Г░├Ц┌▓Ц┐╘Ц┌╓Ц┐√Ц┐╘Ц┐╙Ц│╚Д╩╩Ц│⌡Ц┌▀ */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
 
-    /* ╫И╢Э╡╫ */
-    /* бХ2╟З©Т╓о╟╣╫л╓неы╧Г║ё0║а9 ╓нхо╟о╓ню╟©Т╓г║╓0 ╓ол╣╟╣╫л */
-    /* Z_DEFAULT_COMPRESSION (= 6) ╓╛и╦╫Ю */
+    /* Е┬²Ф°÷Е▄√ */
+    /* Г╛╛2Е╪∙Ф∙╟Ц│╞Е°╖Г╦╝Ц│╝Е╨╕Е░┬Ц─┌0Ц─°9 Ц│╝Г╞└Е⌡╡Ц│╝Ф∙╢Ф∙╟Ц│╖О╪▄0 Ц│╞Г└║Е°╖Г╦╝ */
+    /* Z_DEFAULT_COMPRESSION (= 6) Ц│▄Ф╗≥Ф╨√ */
     if (deflateInit(&z, Z_DEFAULT_COMPRESSION) != Z_OK) {
         fprintf(stderr, "deflateInit: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
 
-    z.avail_in = 0;             /* фЧно╔п╔ц╔у╔║цФ╓н╔г║╪╔©╓н╔п╔╓╔х©Т */
-    z.next_out = outbuf;        /* ╫пно╔щ╔╓╔С╔© */
-    z.avail_out = OUTBUFSIZ;    /* ╫пно╔п╔ц╔у╔║╓н╔╣╔╓╔╨ */
+    z.avail_in = 0;             /* Е┘╔Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Д╦╜Ц│╝Ц┐┤Ц┐╪Ц┌©Ц│╝Ц┐░Ц┌╓Ц┐┬Ф∙╟ */
+    z.next_out = outbuf;        /* Е┤╨Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌© */
+    z.avail_out = OUTBUFSIZ;    /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц│╝Ц┌╣Ц┌╓Ц┌╨ */
 
-    /* дл╬О╓о deflate() ╓нбХ2╟З©Т╓о Z_NO_FLUSH ╓к╓╥╓ф╦ф╓с╫п╓╧ */
+    /* И─ Е╦╦Ц│╞ deflate() Ц│╝Г╛╛2Е╪∙Ф∙╟Ц│╞ Z_NO_FLUSH Ц│╚Ц│≈Ц│╕Е▒╪Ц│ЁЕ┤╨Ц│≥ */
     flush = Z_NO_FLUSH;
 
     while (1) {
-        if (z.avail_in == 0) {  /* фЧно╓╛©т╓╜╓Л╓п */
-            z.next_in = inbuf;  /* фЧно╔щ╔╓╔С╔©╓РфЧно╔п╔ц╔у╔║╓нюХф╛╓к */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* ╔г║╪╔©╓Рфи╓ъ╧Ч╓Ю */
+        if (z.avail_in == 0) {  /* Е┘╔Е┼⌡Ц│▄Е╟╫Ц│█Ц┌▄Ц│╟ */
+            z.next_in = inbuf;  /* Е┘╔Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌©Ц┌▓Е┘╔Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц│╝Е┘┬И═╜Ц│╚ */
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* Ц┐┤Ц┐╪Ц┌©Ц┌▓Х╙╜Ц│©Х╬╪Ц┌─ */
 
-            /* фЧно╓╛╨г╦Е╓к╓й╓ц╓©╓И deflate() ╓нбХ2╟З©Т╓о Z_FINISH ╓к╓╧╓К */
+            /* Е┘╔Е┼⌡Ц│▄Ф°─Е╬▄Ц│╚Ц│╙Ц│ёЦ│÷Ц┌┴ deflate() Ц│╝Г╛╛2Е╪∙Ф∙╟Ц│╞ Z_FINISH Ц│╚Ц│≥Ц┌▀ */
             if (z.avail_in < INBUFSIZ) flush = Z_FINISH;
         }
-        status = deflate(&z, flush); /* ╟╣╫л╓╧╓К */
-        if (status == Z_STREAM_END) break; /* ╢╟н╩ */
-        if (status != Z_OK) {   /* ╔╗╔И║╪ */
+        status = deflate(&z, flush); /* Е°╖Г╦╝Ц│≥Ц┌▀ */
+        if (status == Z_STREAM_END) break; /* Е╝▄Д╨├ */
+        if (status != Z_OK) {   /* Ц┌╗Ц┐╘Ц┐╪ */
             fprintf(stderr, "deflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
-        if (z.avail_out == 0) { /* ╫пно╔п╔ц╔у╔║╓╛©т╓╜╓Л╓п */
-            /* ╓ч╓х╓А╓ф╫Я╓╜╫п╓╧ */
+        if (z.avail_out == 0) { /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц│▄Е╟╫Ц│█Ц┌▄Ц│╟ */
+            /* Ц│╬Ц│╗Ц┌│Ц│╕Ф⌡╦Ц│█Е┤╨Ц│≥ */
             if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = outbuf; /* ╫пно╔п╔ц╔у╔║╩днл╓Р╦╣╓клА╓╧ */
-            z.avail_out = OUTBUFSIZ; /* ╫пно╔щ╔╓╔С╔©╓Р╦╣╓клА╓╧ */
+            z.next_out = outbuf; /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ф╝▀И┤▐Ц┌▓Е┘┐Ц│╚Ф┬╩Ц│≥ */
+            z.avail_out = OUTBUFSIZ; /* Е┤╨Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌©Ц┌▓Е┘┐Ц│╚Ф┬╩Ц│≥ */
         }
     }
 
-    /* ╩д╓Й╓Рег╓╜╫п╓╧ */
+    /* Ф╝▀Ц┌┼Ц┌▓Е░░Ц│█Е┤╨Ц│≥ */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
         if (fwrite(outbuf, 1, count, fout) != count) {
             fprintf(stderr, "Write error\n");
@@ -70,23 +70,23 @@ void do_compress(void)          /* ╟╣╫л */
         }
     }
 
-    /* ╦Е╩окЖ */
+    /* Е╬▄Е╖▀Ф°╚ */
     if (deflateEnd(&z) != Z_OK) {
         fprintf(stderr, "deflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
 }
 
-void do_decompress(void)        /* е╦Ё╚║йиЭ╦╣║к */
+void do_decompress(void)        /* Е╠∙И√▀О╪┬Е╬╘Е┘┐О╪┴ */
 {
     int count, status;
 
-    /* ╓╧╓ы╓ф╓н╔А╔Б╔Й╢имЩ╓Р╔И╔╓╔ж╔И╔Й╓кг╓╓╩╓К */
+    /* Ц│≥Ц│╧Ц│╕Ц│╝Ц┐║Ц┐╒Ц┐╙Г╝║Г░├Ц┌▓Ц┐╘Ц┌╓Ц┐√Ц┐╘Ц┐╙Ц│╚Д╩╩Ц│⌡Ц┌▀ */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
 
-    /* ╫И╢Э╡╫ */
+    /* Е┬²Ф°÷Е▄√ */
     z.next_in = Z_NULL;
     z.avail_in = 0;
     if (inflateInit(&z) != Z_OK) {
@@ -94,33 +94,33 @@ void do_decompress(void)        /* е╦Ё╚║йиЭ╦╣║к */
         exit(1);
     }
 
-    z.next_out = outbuf;        /* ╫пно╔щ╔╓╔С╔© */
-    z.avail_out = OUTBUFSIZ;    /* ╫пно╔п╔ц╔у╔║╩днл */
+    z.next_out = outbuf;        /* Е┤╨Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌© */
+    z.avail_out = OUTBUFSIZ;    /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ф╝▀И┤▐ */
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
-        if (z.avail_in == 0) {  /* фЧно╩днл╓╛╔╪╔М╓к╓й╓Л╓п */
-            z.next_in = inbuf;  /* фЧно╔щ╔╓╔С╔©╓Р╦╣╓клА╓╧ */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* ╔г║╪╔©╓Рфи╓Ю */
+        if (z.avail_in == 0) {  /* Е┘╔Е┼⌡Ф╝▀И┤▐Ц│▄Ц┌╪Ц┐╜Ц│╚Ц│╙Ц┌▄Ц│╟ */
+            z.next_in = inbuf;  /* Е┘╔Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌©Ц┌▓Е┘┐Ц│╚Ф┬╩Ц│≥ */
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* Ц┐┤Ц┐╪Ц┌©Ц┌▓Х╙╜Ц┌─ */
         }
-        status = inflate(&z, Z_NO_FLUSH); /* е╦Ё╚ */
-        if (status == Z_STREAM_END) break; /* ╢╟н╩ */
-        if (status != Z_OK) {   /* ╔╗╔И║╪ */
+        status = inflate(&z, Z_NO_FLUSH); /* Е╠∙И√▀ */
+        if (status == Z_STREAM_END) break; /* Е╝▄Д╨├ */
+        if (status != Z_OK) {   /* Ц┌╗Ц┐╘Ц┐╪ */
             fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
-        if (z.avail_out == 0) { /* ╫пно╔п╔ц╔у╔║╓╛©т╓╜╓Л╓п */
-            /* ╓ч╓х╓А╓ф╫Я╓╜╫п╓╧ */
+        if (z.avail_out == 0) { /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ц│▄Е╟╫Ц│█Ц┌▄Ц│╟ */
+            /* Ц│╬Ц│╗Ц┌│Ц│╕Ф⌡╦Ц│█Е┤╨Ц│≥ */
             if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = outbuf; /* ╫пно╔щ╔╓╔С╔©╓Р╦╣╓клА╓╧ */
-            z.avail_out = OUTBUFSIZ; /* ╫пно╔п╔ц╔у╔║╩днл╓Р╦╣╓клА╓╧ */
+            z.next_out = outbuf; /* Е┤╨Е┼⌡Ц┐²Ц┌╓Ц┐ЁЦ┌©Ц┌▓Е┘┐Ц│╚Ф┬╩Ц│≥ */
+            z.avail_out = OUTBUFSIZ; /* Е┤╨Е┼⌡Ц┐░Ц┐┐Ц┐∙Ц┌║Ф╝▀И┤▐Ц┌▓Е┘┐Ц│╚Ф┬╩Ц│≥ */
         }
     }
 
-    /* ╩д╓Й╓Рег╓╜╫п╓╧ */
+    /* Ф╝▀Ц┌┼Ц┌▓Е░░Ц│█Е┤╨Ц│≥ */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
         if (fwrite(outbuf, 1, count, fout) != count) {
             fprintf(stderr, "Write error\n");
@@ -128,7 +128,7 @@ void do_decompress(void)        /* е╦Ё╚║йиЭ╦╣║к */
         }
     }
 
-    /* ╦Е╩окЖ */
+    /* Е╬▄Е╖▀Ф°╚ */
     if (inflateEnd(&z) != Z_OK) {
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
