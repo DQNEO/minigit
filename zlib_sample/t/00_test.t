@@ -12,9 +12,9 @@ for my $file (@files) {
     my $orig = $file . '.txt';
     my $zlib = $file . '.zlib';
     unlink $zlib if -e $zlib;
-    `./$PROGNAME c $orig $zlib`;
+    `./$PROGNAME -c $orig $zlib`;
     $orig_text = `cat $orig`;
-    $ret = `./$PROGNAME d $zlib /dev/stdout`;
+    $ret = `./$PROGNAME -d $zlib /dev/stdout`;
     is $ret, $orig_text, "file $file";
 
     unlink $zlib if -e $zlib;

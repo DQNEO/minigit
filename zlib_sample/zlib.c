@@ -141,12 +141,14 @@ int main(int argc, char *argv[])
 
     if (argc != 4) {
         fprintf(stderr, "Usage: comptest flag infile outfile\n");
-        fprintf(stderr, "  flag: c=compress d=decompress\n");
+	fprintf(stderr, "option:\n");
+	fprintf(stderr, "    -c: compress\n");
+	fprintf(stderr, "    -d: decompress\n");
         exit(0);
     }
-    if (strcmp(argv[1],"c") == 0) {
+    if (strcmp(argv[1],"-c") == 0) {
         c = 1;
-    } else if (strcmp(argv[1], "d") == 0) {
+    } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
