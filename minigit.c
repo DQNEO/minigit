@@ -348,6 +348,7 @@ int _rev_parse(char *rev, char *sha1_string)
     char filename[256] = {};
     const char *dir = ".git/refs/heads/";
 
+    //HEADの場合は強引にmasterに変更する
     if (strcmp(rev, "HEAD") == 0) {
 	strcpy(rev, "master");
     }
