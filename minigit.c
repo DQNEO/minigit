@@ -570,7 +570,19 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 
     printf("Author: %s\n", author_name);
     printf("Date:   %s\n", frmted_time);
-    printf("    %s", cp);
+
+    int start_of_new_line = 1;
+    while (*cp) {
+	
+	if (start_of_new_line || *(cp -1) == '\n') {
+	    printf("    ");
+	}
+
+	printf("%c", *cp);
+	cp++;
+	start_of_new_line = 0;
+    }
+
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
 
