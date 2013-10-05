@@ -1,8 +1,5 @@
 /* zlib を使う例 */
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
-/* コンパイル: gcc -Wall comptest.c -o comptest -lz */
-/* -lz は libz.a をリンクする（たぶん /usr(/local)/lib にある）*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>               /* /usr(/local)/include/zlib.h */
