@@ -568,6 +568,11 @@ void usage() {
     exit(1);
 }
 
+int cmd_init(int argc, char *argv[])
+{
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc == 1) {
@@ -580,6 +585,8 @@ int main(int argc, char *argv[])
 	return cmd_log(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "rev-parse") == 0) {
 	return cmd_rev_parse(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "init") == 0) {
+	return cmd_init(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
