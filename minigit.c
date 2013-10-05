@@ -265,13 +265,19 @@ int is_substr(const char *s,const char *l)
   return 1;
 }
 
-void find_file(char *sha1_input, char *matched_filename)
+void validate_sha1(const char *sha1_input)
 {
+    //防御的プログラミング！ってこうですか＞＜
     if ( !('0' <= *sha1_input && *sha1_input <= '9' ) &&
 	 !('a' <= *sha1_input && *sha1_input <= 'f') ) {
 	fprintf(stderr, "invalid sha1 :%s\n", sha1_input);
 	exit(1);
     }
+}
+
+void find_file(char *sha1_input, char *matched_filename)
+{
+    validate_sha1(sha1_input);
 
     char sha1_input_firsrt2chars[2];
     char *sha1_input_from3rd = &sha1_input[2];
@@ -517,7 +523,8 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     printf("\n    %s", cp);
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
-    
+
+    validate_sha1(parent_sha1);
 }
  
 int cat_commit_object(char *sha1_string, char *parent_sha1)
