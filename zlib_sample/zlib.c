@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>
+#include <string.h>
 
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
