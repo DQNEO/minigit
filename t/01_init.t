@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 use Test::More;
-
+use FindBin qw($Bin);
+use lib "$Bin/lib";
+use MyLib qw(slurp);
 our $PROGNAME = 'minigit';
 
 diag('cmd init');
@@ -27,6 +29,9 @@ is $ret_val, 0, "exit value of init";
 ok -d $tmp_dir, ".git";
 ok -d $tmp_dir . "/.git/objects", ".git/objects";
 ok -d $tmp_dir . "/.git/refs", ".git/refs";
+
+is slurp($tmp_dir . "/.git/HEAD"), "ref: refs/heads/master\n", ".git/HEAD";
+
 
 # clean
 #ok system("rm -rf $tmp_dir") == 0, "clean";
