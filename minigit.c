@@ -425,7 +425,7 @@ int cmd_cat_file(int argc, char **argv)
     return 0;
 }
 
-void pretty_print_commit_object(object_info *oi)
+void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 {
     //ヘッダー部は読み飛ばす
     char *cp = oi->buf + oi->header_length;
@@ -459,8 +459,6 @@ void pretty_print_commit_object(object_info *oi)
     }    
     tree_sha1[40] = '\0';
     cp++;
-
-    char parent_sha1[41];
 
     // skip 'parent '
     cp += 7;
@@ -517,7 +515,7 @@ void pretty_print_commit_object(object_info *oi)
     
 }
  
-int cat_commit_object(char *sha1_string)
+int cat_commit_object(char *sha1_string, char *parent_sha1)
 {
     struct _TAG_OBJECT_INFO oi;
     char buf[OUTBUFSIZ];
@@ -536,7 +534,7 @@ int cat_commit_object(char *sha1_string)
 
     // print commit
     printf("commit %s\n", sha1_string);
-    pretty_print_commit_object(&oi);
+    pretty_print_commit_object(&oi, parent_sha1);
 
     return 0;
 }
@@ -554,7 +552,13 @@ int cmd_log(int argc , char **argv)
     char commit_sha1[256] = {};
     _rev_parse(rev, commit_sha1);
 
-    cat_commit_object(commit_sha1);
+    char parent_sha1[256] = {};
+
+    cat_commit_object(commit_sha1, parent_sha1);
+    while (parent_sha1[0]) {
+	printf("\n");
+	cat_commit_object(parent_sha1, parent_sha1);
+    }
     return 0;
 }
 
