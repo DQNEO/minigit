@@ -267,6 +267,10 @@ int is_substr(const char *s,const char *l)
 
 void validate_sha1(const char *sha1_input)
 {
+    // no problem if emtpy string
+    if (*sha1_input == '\0') {
+	return;
+    }
     //防御的プログラミング！ってこうですか＞＜
     if ( !('0' <= *sha1_input && *sha1_input <= '9' ) &&
 	 !('a' <= *sha1_input && *sha1_input <= 'f') ) {
