@@ -2,18 +2,18 @@
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
 #include <stdio.h>
 #include <stdlib.h>
-#include <zlib.h>               /* /usr(/local)/include/zlib.h */
+#include <zlib.h>
 
-#define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
-#define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
+#define INBUFSIZ   1024
+#define OUTBUFSIZ  1024
 
-z_stream z;                     /* ライブラリとやりとりするための構造体 */
+z_stream z;
 
-char inbuf[INBUFSIZ];           /* 入力バッファ */
-char outbuf[OUTBUFSIZ];         /* 出力バッファ */
-FILE *fin, *fout;               /* 入力・出力ファイル */
+char inbuf[INBUFSIZ];
+char outbuf[OUTBUFSIZ];
+FILE *fin, *fout;
 
-void do_compress(void)          /* 圧縮 */
+void do_compress(void)
 {
     int count, flush, status;
 
@@ -77,7 +77,7 @@ void do_compress(void)          /* 圧縮 */
     }
 }
 
-void do_decompress(void)        /* 展開（復元） */
+void do_decompress(void)
 {
     int count, status;
 
