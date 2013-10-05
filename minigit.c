@@ -544,11 +544,11 @@ int cat_commit_object(char *sha1_string)
 
 int cmd_log(int argc , char **argv)
 {
-    char *rev;
+    char rev[256];
     if (argc > 1) {
-	rev = argv[1];
+	strcpy(rev, argv[1]);
     } else {
-	rev = "HEAD";
+	strcpy(rev, "HEAD");
     }
 
     char sha1_string[256] = {};
