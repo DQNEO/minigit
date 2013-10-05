@@ -551,10 +551,10 @@ int cmd_log(int argc , char **argv)
 	strcpy(rev, "HEAD");
     }
 
-    char sha1_string[256] = {};
-    _rev_parse(rev, sha1_string);
+    char commit_sha1[256] = {};
+    _rev_parse(rev, commit_sha1);
 
-    cat_commit_object(sha1_string);
+    cat_commit_object(commit_sha1);
     return 0;
 }
 
