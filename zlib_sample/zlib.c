@@ -142,10 +142,9 @@ int main(int argc, char *argv[])
     FILE *fin, *fout;
 
     if (argc != 4) {
-        fprintf(stderr, "Usage: zlib option infile outfile\n");
-	fprintf(stderr, "option:\n");
-	fprintf(stderr, "    -c: compress\n");
-	fprintf(stderr, "    -d: decompress\n");
+        fprintf(stderr, "Usage:\n");
+	fprintf(stderr, "  zlib -c orig_file compressed_file\n");
+	fprintf(stderr, "  zlib -d compressed_file\n");
         exit(0);
     }
     if (strcmp(argv[1],"-c") == 0) {
