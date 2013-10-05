@@ -511,7 +511,7 @@ void pretty_print_commit_object(object_info *oi)
 
     printf("Author: %s\n", author_name);
     printf("Date:   %s %s\n", frmted_time, timediff);
-    printf("\n    %s\n", cp);
+    printf("\n    %s", cp);
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
     
@@ -522,7 +522,6 @@ int cat_commit_object(char *sha1_string)
     struct _TAG_OBJECT_INFO oi;
     char buf[OUTBUFSIZ];
 
-    //printf("commit %s\n", sha1_string);
 
     oi.header_length = 0;
 
@@ -536,6 +535,7 @@ int cat_commit_object(char *sha1_string)
     read_object_body(found_filename, &oi);
 
     // print commit
+    printf("commit %s\n", sha1_string);
     pretty_print_commit_object(&oi);
 
     return 0;
