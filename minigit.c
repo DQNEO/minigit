@@ -34,6 +34,20 @@ typedef struct _TAG_OBJECT_INFO {
 } object_info;
 
 /**
+ * git:date.cのtime_to_tmおよびgm_time_tから借用
+ */
+struct tm *time_to_tm(unsigned long time, int tz)
+{
+    int minutes;
+
+    minutes = tz < 0 ? -tz : tz;
+    minutes = (minutes / 100)*60 + (minutes % 100);
+    minutes = tz < 0 ? -minutes : minutes;
+    time_t t = (time_t) time + minutes * 60;
+    return gmtime(&t);
+}
+
+/**
  * get into string sha1 from binary sha1
  *
  * this function is totally borrowed from hex.c of git :)
@@ -521,11 +535,6 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     }
     str_timestamp[10] = '\0';
 
-    time_t t;
-    t = atoi(str_timestamp);
-    struct tm *tm;
-    tm = localtime(&t);
-
     char timediff[6];
     cp++; //skip ' '
 
@@ -539,8 +548,14 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 
     message = cp;
 
+    time_t t;
+    t = atoi(str_timestamp);
+    struct tm *tm;
+
     char frmted_time[256];
-    int tz = 900;
+    int tz = atoi(timediff);
+
+    tm = time_to_tm(t, tz);
 
     // see show_date in date.c#L207
     sprintf(frmted_time ,"%.3s %.3s %d %02d:%02d:%02d %d%c%+05d\n",
