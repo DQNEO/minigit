@@ -13,7 +13,7 @@ char inbuf[INBUFSIZ];
 char outbuf[OUTBUFSIZ];
 FILE *fin, *fout;
 
-void do_compress(void)
+void _compress(void)
 {
     int count, flush, status;
 
@@ -77,7 +77,7 @@ void do_compress(void)
     }
 }
 
-void do_decompress(void)
+void _decompress(void)
 {
     int count, status;
 
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[3]);
         exit(1);
     }
-    if (c) do_compress(); else do_decompress();
+    if (c) _compress(); else _decompress();
     fclose(fin);
     fclose(fout);
     return 0;
