@@ -14,8 +14,9 @@ for my $file (@files) {
     unlink $zlib if -e $zlib;
     `./$PROGNAME -c $orig $zlib`;
     $orig_text = `cat $orig`;
-    $ret = `./$PROGNAME -d $zlib /dev/stdout`;
-    is $ret, $orig_text, "file $file";
+    my $cmd = "./$PROGNAME -d $zlib /dev/stdout";
+    $ret = `$cmd`;
+    is $ret, $orig_text, "$cmd";
 
     unlink $zlib if -e $zlib;
 }

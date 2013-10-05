@@ -111,7 +111,7 @@ void do_decompress(void)
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
+            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
@@ -122,7 +122,7 @@ void do_decompress(void)
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, fout) != count) {
+        if (fwrite(outbuf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
