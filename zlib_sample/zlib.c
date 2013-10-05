@@ -77,7 +77,7 @@ void _compress(void)
     }
 }
 
-void _decompress(void)
+void _decompress(FILE *fin)
 {
     int count, status;
 
@@ -162,7 +162,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[3]);
         exit(1);
     }
-    if (c) _compress(); else _decompress();
+
+    if (c) _compress(); else _decompress(fin);
     fclose(fin);
     fclose(fout);
     return 0;
