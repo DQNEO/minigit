@@ -540,6 +540,8 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     message = cp;
 
     char frmted_time[256];
+    int tz = 900;
+
     // see show_date in date.c#L207
     sprintf(frmted_time ,"%.3s %.3s %d %02d:%02d:%02d %d%c%+05d\n",
 	 weekday_names[tm->tm_wday],
@@ -548,7 +550,7 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 	 tm->tm_hour, tm->tm_min, tm->tm_sec,
 	 tm->tm_year + 1900,
 	 ' ',
-	 900
+	 tz
 	 );
 
     printf("Author: %s\n", author_name);
