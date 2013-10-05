@@ -1,11 +1,6 @@
-/* zlib を使う例 */
-/* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
-/* コンパイル: gcc -Wall comptest.c -o comptest -lz */
-/* -lz は libz.a をリンクする（たぶん /usr(/local)/lib にある）*/
-
+#define PROGNAME "minigit"
 #include <stdio.h>
 #include <stdlib.h>
-#include <zlib.h>               /* /usr(/local)/include/zlib.h */
 #include <string.h>
 
 #include <sys/types.h>
@@ -14,9 +9,13 @@
 // opendir
 #include <dirent.h>
 #include <time.h>
-#define INBUFSIZ   1024         /* 入力バッファサイズ（任意） */
-#define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
-#define PROGNAME "minigit"
+
+/* zlib sample code  */
+/* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
+#include <zlib.h>
+#define INBUFSIZ   1024
+#define OUTBUFSIZ  1024
+
 
 char *weekday_names[] = {
   "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
