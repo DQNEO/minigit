@@ -476,16 +476,23 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     cp++;
 
     // skip 'parent '
-    cp += 7;
-    i = 0;
-    while (*cp != '\n') {
-	parent_sha1[i++] = *(cp++);
+    if (*cp == 'p') {
+	cp += 7;
+	i = 0;
+	while (*cp != '\n') {
+	    parent_sha1[i++] = *(cp++);
+	}
+	parent_sha1[40] = '\0';
+	cp++; // skip '\n'
+    } else {
+	memset(parent_sha1, '\0', 41);
     }
-    parent_sha1[40] = '\0';
+
+    //validate_sha1(parent_sha1);
 
     //マージコミットの場合はまたparentがある。
 
-    cp += 8; // skip 'author '
+    cp += 7; // skip 'author '
     i = 0;
     while (*cp != '>') {
 	author_name[i++] = *(cp++);
