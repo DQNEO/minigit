@@ -39,13 +39,13 @@ diag('cat tree object');
 my @sha1_list = ('1e863', '44495', 'f135c');
 
 for my $sha1_short (@sha1_list) {
-$ret = `./minigit cat-file -p t/objects/$sha1_short.tree`;
+    $ret = `./minigit cat-file -p t/objects/$sha1_short.tree`;
 
-open my $fh, '<', "t/objects/$sha1_short.tree.txt"
-    or die "failed to open file: $!";
-$exp = do { local $/; <$fh> };
+    open my $fh, '<', "t/objects/$sha1_short.tree.txt"
+	or die "failed to open file: $!";
+    $exp = do { local $/; <$fh> };
 
-is $ret, $exp, 'tree ' . $sha1_short;
+    is $ret, $exp, 'tree ' . $sha1_short;
 
 }
 
@@ -54,14 +54,14 @@ diag('test commit object');
 my @commits = ('0067b', '16a29');
 
 for my $commit (@commits) {
-$ret = `./minigit cat-file -p t/objects/$commit.commit`;
-$ret =~ s/gmail/example/g;
+    $ret = `./minigit cat-file -p t/objects/$commit.commit`;
+    $ret =~ s/gmail/example/g;
 
-open my $fh, '<', "t/objects/$commit.commit.txt"
-    or die "failed to open file: $!";
-$exp = do { local $/; <$fh> };
+    open my $fh, '<', "t/objects/$commit.commit.txt"
+	or die "failed to open file: $!";
+    $exp = do { local $/; <$fh> };
 
-is $ret, $exp, 'commit ' . $commit;
+    is $ret, $exp, 'commit ' . $commit;
 
 }
 
@@ -86,7 +86,7 @@ is $ret , $exp, $cmd;
 done_testing();
 
 =pod
-diag('test log HEAD');
+    diag('test log HEAD');
 $ret = `./minigit log HEAD`;
 $exp = "sha1=badcafe\n";
 
