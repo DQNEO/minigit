@@ -646,6 +646,12 @@ void usage() {
     exit(1);
 }
 
+int cmd_add(int argc, char *argv[])
+{
+    printf("%s\n", argv[1]);
+    return 0;
+}
+
 int cmd_init(int argc, char *argv[])
 {
     mkdir(".git", 0755);
@@ -677,6 +683,8 @@ int main(int argc, char *argv[])
 	return cmd_rev_parse(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "init") == 0) {
 	return cmd_init(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "add") == 0) {
+	return cmd_add(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
