@@ -60,24 +60,6 @@ for my $commit (@commits) {
     is $ret, $exp, 'commit ' . $commit;
 }
 
-
-diag('rev-parse');
-$cmd ='rev-parse HEAD';
-$ret = `./minigit $cmd`;
-$exp = `git rev-parse HEAD`;
-is $ret , $exp, $cmd;
-
-$cmd = 'rev-parse';
-$ret = `./minigit $cmd`;
-$exp = "";
-is $ret , $exp, $cmd;
-
-$cmd = 'rev-parse br_caa88';
-$ret = `./minigit $cmd`;
-$exp = `git $cmd`;
-is $ret , $exp, $cmd;
-
-
 done_testing();
 
 
