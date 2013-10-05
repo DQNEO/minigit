@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
+use autodie;
 use Test::More;
 
 # test blob object
@@ -41,8 +42,8 @@ my @sha1_list = ('1e863', '44495', 'f135c');
 for my $sha1_short (@sha1_list) {
     $ret = `./minigit cat-file -p t/objects/$sha1_short.tree`;
 
-    open my $fh, '<', "t/objects/$sha1_short.tree.txt"
-	or die "failed to open file: $!";
+    open my $fh, '<', "t/objects/$sha1_short.tree.txt";
+
     $exp = do { local $/; <$fh> };
 
     is $ret, $exp, 'tree ' . $sha1_short;
@@ -57,8 +58,8 @@ for my $commit (@commits) {
     $ret = `./minigit cat-file -p t/objects/$commit.commit`;
     $ret =~ s/gmail/example/g;
 
-    open my $fh, '<', "t/objects/$commit.commit.txt"
-	or die "failed to open file: $!";
+    open my $fh, '<', "t/objects/$commit.commit.txt";
+
     $exp = do { local $/; <$fh> };
 
     is $ret, $exp, 'commit ' . $commit;
