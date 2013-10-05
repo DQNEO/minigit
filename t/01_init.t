@@ -38,3 +38,9 @@ is slurp($tmp_dir . "/.git/HEAD"), "ref: refs/heads/master\n", ".git/HEAD";
 
 done_testing();
 
+=pod
+  git init のテスト
+  /tmp/下でgit initして各種ディレクトリをセットアップ
+  終わったらゴミ掃除
+=end
+
