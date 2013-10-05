@@ -353,7 +353,11 @@ int _rev_parse(char *rev, char *sha1_string)
 	strcpy(rev, "master");
     }
 
-
+    //引数が40文字なら、強引にsha1とみなす。
+    if (strlen(rev) == 40) {
+	strcpy(sha1_string, rev);
+	return 0;
+    }
     strcat(filename, dir);
     strcat(filename, rev);
 
