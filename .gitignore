@@ -2,4 +2,4 @@ minigit
 
 # ignore binary executable files
 a.out
-c_samples/comptest
+zlib_sample/zlib
