@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     FILE *fin, *fout;
 
     if (argc != 4) {
-        fprintf(stderr, "Usage: zlib flag infile outfile\n");
+        fprintf(stderr, "Usage: zlib option infile outfile\n");
 	fprintf(stderr, "option:\n");
 	fprintf(stderr, "    -c: compress\n");
 	fprintf(stderr, "    -d: decompress\n");
