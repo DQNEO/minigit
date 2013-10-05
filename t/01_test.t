@@ -42,12 +42,8 @@ my @sha1_list = ('1e863', '44495', 'f135c');
 for my $sha1_short (@sha1_list) {
     $ret = `./minigit cat-file -p t/objects/$sha1_short.tree`;
 
-    open my $fh, '<', "t/objects/$sha1_short.tree.txt";
-
-    $exp = do { local $/; <$fh> };
-
+    $exp = slurp("t/objects/$sha1_short.tree.txt");
     is $ret, $exp, 'tree ' . $sha1_short;
-
 }
 
 diag('test commit object');
@@ -58,12 +54,8 @@ for my $commit (@commits) {
     $ret = `./minigit cat-file -p t/objects/$commit.commit`;
     $ret =~ s/gmail/example/g;
 
-    open my $fh, '<', "t/objects/$commit.commit.txt";
-
-    $exp = do { local $/; <$fh> };
-
+    $exp = slurp("t/objects/$commit.commit.txt");
     is $ret, $exp, 'commit ' . $commit;
-
 }
 
 
@@ -86,6 +78,14 @@ is $ret , $exp, $cmd;
 
 done_testing();
 
+
+sub slurp {
+    my $filename = shift;
+    local $/;
+    open my $fh, '<', $filename;
+    return <$fh>;
+}
+
 =pod
     diag('test log HEAD');
 $ret = `./minigit log HEAD`;
@@ -99,8 +99,6 @@ $exp = "sha1=badcafe\n";
 
 is $ret , $exp, 'log';
 =end
-
-
 
 
 
