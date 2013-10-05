@@ -570,6 +570,9 @@ void usage() {
 
 int cmd_init(int argc, char *argv[])
 {
+    mkdir(".git", 0755);
+    mkdir(".git/objects", 0755);
+    mkdir(".git/refs", 0755);
     return 0;
 }
 
