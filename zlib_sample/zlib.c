@@ -32,7 +32,7 @@ void _compress(FILE *fin, FILE *fout)
     }
 
     z.avail_in = 0;             /* 入力バッファ中のデータのバイト数 */
-    z.next_out = outbuf;        /* 出力ポインタ */
+    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファのサイズ */
 
     /* 通常は deflate() の第2引数は Z_NO_FLUSH にして呼び出す */
@@ -40,7 +40,7 @@ void _compress(FILE *fin, FILE *fout)
 
     while (1) {
         if (z.avail_in == 0) {  /* 入力が尽きれば */
-            z.next_in = inbuf;  /* 入力ポインタを入力バッファの先頭に */
+            z.next_in = (Bytef *)inbuf;  /* 入力ポインタを入力バッファの先頭に */
             z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読み込む */
 
             /* 入力が最後になったら deflate() の第2引数は Z_FINISH にする */
@@ -58,7 +58,7 @@ void _compress(FILE *fin, FILE *fout)
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = outbuf; /* 出力バッファ残量を元に戻す */
+            z.next_out = (Bytef *)outbuf; /* 出力バッファ残量を元に戻す */
             z.avail_out = OUTBUFSIZ; /* 出力ポインタを元に戻す */
         }
     }
@@ -95,13 +95,13 @@ void _decompress(FILE *fin)
         exit(1);
     }
 
-    z.next_out = outbuf;        /* 出力ポインタ */
+    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
         if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-            z.next_in = inbuf;  /* 入力ポインタを元に戻す */
+            z.next_in = (Bytef *)inbuf;  /* 入力ポインタを元に戻す */
             z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
         }
         status = inflate(&z, Z_NO_FLUSH); /* 展開 */
@@ -116,7 +116,7 @@ void _decompress(FILE *fin)
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = outbuf; /* 出力ポインタを元に戻す */
+            z.next_out = (Bytef *)outbuf; /* 出力ポインタを元に戻す */
             z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
         }
     }
