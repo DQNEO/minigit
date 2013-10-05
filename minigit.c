@@ -267,7 +267,11 @@ int is_substr(const char *s,const char *l)
 
 void find_file(char *sha1_input, char *matched_filename)
 {
-    //printf("sha1_input:%s\n", sha1_input);
+    if ( !('0' <= *sha1_input && *sha1_input <= '9' ) &&
+	 !('a' <= *sha1_input && *sha1_input <= 'f') ) {
+	fprintf(stderr, "invalid sha1 :%s\n", sha1_input);
+	exit(1);
+    }
 
     char sha1_input_firsrt2chars[2];
     char *sha1_input_from3rd = &sha1_input[2];
@@ -286,7 +290,8 @@ void find_file(char *sha1_input, char *matched_filename)
     strcat(dir, sha1_input_firsrt2chars);
 
     if(( dp = opendir(dir) ) == NULL ){
-	perror("opendir");
+	perror(dir);
+	fprintf(stderr, "sha1_input = %s\n", sha1_input);
 	exit( EXIT_FAILURE );
     }
  
