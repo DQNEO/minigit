@@ -11,9 +11,9 @@ z_stream z;
 
 char inbuf[INBUFSIZ];
 char outbuf[OUTBUFSIZ];
-FILE *fin, *fout;
 
-void _compress(void)
+
+void _compress(FILE *fin, FILE *fout)
 {
     int count, flush, status;
 
@@ -138,6 +138,7 @@ void _decompress(FILE *fin)
 int main(int argc, char *argv[])
 {
     int c;
+    FILE *fin, *fout;
 
     if (argc != 4) {
         fprintf(stderr, "Usage: comptest flag infile outfile\n");
@@ -163,7 +164,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    if (c) _compress(); else _decompress(fin);
+    if (c) _compress(fin, fout); else _decompress(fin);
     fclose(fin);
     fclose(fout);
     return 0;
