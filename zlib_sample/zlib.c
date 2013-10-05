@@ -164,7 +164,12 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    if (c) _compress(fin, fout); else _decompress(fin);
+    if (c) {
+      _compress(fin, fout);
+    } else {
+      _decompress(fin);
+    }
+
     fclose(fin);
     fclose(fout);
     return 0;
