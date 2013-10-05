@@ -18,6 +18,14 @@
 #define OUTBUFSIZ  1024         /* 出力バッファサイズ（任意） */
 #define PROGNAME "minigit"
 
+char *weekday_names[] = {
+  "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
+};
+
+char *month_names[] = {
+  "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
+};
+
 typedef struct _TAG_OBJECT_INFO {
     char type[20];
     int  size;
@@ -510,8 +518,8 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 
     time_t t;
     t = atoi(str_timestamp);
-    struct tm *ptm;
-    ptm = localtime(&t);
+    struct tm *tm;
+    tm = localtime(&t);
 
     char timediff[6];
     cp++; //skip ' '
@@ -527,11 +535,20 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     message = cp;
 
     char frmted_time[256];
-    strftime(frmted_time, 255, "%a %b%e %H:%M:%S %Y", ptm);
+    // see show_date in date.c#L207
+    sprintf(frmted_time ,"%.3s %.3s %d %02d:%02d:%02d %d%c%+05d\n",
+	 weekday_names[tm->tm_wday],
+	 month_names[tm->tm_mon],
+	 tm->tm_mday,
+	 tm->tm_hour, tm->tm_min, tm->tm_sec,
+	 tm->tm_year + 1900,
+	 ' ',
+	 900
+	 );
 
     printf("Author: %s\n", author_name);
-    printf("Date:   %s %s\n", frmted_time, timediff);
-    printf("\n    %s", cp);
+    printf("Date:   %s\n", frmted_time);
+    printf("    %s", cp);
     //printf("tree : %s\n", tree_sha1);
     //printf("parent : %s\n", parent_sha1);
 
