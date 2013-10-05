@@ -3,7 +3,9 @@ use strict;
 use warnings;
 use autodie;
 use Test::More;
-
+use FindBin qw($Bin);
+use lib "$Bin/lib";
+use MyLib qw(slurp);
 # test blob object
 diag('blob object');
 
@@ -79,12 +81,6 @@ is $ret , $exp, $cmd;
 done_testing();
 
 
-sub slurp {
-    my $filename = shift;
-    local $/;
-    open my $fh, '<', $filename;
-    return <$fh>;
-}
 
 =pod
     diag('test log HEAD');
