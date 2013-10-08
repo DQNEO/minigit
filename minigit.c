@@ -647,7 +647,14 @@ void usage() {
 
 int cmd_add(int argc, char *argv[])
 {
-    printf("%s\n", argv[1]);
+    char *filename = argv[1];
+    struct stat st;
+
+    if (lstat(filename, &st)) {
+	fprintf(stderr, "unable to lstat %s\n", filename);
+    }
+
+    printf("st.st_size = %ld\n", st.st_size);
     return 0;
 }
 
