@@ -79,36 +79,30 @@ void _compress(FILE *fin, FILE *fout)
 void usage()
 {
     fprintf(stderr, "Usage:\n");
-    fprintf(stderr, "  zlib -c orig_file compressed_file\n");
+    fprintf(stderr, "  zlib orig_file compressed_file\n");
     exit(0);
 }
 
 int main(int argc, char *argv[])
 {
-    int c;
     FILE *fin, *fout;
 
     if (argc == 1) {
 	usage();
-    } else if (strcmp(argv[1],"-c") == 0) {
-        c = 1;
-    } else {
-	usage();
     }
-    if ((fin = fopen(argv[2], "r")) == NULL) {
+
+    if ((fin = fopen(argv[1], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
-    if (c) {
-	if ((fout = fopen(argv[3], "w")) == NULL) {
+
+	if ((fout = fopen(argv[2], "w")) == NULL) {
 	    fprintf(stderr, "Can't open %s\n", argv[3]);
 	    exit(1);
 	}
       _compress(fin, fout);
       fclose(fout);
-    } else {
 
-    }
 
     fclose(fin);
     return 0;
