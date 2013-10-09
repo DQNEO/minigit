@@ -96,14 +96,14 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-	if ((fout = fopen(argv[2], "w")) == NULL) {
-	    fprintf(stderr, "Can't open %s\n", argv[3]);
-	    exit(1);
-	}
-      _compress(fin, fout);
-      fclose(fout);
+    if ((fout = fopen(argv[2], "w")) == NULL) {
+      fprintf(stderr, "Can't open %s\n", argv[3]);
+      exit(1);
+    }
 
+    _compress(fin, fout);
 
+    fclose(fout);
     fclose(fin);
     return 0;
 }
