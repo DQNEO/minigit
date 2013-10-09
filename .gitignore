@@ -3,3 +3,5 @@ minigit
 # ignore binary executable files
 a.out
 zlib_sample/zlib
+zlib_sample/compress_sample/write_loose_object
+
