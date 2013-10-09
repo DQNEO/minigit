@@ -83,21 +83,17 @@ void usage()
     exit(0);
 }
 
-int main(int argc, char *argv[])
+void do_compress(char *in_file, char *out_file)
 {
-    FILE *fin, *fout;
-
-    if (argc == 1) {
-	usage();
-    }
-
-    if ((fin = fopen(argv[1], "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[2]);
+   FILE *fin, *fout;
+   
+    if ((fin = fopen(in_file, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file);
         exit(1);
     }
 
-    if ((fout = fopen(argv[2], "w")) == NULL) {
-      fprintf(stderr, "Can't open %s\n", argv[3]);
+    if ((fout = fopen(out_file, "w")) == NULL) {
+      fprintf(stderr, "Can't open %s\n", out_file);
       exit(1);
     }
 
@@ -105,5 +101,17 @@ int main(int argc, char *argv[])
 
     fclose(fout);
     fclose(fin);
+
+}
+
+int main(int argc, char *argv[])
+{
+ 
+
+    if (argc == 1) {
+	usage();
+    }
+
+    do_compress(argv[1], argv[2]);
     return 0;
 }
