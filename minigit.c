@@ -5,6 +5,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 // opendir
 #include <dirent.h>
@@ -655,6 +656,17 @@ int cmd_add(int argc, char *argv[])
     }
 
     printf("st.st_size = %ld\n", st.st_size);
+    unsigned char *buf;
+    buf = malloc(st.st_size);
+
+    FILE *fp;
+    fp = fopen(filename, "rb");
+    fread(buf, st.st_size, 1, fp);
+    fclose(fp);
+    
+    printf("%s\n", buf);
+    free(buf);
+    
     return 0;
 }
 
