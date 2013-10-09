@@ -1,15 +1,19 @@
 #define PROGNAME "minigit"
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdio.h>
 
 // opendir
 #include <dirent.h>
 #include <time.h>
+
+// for calculate sha1
+#include <openssl/sha.h>
 
 /* zlib sample code  */
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
@@ -69,6 +73,26 @@ char *sha1_to_hex(const unsigned char *sha1)
 
     return buffer;
 }
+
+void calc_sha1(const unsigned char *body, unsigned long len)
+{
+    char *type = "blob";
+    int hdrlen;
+    char hdr[256];
+    unsigned char sha1[41];
+    SHA_CTX c;
+
+    sprintf(hdr, "%s %ld", type, len);
+    hdrlen = strlen(hdr) + 1;
+
+    SHA1_Init(&c);
+    SHA1_Update(&c, hdr, hdrlen);
+    SHA1_Update(&c, body, len);
+    SHA1_Final(sha1, &c);
+
+    printf("%s\n", sha1_to_hex(sha1));
+}
+
 
 void parse_header(char *header, object_info  *oi)
 {
@@ -643,10 +667,11 @@ void usage() {
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
     fprintf(stdout, "  log: (HEAD|branchname)\n");
+    fprintf(stdout, "  hash-object <file>\n");
     exit(1);
 }
 
-int cmd_add(int argc, char *argv[])
+int cmd_hash_object(int argc, char *argv[])
 {
     char *filename = argv[1];
     struct stat st;
@@ -655,7 +680,6 @@ int cmd_add(int argc, char *argv[])
 	fprintf(stderr, "unable to lstat %s\n", filename);
     }
 
-    printf("st.st_size = %ld\n", st.st_size);
     unsigned char *buf;
     buf = malloc(st.st_size);
 
@@ -663,8 +687,9 @@ int cmd_add(int argc, char *argv[])
     fp = fopen(filename, "rb");
     fread(buf, st.st_size, 1, fp);
     fclose(fp);
-    
-    printf("%s\n", buf);
+
+    calc_sha1(buf, st.st_size);
+
     free(buf);
     
     return 0;
@@ -701,8 +726,8 @@ int main(int argc, char *argv[])
 	return cmd_rev_parse(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "init") == 0) {
 	return cmd_init(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "add") == 0) {
-	return cmd_add(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "hash-object") == 0) {
+	return cmd_hash_object(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
