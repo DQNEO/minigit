@@ -96,14 +96,13 @@ void do_compress(char *in_file, char *out_file)
 
     unsigned char *buf;
     buf = malloc(st.st_size);
-
-    
-   
     if ((fin = fopen(in_file, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file);
         exit(1);
     }
 
+    //fread(buf, st.st_size, 1, fin);
+    
 
     if ((fout = fopen(out_file, "w")) == NULL) {
       fprintf(stderr, "Can't open %s\n", out_file);
