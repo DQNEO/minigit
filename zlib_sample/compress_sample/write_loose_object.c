@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <zlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
@@ -86,11 +88,22 @@ void usage()
 void do_compress(char *in_file, char *out_file)
 {
    FILE *fin, *fout;
+
+    struct stat st;
+    if (stat(in_file, &st)) {
+	fprintf(stderr, "unable to stat %s\n", in_file);
+    }
+
+    unsigned char *buf;
+    buf = malloc(st.st_size);
+
+    
    
     if ((fin = fopen(in_file, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file);
         exit(1);
     }
+
 
     if ((fout = fopen(out_file, "w")) == NULL) {
       fprintf(stderr, "Can't open %s\n", out_file);
