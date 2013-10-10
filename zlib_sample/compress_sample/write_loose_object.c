@@ -8,17 +8,17 @@
 #include <sys/types.h>
 
 #define INBUFSIZ   1024
-#define OUTBUFSIZ  1024
+#define OUTBUFSIZ  409600
 
 void _compress(FILE *fin, FILE *fout, long st_size, char *buf)
 {
     z_stream z;
 
-    char outbuf[OUTBUFSIZ];
-    int count, flush, status;
+    char *outbuf;
+    int ret;
 
+    outbuf = malloc(st_size);
     fread(buf, st_size, 1, fin);
-    
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -37,16 +37,29 @@ void _compress(FILE *fin, FILE *fout, long st_size, char *buf)
     z.avail_in = st_size;             /* 入力バッファ中のデータのバイト数 */
     z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファのサイズ */
-    
-    deflate(&z, Z_FINISH);
 
-    fwrite(outbuf, OUTBUFSIZ, 1, fout);
+    do {
+      ret = deflate(&z, Z_FINISH);
+
+      /* debug
+      if (ret == Z_STREAM_END) {
+	printf("Z_STREAM_END\n");
+      } else if (ret == Z_OK) {
+	printf("Z_OK\n");
+      }
+      */
+      fwrite(outbuf, OUTBUFSIZ, 1, fout);
+
+    } while (ret == Z_OK);
+
 
     /* 後始末 */
-    if (deflateEnd(&z) != Z_OK) {
-        fprintf(stderr, "deflateEnd: %s\n", (z.msg) ? z.msg : "???");
+    if (deflateEnd(&z) != Z_OK ) {
+        fprintf(stderr, "deflateEnd error:%s\n", z.msg );
         exit(1);
     }
+
+    free(outbuf);
 }
 
 
