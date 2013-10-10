@@ -10,7 +10,7 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void write_loose_object(char *out_file, char *hdr, int hdrlen, char *buf, long body_size)
+void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, unsigned long body_size)
 {
     z_stream z;
     FILE *fout;
@@ -19,8 +19,8 @@ void write_loose_object(char *out_file, char *hdr, int hdrlen, char *buf, long b
 
     outbuf = malloc(body_size);
 
-    if ((fout = fopen(out_file, "w")) == NULL) {
-      fprintf(stderr, "Can't open %s\n", out_file);
+    if ((fout = fopen(out_filename, "w")) == NULL) {
+      fprintf(stderr, "Can't open %s\n", out_filename);
       exit(1);
     }
 
