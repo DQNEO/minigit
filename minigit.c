@@ -659,6 +659,73 @@ int cmd_log(int argc , char **argv)
 }
 
 
+void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, unsigned long body_size)
+{
+    z_stream z;
+    FILE *fout;
+    char *outbuf;
+    int ret;
+
+    long outbufsiz = body_size + hdrlen + 1024;
+    outbuf = malloc(body_size);
+
+    if ((fout = fopen(out_filename, "wb")) == NULL) {
+	perror("cannot open");
+      fprintf(stderr, "Can't open %s\n", out_filename);
+      exit(1);
+    }
+
+
+    /* すべてのメモリ管理をライブラリに任せる */
+    z.zalloc = Z_NULL;
+    z.zfree = Z_NULL;
+    z.opaque = Z_NULL;
+
+    /* 初期化 */
+    /* 第2引数は圧縮の度合。0〜9 の範囲の整数で，0 は無圧縮 */
+    /* Z_DEFAULT_COMPRESSION (= 6) が標準 */
+    if (deflateInit(&z, Z_DEFAULT_COMPRESSION) != Z_OK) {
+        fprintf(stderr, "deflateInit: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+
+    /* First header..*/
+    z.next_in = (unsigned char *)hdr;
+    z.avail_in = hdrlen;
+
+    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
+    z.avail_out = outbufsiz;    /* 出力バッファのサイズ */
+
+    while (deflate(&z, 0) == Z_OK) ;
+    
+    z.next_in = (Bytef *)buf;
+    z.avail_in = body_size;             /* 入力バッファ中のデータのバイト数 */
+
+    do {
+      ret = deflate(&z, Z_FINISH);
+
+      /* debug
+      if (ret == Z_STREAM_END) {
+	printf("Z_STREAM_END\n");
+      } else if (ret == Z_OK) {
+	printf("Z_OK\n");
+      }
+      */
+      fwrite(outbuf, outbufsiz, 1, fout);
+
+    } while (ret == Z_OK);
+
+
+    /* 後始末 */
+    if (deflateEnd(&z) != Z_OK ) {
+        fprintf(stderr, "deflateEnd error:%s\n", z.msg );
+        exit(1);
+    }
+
+    free(outbuf);
+    fclose(fout);
+}
+
 
 void usage() {
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
@@ -669,9 +736,39 @@ void usage() {
     exit(1);
 }
 
+void sha1_file_name(const unsigned char *sha1, char *filename)
+{
+    const char *objdir = ".git/objects";
+    int len;
+    char *str_sha1 = sha1_to_hex(sha1);
+    int i;
+
+    len = strlen(objdir);
+    strcpy(filename, objdir);
+    filename[len] = '/';
+    filename[len+3] = '/';
+
+    filename[len+1] = str_sha1[0];
+    filename[len+2] = str_sha1[1];
+    
+    for (i=2;i<40;i++) {
+	filename[len+2+i] = str_sha1[i];
+    }
+    filename[len + 42] = '\0';
+}
+
 int cmd_hash_object(int argc, char *argv[])
 {
-    char *filename = argv[1];
+    char *filename;
+    int do_write;
+    if (strcmp(argv[1], "-w") == 0) {
+	do_write = 1;
+	filename = argv[2];
+    } else {
+	do_write = 0;
+	filename = argv[1];
+    }
+
     unsigned char sha1[41];
     struct stat st;
 
@@ -688,6 +785,17 @@ int cmd_hash_object(int argc, char *argv[])
     fclose(fp);
 
     calc_sha1(buf, st.st_size, sha1);
+
+    if (do_write) {
+	char hdr[1024];
+	char *obj_type = "blob";
+	sprintf(hdr, "%s %ld", obj_type ,(long) st.st_size);
+
+	int hdrlen = strlen(hdr) + 1;
+	char filename[50];
+	sha1_file_name(sha1, filename);
+	write_loose_object(filename, hdr, hdrlen, buf, st.st_size);
+    }
 
     free(buf);
     printf("%s\n", sha1_to_hex(sha1));
