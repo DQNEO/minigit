@@ -10,12 +10,15 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
 
-void _compress(FILE *fin, FILE *fout)
+void _compress(FILE *fin, FILE *fout, long st_size, char *buf)
 {
     z_stream z;
-    char inbuf[INBUFSIZ];
+
     char outbuf[OUTBUFSIZ];
     int count, flush, status;
+
+    fread(buf, st_size, 1, fin);
+    
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -30,45 +33,14 @@ void _compress(FILE *fin, FILE *fout)
         exit(1);
     }
 
-    z.avail_in = 0;             /* 入力バッファ中のデータのバイト数 */
+    z.next_in = (Bytef *)buf;
+    z.avail_in = st_size;             /* 入力バッファ中のデータのバイト数 */
     z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
     z.avail_out = OUTBUFSIZ;    /* 出力バッファのサイズ */
+    
+    deflate(&z, Z_FINISH);
 
-    /* 通常は deflate() の第2引数は Z_NO_FLUSH にして呼び出す */
-    flush = Z_NO_FLUSH;
-
-    while (1) {
-        if (z.avail_in == 0) {  /* 入力が尽きれば */
-            z.next_in = (Bytef *)inbuf;  /* 入力ポインタを入力バッファの先頭に */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読み込む */
-
-            /* 入力が最後になったら deflate() の第2引数は Z_FINISH にする */
-            if (z.avail_in < INBUFSIZ) flush = Z_FINISH;
-        }
-        status = deflate(&z, flush); /* 圧縮する */
-        if (status == Z_STREAM_END) break; /* 完了 */
-        if (status != Z_OK) {   /* エラー */
-            fprintf(stderr, "deflate: %s\n", (z.msg) ? z.msg : "???");
-            exit(1);
-        }
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
-                fprintf(stderr, "Write error\n");
-                exit(1);
-            }
-            z.next_out = (Bytef *)outbuf; /* 出力バッファ残量を元に戻す */
-            z.avail_out = OUTBUFSIZ; /* 出力ポインタを元に戻す */
-        }
-    }
-
-    /* 残りを吐き出す */
-    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, fout) != count) {
-            fprintf(stderr, "Write error\n");
-            exit(1);
-        }
-    }
+    fwrite(outbuf, OUTBUFSIZ, 1, fout);
 
     /* 後始末 */
     if (deflateEnd(&z) != Z_OK) {
@@ -94,23 +66,22 @@ void do_compress(char *in_file, char *out_file)
 	fprintf(stderr, "unable to stat %s\n", in_file);
     }
 
-    unsigned char *buf;
+    char *buf;
     buf = malloc(st.st_size);
     if ((fin = fopen(in_file, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file);
         exit(1);
     }
 
-    //fread(buf, st.st_size, 1, fin);
-    
 
     if ((fout = fopen(out_file, "w")) == NULL) {
       fprintf(stderr, "Can't open %s\n", out_file);
       exit(1);
     }
 
-    _compress(fin, fout);
+    _compress(fin, fout, st.st_size, buf);
 
+    free(buf);
     fclose(fout);
     fclose(fin);
 
