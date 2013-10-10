@@ -10,7 +10,7 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void _compress(FILE *fin, char *out_file, long body_size, char *buf, char *hdr, int hdrlen)
+void compress_write(FILE *fin, char *out_file, long body_size, char *buf, char *hdr, int hdrlen)
 {
     z_stream z;
     FILE *fout;
@@ -108,7 +108,7 @@ void do_compress(char *in_file, char *out_file)
 
     int hdrlen = strlen(hdr) + 1;
 
-    _compress(fin, out_file, st.st_size, buf, hdr, hdrlen);
+    _compress_write(fin, out_file, st.st_size, buf, hdr, hdrlen);
 
     free(buf);
     fclose(fin);
