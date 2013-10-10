@@ -10,15 +10,15 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void _compress(FILE *fin, FILE *fout, long st_size, char *buf, char *hdr, int hdrlen)
+void _compress(FILE *fin, FILE *fout, long body_size, char *buf, char *hdr, int hdrlen)
 {
     z_stream z;
 
     char *outbuf;
     int ret;
 
-    outbuf = malloc(st_size);
-    fread(buf, st_size, 1, fin);
+    outbuf = malloc(body_size);
+    fread(buf, body_size, 1, fin);
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -43,7 +43,7 @@ void _compress(FILE *fin, FILE *fout, long st_size, char *buf, char *hdr, int hd
     while (deflate(&z, 0) == Z_OK) ;
     
     z.next_in = (Bytef *)buf;
-    z.avail_in = st_size;             /* 入力バッファ中のデータのバイト数 */
+    z.avail_in = body_size;             /* 入力バッファ中のデータのバイト数 */
 
     do {
       ret = deflate(&z, Z_FINISH);
