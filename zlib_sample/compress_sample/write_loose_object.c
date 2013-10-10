@@ -99,7 +99,10 @@ void do_compress(char *in_file, char *out_file)
       exit(1);
     }
 
-    char *hdr = "blob 1234";
+    char hdr[1024];
+    char *type = "blob";
+    sprintf(hdr, "%s %ld", type ,(long) st.st_size);
+
     int hdrlen = strlen(hdr) + 1;
 
     _compress(fin, fout, st.st_size, buf, hdr, hdrlen);
