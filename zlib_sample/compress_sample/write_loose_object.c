@@ -7,8 +7,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#define OUTBUFSIZ  409600
-
 void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, unsigned long body_size)
 {
     z_stream z;
@@ -16,6 +14,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, un
     char *outbuf;
     int ret;
 
+    long outbufsiz = body_size + hdrlen + 1024;
     outbuf = malloc(body_size);
 
     if ((fout = fopen(out_filename, "w")) == NULL) {
@@ -42,7 +41,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, un
     z.avail_in = hdrlen;
 
     z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
-    z.avail_out = hdrlen + OUTBUFSIZ;    /* 出力バッファのサイズ */
+    z.avail_out = outbufsiz;    /* 出力バッファのサイズ */
 
     while (deflate(&z, 0) == Z_OK) ;
     
@@ -59,7 +58,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, un
 	printf("Z_OK\n");
       }
       */
-      fwrite(outbuf, OUTBUFSIZ, 1, fout);
+      fwrite(outbuf, outbufsiz, 1, fout);
 
     } while (ret == Z_OK);
 
