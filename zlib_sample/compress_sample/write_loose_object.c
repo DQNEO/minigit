@@ -18,7 +18,6 @@ void write_loose_object(FILE *fin, char *out_file, long body_size, char *buf, ch
     int ret;
 
     outbuf = malloc(body_size);
-    fread(buf, body_size, 1, fin);
 
     if ((fout = fopen(out_file, "w")) == NULL) {
       fprintf(stderr, "Can't open %s\n", out_file);
@@ -101,6 +100,7 @@ void do_compress(char *in_file, char *out_file)
         exit(1);
     }
 
+    fread(buf, st.st_size, 1, fin);
 
     char hdr[1024];
     char *type = "blob";
