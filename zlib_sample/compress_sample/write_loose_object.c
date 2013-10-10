@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
 void write_loose_object(char *out_filename, char *hdr, int hdrlen, char *buf, unsigned long body_size)
