@@ -74,12 +74,11 @@ char *sha1_to_hex(const unsigned char *sha1)
     return buffer;
 }
 
-void calc_sha1(const unsigned char *body, unsigned long len)
+void calc_sha1(const unsigned char *body, unsigned long len, unsigned char *sha1)
 {
     char *type = "blob";
     int hdrlen;
     char hdr[256];
-    unsigned char sha1[41];
     SHA_CTX c;
 
     sprintf(hdr, "%s %ld", type, len);
@@ -90,7 +89,6 @@ void calc_sha1(const unsigned char *body, unsigned long len)
     SHA1_Update(&c, body, len);
     SHA1_Final(sha1, &c);
 
-    printf("%s\n", sha1_to_hex(sha1));
 }
 
 
@@ -674,6 +672,7 @@ void usage() {
 int cmd_hash_object(int argc, char *argv[])
 {
     char *filename = argv[1];
+    unsigned char sha1[41];
     struct stat st;
 
     if (lstat(filename, &st)) {
@@ -688,10 +687,10 @@ int cmd_hash_object(int argc, char *argv[])
     fread(buf, st.st_size, 1, fp);
     fclose(fp);
 
-    calc_sha1(buf, st.st_size);
+    calc_sha1(buf, st.st_size, sha1);
 
     free(buf);
-    
+    printf("%s\n", sha1_to_hex(sha1));
     return 0;
 }
 
