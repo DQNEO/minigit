@@ -10,7 +10,7 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void _compress(FILE *fin, FILE *fout, long st_size, char *buf)
+void _compress(FILE *fin, FILE *fout, long st_size, char *buf, char *hdr, int hdrlen)
 {
     z_stream z;
 
@@ -33,10 +33,17 @@ void _compress(FILE *fin, FILE *fout, long st_size, char *buf)
         exit(1);
     }
 
+    /* First header..*/
+    z.next_in = (unsigned char *)hdr;
+    z.avail_in = hdrlen;
+
+    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
+    z.avail_out = hdrlen + OUTBUFSIZ;    /* 出力バッファのサイズ */
+
+    while (deflate(&z, 0) == Z_OK) ;
+    
     z.next_in = (Bytef *)buf;
     z.avail_in = st_size;             /* 入力バッファ中のデータのバイト数 */
-    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
-    z.avail_out = OUTBUFSIZ;    /* 出力バッファのサイズ */
 
     do {
       ret = deflate(&z, Z_FINISH);
@@ -92,7 +99,10 @@ void do_compress(char *in_file, char *out_file)
       exit(1);
     }
 
-    _compress(fin, fout, st.st_size, buf);
+    char *hdr = "blob 1234";
+    int hdrlen = strlen(hdr) + 1;
+
+    _compress(fin, fout, st.st_size, buf, hdr, hdrlen);
 
     free(buf);
     fclose(fout);
