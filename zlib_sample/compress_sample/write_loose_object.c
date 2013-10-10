@@ -10,15 +10,21 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void _compress(FILE *fin, FILE *fout, long body_size, char *buf, char *hdr, int hdrlen)
+void _compress(FILE *fin, char *out_file, long body_size, char *buf, char *hdr, int hdrlen)
 {
     z_stream z;
-
+    FILE *fout;
     char *outbuf;
     int ret;
 
     outbuf = malloc(body_size);
     fread(buf, body_size, 1, fin);
+
+    if ((fout = fopen(out_file, "w")) == NULL) {
+      fprintf(stderr, "Can't open %s\n", out_file);
+      exit(1);
+    }
+
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -67,6 +73,7 @@ void _compress(FILE *fin, FILE *fout, long body_size, char *buf, char *hdr, int 
     }
 
     free(outbuf);
+    fclose(fout);
 }
 
 
@@ -79,7 +86,8 @@ void usage()
 
 void do_compress(char *in_file, char *out_file)
 {
-   FILE *fin, *fout;
+    FILE *fin;
+
 
     struct stat st;
     if (stat(in_file, &st)) {
@@ -94,21 +102,15 @@ void do_compress(char *in_file, char *out_file)
     }
 
 
-    if ((fout = fopen(out_file, "w")) == NULL) {
-      fprintf(stderr, "Can't open %s\n", out_file);
-      exit(1);
-    }
-
     char hdr[1024];
     char *type = "blob";
     sprintf(hdr, "%s %ld", type ,(long) st.st_size);
 
     int hdrlen = strlen(hdr) + 1;
 
-    _compress(fin, fout, st.st_size, buf, hdr, hdrlen);
+    _compress(fin, out_file, st.st_size, buf, hdr, hdrlen);
 
     free(buf);
-    fclose(fout);
     fclose(fin);
 
 }
