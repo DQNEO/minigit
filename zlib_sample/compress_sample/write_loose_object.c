@@ -10,7 +10,7 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  409600
 
-void write_loose_object(char *out_file, long body_size, char *buf, char *hdr, int hdrlen)
+void write_loose_object(char *out_file, char *hdr, int hdrlen, char *buf, long body_size)
 {
     z_stream z;
     FILE *fout;
@@ -108,7 +108,7 @@ void do_compress(char *in_file, char *out_file)
 
     int hdrlen = strlen(hdr) + 1;
 
-    write_loose_object(out_file, st.st_size, buf, hdr, hdrlen);
+    write_loose_object(out_file, hdr, hdrlen, buf, st.st_size);
 
     free(buf);
     fclose(fin);
