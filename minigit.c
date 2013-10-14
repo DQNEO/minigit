@@ -839,7 +839,7 @@ int cmd_commit(int argc, char *argv[])
    * - commitオブジェクトを作成・保存
    * - refs/heads/{$branch} に新コミットハッシュ値を書き込み
    */
-  
+  printf("hoge\n");
   return 0;
 }
 
