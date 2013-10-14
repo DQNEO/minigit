@@ -526,6 +526,23 @@ int cmd_cat_file(int argc, char **argv)
     return 0;
 }
 
+void pretty_print_commit_message(char *cp)
+{
+
+    int start_of_new_line = 1;
+    while (*cp) {
+	
+	if (start_of_new_line || *(cp -1) == '\n') {
+	    printf("    ");
+	}
+
+	printf("%c", *cp);
+	cp++;
+	start_of_new_line = 0;
+    }
+
+}
+
 void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 {
     //ヘッダー部は読み飛ばす
@@ -629,19 +646,7 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 
     printf("Author: %s\n", author_name);
     printf("Date:   %s\n", frmted_time);
-
-    int start_of_new_line = 1;
-    while (*cp) {
-	
-	if (start_of_new_line || *(cp -1) == '\n') {
-	    printf("    ");
-	}
-
-	printf("%c", *cp);
-	cp++;
-	start_of_new_line = 0;
-    }
-
+    pretty_print_commit_message(cp);
 }
  
 int cat_commit_object(const char *sha1_string, char *parent_sha1)
