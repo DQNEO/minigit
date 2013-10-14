@@ -835,6 +835,11 @@ int cmd_hash_object(int argc, char *argv[])
 
 int cmd_commit(int argc, char *argv[])
 {
+  /**
+   * - commitオブジェクトを作成・保存
+   * - refs/heads/{$branch} に新コミットハッシュ値を書き込み
+   */
+  
   return 0;
 }
 
