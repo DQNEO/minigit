@@ -678,7 +678,7 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
 
     commit cmt;
     commit *pcmt = &cmt;
-    parse_commit_object(&oi, pcmt);
+
     strcpy(parent_sha1 , pcmt->parent_sha1);
 
     printf("Author: %s\n", pcmt->author_name);
@@ -687,6 +687,7 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
     printf("\n");
     pretty_print_commit_message(pcmt->message);
 
+    parse_commit_object(&oi, pcmt);
     return 0;
 }
 
