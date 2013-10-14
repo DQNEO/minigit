@@ -875,7 +875,7 @@ int cmd_commit(int argc, char *argv[])
 
     printf(buf);
 
-    /* 
+    /*
     if (! update_ref(new_sha1_string)) {
 	fprintf(stderr, "unable to update_ref by %s\n", new_sha1_string);
 	exit(1);
