@@ -855,8 +855,23 @@ int cmd_commit(int argc, char *argv[])
      * - commitオブジェクトを保存
      * - refs/heads/{$branch} に新コミットハッシュ値を書き込み
      */
+
+    char tree_sha1[41] = "decd3339b94705aefe6229c1b54150dc7f04c389";
     char *message = argv[2];
     char new_sha1_string[41] = "badcafe890123456789012345678901234567890";
+    char *parent = "parent7890123456789012345678901234567890";
+    char buf[4096];
+    char *author = "DQNEO <dqneoo@example.com> 1381754277 +0900";
+    char *commiter = "DQNEO <dqneoo@example.com> 1381754277 +0900";
+    
+    sprintf(buf, "tree %s\nparent %s\nauthor %s\ncommiter %s\n\n%s\n",
+	   tree_sha1,
+	   parent,
+	   author,
+	   commiter,
+	   message);
+
+    printf(buf);
 
 
     if (! update_ref(new_sha1_string)) {
