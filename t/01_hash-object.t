@@ -26,7 +26,7 @@ my $sha1 = `$PROGNAME hash-object -w $tmp_filename`;
 chomp $sha1;
 ok $sha1, "sha1 is " . $sha1;    
 $ret = `$PROGNAME cat-file -p $sha1`;
-
 is $ret, $content, 'verify hash-object -w by cat-file -p';
+unlink $tmp_filename;
 
 done_testing();
