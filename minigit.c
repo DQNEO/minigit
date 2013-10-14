@@ -667,7 +667,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, un
     int ret;
 
     long outbufsiz = body_size + hdrlen + 1024;
-    outbuf = malloc(outbufsiz);
+    outbuf = (char *)malloc(outbufsiz);
 
     if ((fout = fopen(out_filename, "wb")) == NULL) {
 	perror("cannot open");
