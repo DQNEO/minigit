@@ -91,6 +91,20 @@ void calc_sha1(const unsigned char *body, unsigned long len, unsigned char *sha1
 
 }
 
+void sha1_dir_name(const unsigned char *sha1, char *dirname)
+{
+    const char *objdir = ".git/objects";
+    int len;
+    char *str_sha1 = sha1_to_hex(sha1);
+
+    len = strlen(objdir);
+    strcpy(dirname, objdir);
+    dirname[len] = '/';
+    dirname[len+1] = str_sha1[0];
+    dirname[len+2] = str_sha1[1];
+    dirname[len+3] = '\0';
+}
+
 
 void parse_header(char *header, object_info  *oi)
 {
@@ -134,7 +148,7 @@ void read_object_body(char in_file_name[], object_info *oi)
         fprintf(stderr, "Can't open %s\n", in_file_name);
         exit(1);
     }
-
+ 
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -659,12 +673,27 @@ int cmd_log(int argc , char **argv)
 }
 
 
-void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, unsigned long body_size)
+void write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen, void *buf, unsigned long body_size)
 {
     z_stream z;
     FILE *fout;
     char *outbuf;
     int ret;
+
+    char out_filename[50];
+    char prefixed_dirname[40]; // .git/objects/00
+    sha1_file_name(sha1, out_filename);
+    sha1_dir_name(sha1, prefixed_dirname);
+
+
+    struct stat st;
+    if (stat(prefixed_dirname, &st) != 0) {
+      if (mkdir(prefixed_dirname, 0777) == -1) {
+	perror("cannot mkdir");
+	exit(1);
+      }
+    }
+
 
     long outbufsiz = body_size + hdrlen + 1024;
     outbuf = (char *)malloc(outbufsiz);
@@ -674,7 +703,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, un
     }
 
     if ((fout = fopen(out_filename, "wb")) == NULL) {
-	perror(out_filename);
+      perror(out_filename);
       fprintf(stderr, "Can't open %s\n", out_filename);
       exit(1);
     }
@@ -796,9 +825,7 @@ int cmd_hash_object(int argc, char *argv[])
 	sprintf(hdr, "%s %ld", obj_type ,(long) st.st_size);
 
 	int hdrlen = strlen(hdr) + 1;
-	char filename[50];
-	sha1_file_name(sha1, filename);
-	write_loose_object(filename, hdr, hdrlen, buf, st.st_size);
+	write_loose_object(sha1, hdr, hdrlen, buf, st.st_size);
     }
 
     free(buf);
