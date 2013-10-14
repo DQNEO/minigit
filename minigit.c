@@ -832,6 +832,20 @@ int cmd_hash_object(int argc, char *argv[])
     printf("%s\n", sha1_to_hex(sha1));
     return 0;
 }
+int update_ref(const char *new_sha1_string)
+{
+  char *filename = ".git/refs/heads/master";
+  FILE *fp;
+  if ((fp = fopen(filename, "w")) == NULL) {
+    fprintf(stderr, "unable to open %s\n", filename);
+    exit(1);
+  }
+
+  fprintf(fp,"%s\n", new_sha1_string);
+  fclose(fp);
+
+  return 1;
+}
 
 int cmd_commit(int argc, char *argv[])
 {
@@ -841,16 +855,12 @@ int cmd_commit(int argc, char *argv[])
    */
   char *message = argv[2];
   char new_sha1_string[41] = "badcafe890123456789012345678901234567890";
-  char *filename = ".git/refs/heads/master";
 
-  FILE *fp;
-  if ((fp = fopen(filename, "w")) == NULL) {
-    fprintf(stderr, "unable to open %s\n", filename);
+
+  if (! update_ref(new_sha1_string)) {
+    fprintf(stderr, "unable to update_ref by %s\n", new_sha1_string);
     exit(1);
   }
-
-  fprintf(fp,"%s\n", new_sha1_string);
-  fclose(fp);
 
   printf("[master %s] %s\n", new_sha1_string, message);
   return 0;
