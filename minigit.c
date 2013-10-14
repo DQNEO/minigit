@@ -881,7 +881,7 @@ int cmd_commit(int argc, char *argv[])
     char *message = argv[2];
     char new_sha1_string[41] = "badcafe890123456789012345678901234567890";
     char parent[41] = "";
-    char buf[4096];
+    char buf[4096]; // FIXME: this may cause buffer overflow
     char *author = "DQNEO <dqneoo@example.com> 1381754277 +0900";
     char *commiter = "DQNEO <dqneoo@example.com> 1381754277 +0900";
 
