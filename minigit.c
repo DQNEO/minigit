@@ -414,14 +414,16 @@ void find_file(char *sha1_input, char *matched_filename)
 
 }
 
-int _rev_parse(char *rev, char *sha1_string)
+int _rev_parse(const char *_rev, char *sha1_string)
 {
     char filename[256] = {};
     const char *dir = ".git/refs/heads/";
-
+    char rev[100];
     //HEADの場合は強引にmasterに変更する
-    if (strcmp(rev, "HEAD") == 0) {
+    if (strcmp(_rev, "HEAD") == 0) {
 	strcpy(rev, "master");
+    } else {
+	strcpy(rev, _rev);
     }
 
     //引数が40文字なら、強引にsha1とみなす。
