@@ -82,7 +82,7 @@ char *sha1_to_hex(const unsigned char *sha1)
     return buffer;
 }
 
-void calc_sha1(const unsigned char *body, unsigned long len, unsigned char *sha1)
+void calc_sha1(const void *body, unsigned long len, unsigned char *sha1)
 {
     char *type = "blob";
     int hdrlen;
@@ -879,7 +879,8 @@ int cmd_commit(int argc, char *argv[])
 
     char tree_sha1[41] = "decd3339b94705aefe6229c1b54150dc7f04c389";
     char *message = argv[2];
-    char new_sha1_string[41] = "badcafe890123456789012345678901234567890";
+
+    unsigned char new_sha1[21];
     char parent[41] = "";
     char buf[4096]; // FIXME: this may cause buffer overflow
     char *author = "DQNEO <dqneoo@example.com> 1381754277 +0900";
@@ -893,16 +894,23 @@ int cmd_commit(int argc, char *argv[])
 	   author,
 	   commiter,
 	   message);
+    size_t obj_size = strlen(buf) + 1;
+    calc_sha1(buf, obj_size, new_sha1);
 
-    printf(buf);
+    char hdr[1024];
+    char *obj_type = "commit";
+    sprintf(hdr, "%s %ld", obj_type ,(long) obj_size);
 
+    int hdrlen = strlen(hdr) + 1;
+    write_loose_object(new_sha1, hdr, hdrlen, buf, obj_size);
 
-    if (! update_ref(new_sha1_string)) {
+    /*
+    if (! update_ref(sha1_to_hex(new_sha1))) {
 	fprintf(stderr, "unable to update_ref by %s\n", new_sha1_string);
 	exit(1);
     }
-    /*    */
-    printf("[master %s] %s\n", new_sha1_string, message);
+    */
+    printf("[master %s] %s\n", sha1_to_hex(new_sha1), message);
     return 0;
 }
 
