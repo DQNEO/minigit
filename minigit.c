@@ -850,7 +850,9 @@ int update_ref(const char *new_sha1_string)
 int cmd_commit(int argc, char *argv[])
 {
     /**
-     * - commitオブジェクトを作成・保存
+     * - 対象となるtreeハッシュ値を取得
+     * - commitオブジェクトを作成
+     * - commitオブジェクトを保存
      * - refs/heads/{$branch} に新コミットハッシュ値を書き込み
      */
     char *message = argv[2];
