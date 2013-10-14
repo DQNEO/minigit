@@ -574,7 +574,7 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 	memset(parent_sha1, '\0', 41);
     }
 
-    //validate_sha1(parent_sha1);
+    validate_sha1(parent_sha1);
 
     //マージコミットの場合はまたparentがある。
 
@@ -642,10 +642,6 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 	start_of_new_line = 0;
     }
 
-    //printf("tree : %s\n", tree_sha1);
-    //printf("parent : %s\n", parent_sha1);
-
-    validate_sha1(parent_sha1);
 }
  
 int cat_commit_object(const char *sha1_string, char *parent_sha1)
