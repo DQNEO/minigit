@@ -840,7 +840,7 @@ int cmd_commit(int argc, char *argv[])
    * - refs/heads/{$branch} に新コミットハッシュ値を書き込み
    */
   char *message = argv[2];
-  printf("%s\n", message);
+  printf("[master badcafe] %s\n", message);
   return 0;
 }
 
