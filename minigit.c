@@ -37,6 +37,14 @@ typedef struct _TAG_OBJECT_INFO {
     char *buf;
 } object_info;
 
+typedef struct _TAG_COMMIT {
+    char tree_sha1[41];
+    char parent_sha1[41];
+    char author_name[256];
+    char frmted_time[256];
+    char *message;
+} commit;
+
 /**
  * git:date.cのtime_to_tmおよびgm_time_tから借用
  */
@@ -543,13 +551,17 @@ void pretty_print_commit_message(char *cp)
 
 }
 
-char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, char *author_name, char *frmted_time)
+void parse_commit_object(object_info *oi, commit *pcmt)
 {
     //ヘッダー部は読み飛ばす
     char *cp = oi->buf + oi->header_length;
     //ボディのサイズはヘッダに書かれてあるのを参照する
     //char *end = oi->buf + oi->header_length + oi->size;
 
+    char tree_sha1[41];
+    char parent_sha1[41];
+    char author_name[256];
+    char frmted_time[256];
 
     /**
      * spec of commit object body
@@ -572,6 +584,7 @@ char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, c
 	tree_sha1[i++] = *(cp++);
     }    
     tree_sha1[40] = '\0';
+
     cp++;
 
     // skip 'parent '
@@ -588,7 +601,6 @@ char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, c
     }
 
     validate_sha1(parent_sha1);
-
     //マージコミットの場合はまたparentがある。
 
     cp += 7; // skip 'author '
@@ -627,7 +639,7 @@ char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, c
     tm = time_to_tm(t, tz);
 
     // see show_date in date.c#L207
-    sprintf(frmted_time ,"%.3s %.3s %d %02d:%02d:%02d %d%c%+05d\n",
+    sprintf(frmted_time ,"%.3s %.3s %d %02d:%02d:%02d %d%c%+05d",
 	 weekday_names[tm->tm_wday],
 	 month_names[tm->tm_mon],
 	 tm->tm_mday,
@@ -637,7 +649,11 @@ char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, c
 	 tz
 	 );
 
-    return cp;
+    strcpy(pcmt->tree_sha1, tree_sha1);
+    strcpy(pcmt->parent_sha1, parent_sha1);
+    strcpy(pcmt->frmted_time, frmted_time);
+    strcpy(pcmt->author_name, author_name);
+    pcmt->message = cp;
 }
  
 int cat_commit_object(const char *sha1_string, char *parent_sha1)
@@ -659,14 +675,17 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
 
     // print commit
     printf("commit %s\n", sha1_string);
-    char tree_sha1[41];
-    char author_name[256];
-    char frmted_time[256];
-    char *message;
-    message = parse_commit_object(&oi, parent_sha1,tree_sha1, author_name, frmted_time);
-    printf("Author: %s\n", author_name);
-    printf("Date:   %s\n", frmted_time);
-    pretty_print_commit_message(message);
+
+    commit cmt;
+    commit *pcmt = &cmt;
+    parse_commit_object(&oi, pcmt);
+    strcpy(parent_sha1 , pcmt->parent_sha1);
+
+    printf("Author: %s\n", pcmt->author_name);
+    printf("Date:   %s\n", pcmt->frmted_time);
+    //printf("Parent:   %s\n", pcmt->parent_sha1);
+    printf("\n");
+    pretty_print_commit_message(pcmt->message);
 
     return 0;
 }
