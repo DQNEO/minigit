@@ -17,7 +17,9 @@ diag('output echo-backs commit message');
 $cmd = "./$PROGNAME commit -m hoge";
 my $buffer = `$cmd`;
 is $?, 0, 'commit exit 0';
+diag($buffer);
 ok $buffer =~ /hoge/, 'output has commit message';
+ok $buffer =~ /badcafe/, 'output has commit sha1';
 
 my $new_commit_sha1 = `./$PROGNAME rev-parse HEAD`;
 #isnt $old_commit_sha1, $new_commit_sha1, 'sha1 changed';
