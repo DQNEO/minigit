@@ -841,6 +841,17 @@ int cmd_commit(int argc, char *argv[])
    */
   char *message = argv[2];
   char new_sha1_string[41] = "badcafe890123456789012345678901234567890";
+  char *filename = ".git/refs/heads/master";
+
+  FILE *fp;
+  if ((fp = fopen(filename, "w")) == NULL) {
+    fprintf(stderr, "unable to open %s\n", filename);
+    exit(1);
+  }
+
+  fprintf(fp,"%s\n", new_sha1_string);
+  fclose(fp);
+
   printf("[master %s] %s\n", new_sha1_string, message);
   return 0;
 }
