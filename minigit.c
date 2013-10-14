@@ -543,18 +543,14 @@ void pretty_print_commit_message(char *cp)
 
 }
 
-void pretty_print_commit_object(object_info *oi, char *parent_sha1)
+char *parse_commit_object(object_info *oi, char *parent_sha1, char *tree_sha1, char *author_name, char *frmted_time)
 {
     //ヘッダー部は読み飛ばす
     char *cp = oi->buf + oi->header_length;
     //ボディのサイズはヘッダに書かれてあるのを参照する
     //char *end = oi->buf + oi->header_length + oi->size;
 
-    char tree_sha1[41];
 
-    //char **parents;
-    char author_name[256];
-    char *message;
     /**
      * spec of commit object body
      * -------
@@ -622,13 +618,10 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
     while (*(++cp) != '\n') ;
     cp+=2; //skip \n and \n
 
-    message = cp;
-
     time_t t;
     t = atoi(str_timestamp);
     struct tm *tm;
 
-    char frmted_time[256];
     int tz = atoi(timediff);
 
     tm = time_to_tm(t, tz);
@@ -644,9 +637,7 @@ void pretty_print_commit_object(object_info *oi, char *parent_sha1)
 	 tz
 	 );
 
-    printf("Author: %s\n", author_name);
-    printf("Date:   %s\n", frmted_time);
-    pretty_print_commit_message(cp);
+    return cp;
 }
  
 int cat_commit_object(const char *sha1_string, char *parent_sha1)
@@ -668,7 +659,14 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
 
     // print commit
     printf("commit %s\n", sha1_string);
-    pretty_print_commit_object(&oi, parent_sha1);
+    char tree_sha1[41];
+    char author_name[256];
+    char frmted_time[256];
+    char *message;
+    message = parse_commit_object(&oi, parent_sha1,tree_sha1, author_name, frmted_time);
+    printf("Author: %s\n", author_name);
+    printf("Date:   %s\n", frmted_time);
+    pretty_print_commit_message(message);
 
     return 0;
 }
