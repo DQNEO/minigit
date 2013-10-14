@@ -22,11 +22,11 @@
 #define OUTBUFSIZ  1024
 
 
-char *weekday_names[] = {
+const char *weekday_names[] = {
   "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
 };
 
-char *month_names[] = {
+const char *month_names[] = {
   "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
 };
 
