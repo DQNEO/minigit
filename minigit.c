@@ -91,6 +91,27 @@ void calc_sha1(const unsigned char *body, unsigned long len, unsigned char *sha1
 
 }
 
+void sha1_file_name(const unsigned char *sha1, char *filename)
+{
+    const char *objdir = ".git/objects";
+    int len;
+    char *str_sha1 = sha1_to_hex(sha1);
+    int i;
+
+    len = strlen(objdir);
+    strcpy(filename, objdir);
+    filename[len] = '/';
+    filename[len+3] = '/';
+
+    filename[len+1] = str_sha1[0];
+    filename[len+2] = str_sha1[1];
+    
+    for (i=2;i<40;i++) {
+	filename[len+2+i] = str_sha1[i];
+    }
+    filename[len + 42] = '\0';
+}
+
 void sha1_dir_name(const unsigned char *sha1, char *dirname)
 {
     const char *objdir = ".git/objects";
@@ -767,27 +788,6 @@ void usage() {
     fprintf(stdout, "  log: (HEAD|branchname)\n");
     fprintf(stdout, "  hash-object [-w] <file>\n");
     exit(1);
-}
-
-void sha1_file_name(const unsigned char *sha1, char *filename)
-{
-    const char *objdir = ".git/objects";
-    int len;
-    char *str_sha1 = sha1_to_hex(sha1);
-    int i;
-
-    len = strlen(objdir);
-    strcpy(filename, objdir);
-    filename[len] = '/';
-    filename[len+3] = '/';
-
-    filename[len+1] = str_sha1[0];
-    filename[len+2] = str_sha1[1];
-    
-    for (i=2;i<40;i++) {
-	filename[len+2+i] = str_sha1[i];
-    }
-    filename[len + 42] = '\0';
 }
 
 int cmd_hash_object(int argc, char *argv[])
