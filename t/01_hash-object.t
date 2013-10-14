@@ -22,7 +22,8 @@ open my $fh , '>', $tmp_filename;
 print $fh $content;
 close $fh;
 
-my $sha1 = `$PROGNAME hash-object -w $tmp_filename`;
+$cmd = "$PROGNAME hash-object -w $tmp_filename";
+my $sha1 = `$cmd` or die "cannot " . $cmd;
 chomp $sha1;
 ok $sha1, "sha1 is " . $sha1;    
 $ret = `$PROGNAME cat-file -p $sha1`;
