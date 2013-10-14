@@ -833,6 +833,11 @@ int cmd_hash_object(int argc, char *argv[])
     return 0;
 }
 
+int cmd_commit(int argc, char *argv[])
+{
+  return 0;
+}
+
 int cmd_init(int argc, char *argv[])
 {
     mkdir(".git", 0755);
@@ -866,6 +871,8 @@ int main(int argc, char *argv[])
 	return cmd_init(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "hash-object") == 0) {
 	return cmd_hash_object(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "commit") == 0) {
+	return cmd_commit(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
