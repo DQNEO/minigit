@@ -732,7 +732,7 @@ void usage() {
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
     fprintf(stdout, "  log: (HEAD|branchname)\n");
-    fprintf(stdout, "  hash-object <file>\n");
+    fprintf(stdout, "  hash-object [-w] <file>\n");
     exit(1);
 }
 
