@@ -688,7 +688,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, un
     /* 初期化 */
     /* 第2引数は圧縮の度合。0〜9 の範囲の整数で，0 は無圧縮 */
     /* Z_DEFAULT_COMPRESSION (= 6) が標準 */
-    if (deflateInit(&z, Z_DEFAULT_COMPRESSION) != Z_OK) {
+    if (deflateInit(&z, Z_BEST_SPEED) != Z_OK) {
         fprintf(stderr, "deflateInit: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
