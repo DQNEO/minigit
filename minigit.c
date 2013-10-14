@@ -714,6 +714,14 @@ void write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen, void *
     /* 初期化 */
     /* 第2引数は圧縮の度合。0〜9 の範囲の整数で，0 は無圧縮 */
     /* Z_DEFAULT_COMPRESSION (= 6) が標準 */
+
+    //TODO
+    //ここの圧縮方法がgitのそれと異なってしまっているので、
+    // 圧縮されたオブジェクトファイルがgitによる生成物と同一でない。
+    // sha1_file.c:write_loose_objectおよび
+    // zlib.c:git_deflateをよく読んで同じようにやること。
+    // gdbを使ってavail in, outを丁寧に観察すれば挙動は追えると思う。
+
     if (deflateInit(&z, Z_BEST_SPEED) != Z_OK) {
         fprintf(stderr, "deflateInit: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
