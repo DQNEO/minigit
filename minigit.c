@@ -674,7 +674,7 @@ void write_loose_object(char *out_filename, char *hdr, int hdrlen, void *buf, un
     }
 
     if ((fout = fopen(out_filename, "wb")) == NULL) {
-	perror("cannot open");
+	perror(out_filename);
       fprintf(stderr, "Can't open %s\n", out_filename);
       exit(1);
     }
