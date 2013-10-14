@@ -24,4 +24,9 @@ ok $buffer =~ /badcafe/, 'output has commit sha1';
 my $new_commit_sha1 = `./$PROGNAME rev-parse HEAD`;
 is $new_commit_sha1 ,"badcafe890123456789012345678901234567890\n", 'sha1 changed';
 
+# recover ref file
+open my $fh, '>', '.git/refs/heads/master';
+print $fh $old_commit_sha1;
+close $fh;
+
 done_testing();
