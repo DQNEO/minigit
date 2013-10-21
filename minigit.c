@@ -987,6 +987,10 @@ static void git_write_loose_object(const unsigned char *sha1, char *hdr, int hdr
 	if (ret != Z_OK)
 		printf("deflateEnd on object %s failed (%d)", sha1_to_hex(sha1), ret);
 
+
+	fclose(fp);
+
+	rename("/tmp/git_tmpfile", filename);
 	return ;
 }
 
