@@ -16,6 +16,7 @@
 /* zlib sample code  */
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
 #include <zlib.h>
+#include <error.h>
 
 const char *weekday_names[] = {
   "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
@@ -44,3 +45,17 @@ typedef struct _TAG_COMMIT {
 #define OUTBUFSIZ  1024
 
 #define PROGNAME "minigit"
+
+//borrowed from git
+//extern int errno;
+typedef struct git_zstream {
+	z_stream z;
+	unsigned long avail_in;
+	unsigned long avail_out;
+	unsigned long total_in;
+	unsigned long total_out;
+	unsigned char *next_in;
+	unsigned char *next_out;
+} git_zstream;
+#define git_SHA_CTX	SHA_CTX
+
