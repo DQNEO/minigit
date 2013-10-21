@@ -1087,7 +1087,7 @@ int cmd_commit(int argc, char *argv[])
     sprintf(hdr, "%s %ld", obj_type ,(long) obj_size);
 
     int hdrlen = strlen(hdr) + 1;
-    write_loose_object(new_sha1, hdr, hdrlen, buf, obj_size);
+    git_write_loose_object(new_sha1, hdr, hdrlen, buf, obj_size,0);
 
     /*
     if (! update_ref(sha1_to_hex(new_sha1))) {
