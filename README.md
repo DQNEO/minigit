@@ -16,7 +16,9 @@ objectfile can be a commit, tree , or blob.
 ## Run test
 
 ```
-prove
+make test
+or
+prove -r t
 ```
 
 ## DONE
