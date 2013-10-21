@@ -37,9 +37,8 @@ char *sha1_to_hex(const unsigned char *sha1)
     return buffer;
 }
 
-void calc_sha1(const void *body, unsigned long len, unsigned char *sha1)
+void calc_sha1(const char *type, const void *body, unsigned long len, unsigned char *sha1)
 {
-    char *type = "blob";
     int hdrlen;
     char hdr[256];
     SHA_CTX c;
@@ -1022,7 +1021,7 @@ int cmd_hash_object(int argc, char *argv[])
     fread(buf, st.st_size, 1, fp);
     fclose(fp);
 
-    calc_sha1(buf, st.st_size, sha1);
+    calc_sha1("blob", buf, st.st_size, sha1);
 
     if (do_write) {
 	char hdr[1024];
@@ -1080,7 +1079,7 @@ int cmd_commit(int argc, char *argv[])
 	   commiter,
 	   message);
     size_t obj_size = strlen(buf) + 1;
-    calc_sha1(buf, obj_size, new_sha1);
+    calc_sha1("commit", buf, obj_size, new_sha1);
 
     char hdr[1024];
     char *obj_type = "commit";
