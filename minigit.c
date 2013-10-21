@@ -1027,7 +1027,7 @@ int cmd_hash_object(int argc, char *argv[])
 
 	int hdrlen = strlen(hdr) + 1;
 	git_write_loose_object(sha1, hdr, hdrlen, buf, st.st_size, 0);
-	write_loose_object(sha1, hdr, hdrlen, buf, st.st_size);
+	//write_loose_object(sha1, hdr, hdrlen, buf, st.st_size);
     }
 
     free(buf);
