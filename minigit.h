@@ -5,7 +5,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
-
+#include <fcntl.h>
+#include <unistd.h>
 // opendir
 #include <dirent.h>
 #include <time.h>
@@ -17,6 +18,7 @@
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
 #include <zlib.h>
 #include <error.h>
+#include <sys/mman.h>
 
 const char *weekday_names[] = {
   "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
@@ -59,3 +61,8 @@ typedef struct git_zstream {
 } git_zstream;
 #define git_SHA_CTX	SHA_CTX
 
+struct cache_header {
+	char hdr_signature[4];
+	int hdr_version;
+	int hdr_entries;
+};

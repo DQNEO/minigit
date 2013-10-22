@@ -1019,6 +1019,33 @@ int cmd_init(int argc, char *argv[])
     return 0;
 }
 
+int cmd_ls_files(int argc, char *argv[])
+{
+    int fd;
+    char *mm;
+    struct stat st;
+    struct cache_header *hdr;
+
+    fd = open(".git/index", O_RDONLY);
+    if (fd < 0) {
+	fprintf(stderr, "unable to create .git/HEAD");
+	exit(1);
+    }
+
+    if (fstat(fd, &st)) {
+	fprintf(stderr, "unable to fstat index");
+	exit(1);
+    }
+
+    mm = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    close(fd);
+    hdr = mm;
+    printf("hdr_signature=%d\n", hdr->hdr_signature);
+    printf("hdr_version=%x\n", hdr->hdr_version);
+    printf("hdr_entries=%x\n", hdr->hdr_entries);
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc == 1) {
@@ -1037,6 +1064,8 @@ int main(int argc, char *argv[])
 	return cmd_hash_object(argc - 1, argv + 1);
     } else if (strcmp(argv[1], "commit") == 0) {
 	return cmd_commit(argc - 1, argv + 1);
+    } else if (strcmp(argv[1], "ls-files") == 0) {
+	return cmd_ls_files(argc - 1, argv + 1);
     } else {
         fprintf(stderr, "Unknown command: %s\n", argv[1]);
 	usage();
