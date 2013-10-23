@@ -12,7 +12,11 @@
  * 00000040  6a 9f ab d5 8e 87 d2 59  00 0a 2e 67 69 74 69 67  |j......Y...gitig|
  * 00000050  6e 6f 72 65 00 00 00 00  00 00 00 00 52 65 2a 2d  |nore........Re*-|
  *
- * this c program parses only the header of the file.
+ * This C program parses any .git/index file.
+ * It workds just the same as "git ls-files --stage" command.
+ * 
+ * Usage:
+ *   ./parse_git_index  path/to/.git/index
  * 
  */
 #include <stdio.h>
