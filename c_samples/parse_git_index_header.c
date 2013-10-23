@@ -91,7 +91,7 @@ char *sha1_to_hex(const unsigned char *sha1)
 void print_entry(struct cache_entry *ce)
 {
     static int i = 1;
-    printf("==== entry %d ===\n", i++);
+    /*
     printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
     printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
     printf("mtime.sec = %d\n", bswap32(ce->ce_mtime_sec));
@@ -104,7 +104,9 @@ void print_entry(struct cache_entry *ce)
     printf("size = %u\n", bswap32(ce->ce_size));
     printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
     printf("namelen = %x\n", ce->namelen);
-    printf("name = %s\n", ce->name);
+    */
+    printf("entry[%d] = %s\n", i, ce->name);
+    i++;
 }
 
 int main(int argc, char **argv)
@@ -145,21 +147,22 @@ int main(int argc, char **argv)
     print_entry(ce);
     cp = ce->name + ce->namelen;  //10
     cp += 8;
-
     ce = (struct cache_entry *)cp;
+
     print_entry(ce);
     cp = ce->name + ce->namelen; //8
     cp += 2;
-
     ce = (struct cache_entry *)cp;
+
     print_entry(ce);
     cp = ce->name + ce->namelen; //9
     cp += 1;
-
     ce = (struct cache_entry *)cp;
+
     print_entry(ce);
     cp = ce->name + ce->namelen; //15
     cp += 5;
+    ce = (struct cache_entry *)cp;
 
     close(fd);
     return 0;
