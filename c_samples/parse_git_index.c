@@ -27,11 +27,6 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-struct cache_time {
-    unsigned int nsec;
-    unsigned int sec;
-};
-
 struct cache_entry {
     unsigned int ce_ctime_sec;
     unsigned int ce_ctime_nsec;
