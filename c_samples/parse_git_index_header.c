@@ -27,24 +27,6 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-static inline unsigned int default_swab32(unsigned int val)
-{
-	return (((val & 0xff000000) >> 24) |
-		((val & 0x00ff0000) >>  8) |
-		((val & 0x0000ff00) <<  8) |
-		((val & 0x000000ff) << 24));
-}
-
-static inline unsigned int bswap32(unsigned int x)
-{
-	unsigned int result;
-	if (__builtin_constant_p(x))
-		result = default_swab32(x);
-	else
-		__asm__("bswap %0" : "=r" (result) : "0" (x));
-	return result;
-}
-
 struct cache_time {
     unsigned int nsec;
     unsigned int sec;
@@ -71,6 +53,24 @@ struct index_header {
     unsigned int version;
     unsigned int entries;
 };
+
+static inline unsigned int default_swab32(unsigned int val)
+{
+	return (((val & 0xff000000) >> 24) |
+		((val & 0x00ff0000) >>  8) |
+		((val & 0x0000ff00) <<  8) |
+		((val & 0x000000ff) << 24));
+}
+
+static inline unsigned int bswap32(unsigned int x)
+{
+	unsigned int result;
+	if (__builtin_constant_p(x))
+		result = default_swab32(x);
+	else
+		__asm__("bswap %0" : "=r" (result) : "0" (x));
+	return result;
+}
 
 char *sha1_to_hex(const unsigned char *sha1)
 {
