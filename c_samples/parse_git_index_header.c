@@ -42,8 +42,8 @@ static inline unsigned int bswap32(unsigned int x)
 }
 
 struct cache_time {
-  unsigned int nsec;
-  unsigned int sec;
+    unsigned int nsec;
+    unsigned int sec;
 };
 
 struct cache_entry {
