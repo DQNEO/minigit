@@ -23,7 +23,9 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-static inline int default_swab32(int val)
+typedef unsigned   uint32_t;
+
+static inline uint32_t default_swab32(uint32_t val)
 {
 	return (((val & 0xff000000) >> 24) |
 		((val & 0x00ff0000) >>  8) |
@@ -31,9 +33,9 @@ static inline int default_swab32(int val)
 		((val & 0x000000ff) << 24));
 }
 
-static inline int bswap32(int x)
+static inline uint32_t bswap32(uint32_t x)
 {
-	int result;
+	uint32_t result;
 	if (__builtin_constant_p(x))
 		result = default_swab32(x);
 	else
@@ -41,11 +43,69 @@ static inline int bswap32(int x)
 	return result;
 }
 
+struct cache_time {
+	uint32_t nsec;
+	uint32_t sec;
+};
+
+struct cache_entry {
+    unsigned int ce_ctime_sec;
+    unsigned int ce_ctime_nsec;
+    unsigned int ce_mtime_sec;
+    unsigned int ce_mtime_nsec;
+    unsigned int ce_dev;
+    unsigned int ce_ino;
+    unsigned int ce_mode;
+    unsigned int ce_uid;
+    unsigned int ce_gid;
+    unsigned int ce_size;
+    unsigned char sha1[21];
+    char namelen;
+    char name[1];
+};
+
 struct index_header {
     char dirc[4];
-    int version;
-    int entries;
+    uint32_t version;
+    uint32_t entries;
 };
+
+char *sha1_to_hex(const unsigned char *sha1)
+{
+    static int bufno;
+    static char hexbuffer[4][50];
+    static const char hex[] = "0123456789abcdef";
+    char *buffer = hexbuffer[3 & ++bufno], *buf = buffer;
+    int i;
+
+    for (i = 0; i < 20; i++) {
+	unsigned int val = *sha1++;
+	*buf++ = hex[val >> 4];
+	*buf++ = hex[val & 0xf];
+    }
+    *buf = '\0';
+
+    return buffer;
+}
+
+void print_entry(struct cache_entry *ce)
+{
+    static int i = 1;
+    printf("==== entry %d ===\n", i++);
+    printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
+    printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
+    printf("mtime.sec = %d\n", bswap32(ce->ce_mtime_sec));
+    printf("mtime.nsec = %d\n", bswap32(ce->ce_mtime_nsec));
+    printf("dev = %d\n", bswap32(ce->ce_dev));
+    printf("ino = %d\n", bswap32(ce->ce_ino));
+    printf("mode = %o\n", bswap32(ce->ce_mode));
+    printf("uid = %d\n", bswap32(ce->ce_uid));
+    printf("gid = %d\n", bswap32(ce->ce_gid));
+    printf("size = %u\n", bswap32(ce->ce_size));
+    printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
+    printf("namelen = %x\n", ce->namelen);
+    printf("name = %s\n", ce->name);
+}
 
 int main(int argc, char **argv)
 {
@@ -54,6 +114,8 @@ int main(int argc, char **argv)
     int fd;
     void *map;
     struct index_header *hdr;
+    struct cache_entry *ce;
+    char *cp;
 
     if (argc != 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
@@ -74,10 +136,30 @@ int main(int argc, char **argv)
     map = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 
     hdr = map;
-
+    ce = (struct cache_entry *)(hdr + 1);
+    printf("==== header ===\n");
     printf("signature = %s\n", hdr->dirc); // => "DIRC"  44 49 52 43
     printf("version = %d\n", bswap32(hdr->version)); // => 2
     printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen;  //10
+    cp += 8;
+
+    ce = (struct cache_entry *)cp;
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //8
+    cp += 2;
+
+    ce = (struct cache_entry *)cp;
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //9
+    cp += 1;
+
+    ce = (struct cache_entry *)cp;
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //15
+    cp += 5;
 
     close(fd);
     return 0;
