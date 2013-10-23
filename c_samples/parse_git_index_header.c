@@ -88,7 +88,11 @@ char *sha1_to_hex(const unsigned char *sha1)
 
 void print_entry(struct cache_entry *ce, int i)
 {
-    printf("==== entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
+    printf("%o %s 0\t%s\n",
+	   bswap32(ce->ce_mode),
+	   sha1_to_hex(ce->sha1),
+	   ce->name
+	);
 
     printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
     printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
