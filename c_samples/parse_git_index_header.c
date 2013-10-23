@@ -25,6 +25,7 @@
 
 struct index_header {
     char dirc[4];
+    int version;
 };
 
 int main(int argc, char **argv)
@@ -56,6 +57,7 @@ int main(int argc, char **argv)
     hdr = map;
 
     printf("%s\n", hdr->dirc); // => "DIRC"  44 49 52 43
+    printf("%d\n", hdr->version); // => 33554432 ?
 
     close(fd);
     return 0;
