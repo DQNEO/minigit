@@ -20,11 +20,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 int main(int argc, char **argv)
 {
     char *filename;
     struct stat st;
+    int fd;
 
     if (argc != 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
@@ -37,6 +39,13 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
-    
+    if ((fd = open(filename, O_RDONLY)) == -1) {
+	fprintf(stderr, "unable to open file '%s'\n", filename);
+	exit(1);
+    }
+
+
+    close(fd);
+
     return 0;
 }
