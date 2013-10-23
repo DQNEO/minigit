@@ -75,9 +75,9 @@ int main(int argc, char **argv)
 
     hdr = map;
 
-    printf("%s\n", hdr->dirc); // => "DIRC"  44 49 52 43
-    printf("%d\n", bswap32(hdr->version)); // => 2
-    printf("%d\n", bswap32(hdr->entries)); // => 41 or your number of entries
+    printf("signature = %s\n", hdr->dirc); // => "DIRC"  44 49 52 43
+    printf("version = %d\n", bswap32(hdr->version)); // => 2
+    printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
 
     close(fd);
     return 0;
