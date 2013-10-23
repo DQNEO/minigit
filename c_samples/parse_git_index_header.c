@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <math.h>
 
 typedef unsigned   uint32_t;
 
@@ -111,19 +112,14 @@ void print_entry(struct cache_entry *ce)
 
 int calc_padding(int n)
 {
-    if (2 <= n && n < 10) {
-	return 10 - n;
-    }else if (10 <= n && n < 18) {
-	return 18 - n;
-    }else if (18 <= n && n < 26) {
-	return 26 - n;
-    }else if (26 <= n && n < 34) {
-	return 34 - n;
-    }else if (34 <= n && n < 42) {
-	return 42 - n;
-    }
+    double fld; 
+    int ret, target;
 
-    return 1;
+    fld = floor((n -2) / 8);
+    target = (int)(fld + 1) * 8 + 2;
+    ret = target - n;
+    //printf("calc padding %d => %d\n", n, ret);
+    return ret;
 }
 
 int main(int argc, char **argv)
