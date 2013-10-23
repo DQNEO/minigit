@@ -17,11 +17,23 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 int main(int argc, char **argv)
 {
+    char *filename;
+    struct stat st;
+
     if (argc != 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
+	exit(1);
+    }
+
+    filename = argv[1];
+    if (stat(filename, &st) == -1) {
+	fprintf(stderr, "unable to stat '%s'\n", filename);
 	exit(1);
     }
 
