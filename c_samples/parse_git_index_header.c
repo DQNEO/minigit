@@ -1,7 +1,7 @@
 /**
  * sample code to parse .git/index file
  *
- * the ".git/index" file is a binary file.
+ * a file ".git/index" is a binary file.
  * the content is like below:
  * 
  * $ hexdump -C .git/index | head
