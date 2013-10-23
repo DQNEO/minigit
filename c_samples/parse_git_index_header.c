@@ -23,12 +23,17 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
+struct index_header {
+    char dirc[4];
+};
+
 int main(int argc, char **argv)
 {
     char *filename;
     struct stat st;
     int fd;
     void *map;
+    struct index_header *hdr;
 
     if (argc != 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
@@ -49,6 +54,10 @@ int main(int argc, char **argv)
     map = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 
     printf("%s\n", (char *)map); // => "DIRC"  44 49 52 43
+
+    hdr = map;
+
+    printf("%s\n", hdr->dirc); // => "DIRC"  44 49 52 43
 
     close(fd);
     return 0;
