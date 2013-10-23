@@ -94,6 +94,8 @@ void print_entry(struct cache_entry *ce, int i)
 	   ce->name
 	);
 
+    /* for debug
+    printf("==== entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
     printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
     printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
     printf("mtime.sec = %d\n", bswap32(ce->ce_mtime_sec));
@@ -106,6 +108,7 @@ void print_entry(struct cache_entry *ce, int i)
     printf("size = %u\n", bswap32(ce->ce_size));
     printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
     printf("namelen = %x\n", ce->namelen);
+    */
 
 }
 
@@ -151,10 +154,14 @@ int main(int argc, char **argv)
 
     hdr = map;
     ce = (struct cache_entry *)(hdr + 1);
+
+    /* for debug
     printf("==== header ===\n");
     printf("signature = %s\n", hdr->dirc); // => "DIRC"  44 49 52 43
     printf("version = %d\n", bswap32(hdr->version)); // => 2
     printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
+    */
+
     int n;
     n = bswap32(hdr->entries);
 
