@@ -145,8 +145,7 @@ int main(int argc, char **argv)
 	       ce->name
 	    );
 
-	cp = ce->name + ce->namelen;
-	cp += calc_padding(ce->namelen);
+	cp = ce->name + ce->namelen + calc_padding(ce->namelen);
 	ce = (struct cache_entry *)cp;
     }
 
