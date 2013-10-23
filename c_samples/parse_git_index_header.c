@@ -105,8 +105,25 @@ void print_entry(struct cache_entry *ce)
     printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
     printf("namelen = %x\n", ce->namelen);
     */
-    printf("entry[%d] = %s\n", i, ce->name);
+    printf("entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
     i++;
+}
+
+int calc_padding(int n)
+{
+    if (2 <= n && n < 10) {
+	return 10 - n;
+    }else if (10 <= n && n < 18) {
+	return 18 - n;
+    }else if (18 <= n && n < 26) {
+	return 26 - n;
+    }else if (26 <= n && n < 34) {
+	return 34 - n;
+    }else if (34 <= n && n < 42) {
+	return 42 - n;
+    }
+
+    return 1;
 }
 
 int main(int argc, char **argv)
@@ -145,24 +162,100 @@ int main(int argc, char **argv)
     printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
 
     print_entry(ce);
-    cp = ce->name + ce->namelen;  //10
-    cp += 8;
+    cp = ce->name + ce->namelen;
+    cp += calc_padding(ce->namelen);
     ce = (struct cache_entry *)cp;
 
     print_entry(ce);
-    cp = ce->name + ce->namelen; //8
-    cp += 2;
+    cp = ce->name + ce->namelen;
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen;
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen;
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen;
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //22
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //20
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //16
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //23
+    cp += calc_padding(ce->namelen);
     ce = (struct cache_entry *)cp;
 
     print_entry(ce);
     cp = ce->name + ce->namelen; //9
-    cp += 1;
+    cp += calc_padding(ce->namelen);
     ce = (struct cache_entry *)cp;
 
     print_entry(ce);
-    cp = ce->name + ce->namelen; //15
-    cp += 5;
+    cp = ce->name + ce->namelen; //9
+    cp += calc_padding(ce->namelen);
     ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //13
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //18
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //11
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //16
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //11
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //16
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //?
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
+    print_entry(ce);
+    cp = ce->name + ce->namelen; //?
+    cp += calc_padding(ce->namelen);
+    ce = (struct cache_entry *)cp;
+
 
     close(fd);
     return 0;
