@@ -24,9 +24,7 @@
 #include <sys/mman.h>
 #include <math.h>
 
-typedef unsigned   uint32_t;
-
-static inline uint32_t default_swab32(uint32_t val)
+static inline unsigned int default_swab32(unsigned int val)
 {
 	return (((val & 0xff000000) >> 24) |
 		((val & 0x00ff0000) >>  8) |
@@ -34,9 +32,9 @@ static inline uint32_t default_swab32(uint32_t val)
 		((val & 0x000000ff) << 24));
 }
 
-static inline uint32_t bswap32(uint32_t x)
+static inline unsigned int bswap32(unsigned int x)
 {
-	uint32_t result;
+	unsigned int result;
 	if (__builtin_constant_p(x))
 		result = default_swab32(x);
 	else
@@ -45,8 +43,8 @@ static inline uint32_t bswap32(uint32_t x)
 }
 
 struct cache_time {
-	uint32_t nsec;
-	uint32_t sec;
+	unsigned int nsec;
+	unsigned int sec;
 };
 
 struct cache_entry {
@@ -67,8 +65,8 @@ struct cache_entry {
 
 struct index_header {
     char dirc[4];
-    uint32_t version;
-    uint32_t entries;
+    unsigned int version;
+    unsigned int entries;
 };
 
 char *sha1_to_hex(const unsigned char *sha1)
