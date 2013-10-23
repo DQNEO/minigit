@@ -85,16 +85,6 @@ char *sha1_to_hex(const unsigned char *sha1)
     return buffer;
 }
 
-void print_entry(struct cache_entry *ce, int i)
-{
-    printf("%o %s 0\t%s\n",
-	   bswap32(ce->ce_mode),
-	   sha1_to_hex(ce->sha1),
-	   ce->name
-	);
-
-}
-
 int calc_padding(int n)
 {
     int floor;
@@ -150,7 +140,12 @@ int main(int argc, char **argv)
 
     int i;
     for (i=0;i<n;i++) {
-	print_entry(ce,i);
+	printf("%o %s 0\t%s\n",
+	       bswap32(ce->ce_mode),
+	       sha1_to_hex(ce->sha1),
+	       ce->name
+	    );
+
 	cp = ce->name + ce->namelen;
 	cp += calc_padding(ce->namelen);
 	ce = (struct cache_entry *)cp;
