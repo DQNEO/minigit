@@ -89,10 +89,10 @@ char *sha1_to_hex(const unsigned char *sha1)
     return buffer;
 }
 
-void print_entry(struct cache_entry *ce)
+void print_entry(struct cache_entry *ce, int i)
 {
-    static int i = 1;
-    /*
+    printf("==== entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
+
     printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
     printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
     printf("mtime.sec = %d\n", bswap32(ce->ce_mtime_sec));
@@ -105,9 +105,7 @@ void print_entry(struct cache_entry *ce)
     printf("size = %u\n", bswap32(ce->ce_size));
     printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
     printf("namelen = %x\n", ce->namelen);
-    */
-    printf("entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
-    i++;
+
 }
 
 int calc_padding(int n)
@@ -156,102 +154,16 @@ int main(int argc, char **argv)
     printf("signature = %s\n", hdr->dirc); // => "DIRC"  44 49 52 43
     printf("version = %d\n", bswap32(hdr->version)); // => 2
     printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
+    int n;
+    n = bswap32(hdr->entries);
 
-    print_entry(ce);
-    cp = ce->name + ce->namelen;
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen;
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen;
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen;
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen;
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //22
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //20
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //16
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //23
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //9
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //9
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //13
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //18
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //11
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //16
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //11
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //16
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //?
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
-    print_entry(ce);
-    cp = ce->name + ce->namelen; //?
-    cp += calc_padding(ce->namelen);
-    ce = (struct cache_entry *)cp;
-
+    int i;
+    for (i=0;i<n;i++) {
+	print_entry(ce,i);
+	cp = ce->name + ce->namelen;
+	cp += calc_padding(ce->namelen);
+	ce = (struct cache_entry *)cp;
+    }
 
     close(fd);
     return 0;
