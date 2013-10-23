@@ -1039,10 +1039,10 @@ int cmd_ls_files(int argc, char *argv[])
 
     mm = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     close(fd);
-    hdr = mm;
-    printf("hdr_signature=%d\n", hdr->hdr_signature);
-    printf("hdr_version=%x\n", hdr->hdr_version);
-    printf("hdr_entries=%x\n", hdr->hdr_entries);
+    hdr = (struct cache_header *)mm;
+    printf("hdr_signature=%s\n", hdr->hdr_signature);
+    printf("hdr_version=%x\n", bswap32(hdr->hdr_version));
+    printf("hdr_entries=%x\n", bswap32(hdr->hdr_entries));
     return 0;
 }
 
