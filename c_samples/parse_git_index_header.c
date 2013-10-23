@@ -22,7 +22,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include <math.h>
 
 static inline unsigned int default_swab32(unsigned int val)
 {
@@ -108,11 +107,11 @@ void print_entry(struct cache_entry *ce, int i)
 
 int calc_padding(int n)
 {
-    double fld; 
+    int floor;
     int ret, target;
 
-    fld = floor((n -2) / 8);
-    target = (int)(fld + 1) * 8 + 2;
+    floor = (int)((n -2) / 8);
+    target = (floor + 1) * 8 + 2;
     ret = target - n;
     //printf("calc padding %d => %d\n", n, ret);
     return ret;
