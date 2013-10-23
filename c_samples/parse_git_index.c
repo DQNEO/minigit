@@ -98,22 +98,6 @@ void print_entry(struct cache_entry *ce, int i)
 	   ce->name
 	);
 
-    /* for debug
-    printf("==== entry[%d] = %s, len = %d\n", i, ce->name, ce->namelen);
-    printf("ctime.sec = %d\n", bswap32(ce->ce_ctime_sec));
-    printf("ctime.nsec = %d\n", bswap32(ce->ce_ctime_nsec));
-    printf("mtime.sec = %d\n", bswap32(ce->ce_mtime_sec));
-    printf("mtime.nsec = %d\n", bswap32(ce->ce_mtime_nsec));
-    printf("dev = %d\n", bswap32(ce->ce_dev));
-    printf("ino = %d\n", bswap32(ce->ce_ino));
-    printf("mode = %o\n", bswap32(ce->ce_mode));
-    printf("uid = %d\n", bswap32(ce->ce_uid));
-    printf("gid = %d\n", bswap32(ce->ce_gid));
-    printf("size = %u\n", bswap32(ce->ce_size));
-    printf("sha1 = %s\n", sha1_to_hex(ce->sha1));
-    printf("namelen = %x\n", ce->namelen);
-    */
-
 }
 
 int calc_padding(int n)
@@ -124,7 +108,7 @@ int calc_padding(int n)
     floor = (int)((n -2) / 8);
     target = (floor + 1) * 8 + 2;
     ret = target - n;
-    //printf("calc padding %d => %d\n", n, ret);
+
     return ret;
 }
 
