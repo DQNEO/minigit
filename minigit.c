@@ -1019,6 +1019,10 @@ int cmd_init(int argc, char *argv[])
     return 0;
 }
 
+/**
+ * see the document of .git/index:
+ * https://github.com/gitster/git/blob/master/Documentation/technical/index-format.txt
+ */
 int cmd_ls_files(int argc, char *argv[])
 {
     int fd;
