@@ -99,7 +99,7 @@ int calc_padding(int n)
 
 int main(int argc, char **argv)
 {
-    char *filename;
+    char *index_file;
     struct stat st;
     int fd;
     void *map;
@@ -113,14 +113,14 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
-    filename = argv[1];
-    if (stat(filename, &st) == -1) {
-	fprintf(stderr, "unable to stat '%s'\n", filename);
+    index_file = argv[1];
+    if (stat(index_file, &st) == -1) {
+	fprintf(stderr, "unable to stat '%s'\n", index_file);
 	exit(1);
     }
 
-    if ((fd = open(filename, O_RDONLY)) == -1) {
-	fprintf(stderr, "unable to open file '%s'\n", filename);
+    if ((fd = open(index_file, O_RDONLY)) == -1) {
+	fprintf(stderr, "unable to open file '%s'\n", index_file);
 	exit(1);
     }
 
