@@ -106,7 +106,8 @@ int main(int argc, char **argv)
     struct index_header *hdr;
     struct cache_entry *ce;
     char *cp;
-    int n,i;
+    int count_entries;
+    int i;
 
     if (argc != 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
@@ -136,9 +137,9 @@ int main(int argc, char **argv)
     printf("entries = %d\n", bswap32(hdr->entries)); // => 41 or your number of entries
     */
 
-    n = bswap32(hdr->entries);
+    count_entries = bswap32(hdr->entries);
 
-    for (i=0;i<n;i++) {
+    for (i=0; i < count_entries; i++) {
 	printf("%o %s 0\t%s\n",
 	       bswap32(ce->ce_mode),
 	       sha1_to_hex(ce->sha1),
