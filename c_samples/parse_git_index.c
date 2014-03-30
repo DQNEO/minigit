@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     void *map;
     struct index_header *hdr;
     struct cache_entry *ce;
-    char *cp;
+    char *p_next_entry;
     int count_entries;
     int i;
 
@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 	       ce->name
 	    );
 
-	cp = ce->name + ce->namelen + calc_padding(ce->namelen);
-	ce = (struct cache_entry *)cp;
+	p_next_entry = ce->name + ce->namelen + calc_padding(ce->namelen);
+	ce = (struct cache_entry *)p_next_entry;
     }
 
     close(fd);
