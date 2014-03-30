@@ -125,6 +125,8 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
+    // git original code is here:
+    // https://github.com/git/git/blob/v1.9.1/read-cache.c#L1455
     map = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 
     hdr = map;
