@@ -54,11 +54,10 @@ function compare_p () {
     echo "=== compare cat-file -p ===="
     list_objects | while read hash
     do
-	if diff <($MINIGIT cat-file -p $hash) <(git cat-file -p $hash) ; then
+	if [ "$($MINIGIT cat-file -p $hash)" == "$(git cat-file -p $hash)" ] ; then
             echo ok $hash
 	else
             echo ng $hash
-	    exit
 	fi
     done
 }
