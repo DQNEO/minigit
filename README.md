@@ -29,3 +29,10 @@ prove -r t
 * bug in cat-file -p (for tree object)
 * show
 * log -1
+
+## How to get many loose object files
+
+you can get loose objects as many as you like by `git unpack-objects` :)
+
+http://qiita.com/DQNEO/items/b6cb03c60b510dd3c934
+
