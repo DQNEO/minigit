@@ -5,23 +5,25 @@
 # gitとminigitでcat-fileの出力結果が同じであるかをテストする
 #
 # Usage:
-# [thiscommand] /path/to/.git/objetcs
+# [thiscommand] /path/to/repo
 #
 # TODO バイナリファイルだとdiffが一致しないことがあるのが謎
 
 set -e
 
-obj_dir=$1
+repo_dir=$1
 CUR_DIR=$(cd $(dirname $0); pwd)
 MINIGIT=$CUR_DIR/../minigit
 
 if [ $# -eq 0 ] ; then
-    echo "Usage: $0  /path/to/.git/objetcs/"
+    echo "Usage: $0  /path/to/repo"
     exit 1
 fi
 
+cd $repo_dir
+
 function list_objects () {
-    find ${obj_dir}[^pi]* -type f | while read line ; do ( echo ${line#.git/objects/} | sed -e s#/##) ; done
+    find .git/objects/[^pi]* -type f | while read line ; do ( echo ${line#.git/objects/} | sed -e s#/##) ; done
 }
 
 
