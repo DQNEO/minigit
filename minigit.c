@@ -147,7 +147,7 @@ void read_object_body(char in_file_name[], object_info *oi)
     }
 
     z.next_out = (Bytef *) outbuf;        /* 出力ポインタ */
-    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    z.avail_out = oi->size;    /* 出力バッファ残量 */
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
@@ -164,7 +164,9 @@ void read_object_body(char in_file_name[], object_info *oi)
             exit(1);
         }
 
-        // ここにokumura zlibにコードを移植する必要あるかも
+        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
+            break;
+        }
 
     }
 
@@ -439,7 +441,6 @@ int cmd_cat_file(int argc, char **argv)
     struct _TAG_OBJECT_INFO oi;
     char *filename;
 
-    char buf[OUTBUFSIZ];
 
     oi.header_length = 0;
 
@@ -463,9 +464,6 @@ int cmd_cat_file(int argc, char **argv)
 	filename = found_filename;
     }
 
-
-    oi.buf = buf;
-
     if (strcmp(opt, "-s") == 0) {
 	// show size
 	parse_object_header(filename, &oi);
@@ -477,6 +475,8 @@ int cmd_cat_file(int argc, char **argv)
     } else if (strcmp(opt, "-p") == 0) {
 	// pretty print
 	parse_object_header(filename, &oi);
+        oi.buf = (char *)malloc(oi.size+1000);
+
 	if (strcmp(oi.type, "tree") == 0) {
 	    read_object_body(filename, &oi); //ここがバグってるっぽい
 	    pretty_print_tree_object(&oi);
