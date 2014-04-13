@@ -20,46 +20,52 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-cd $repo_dir
-
 function list_objects () {
     find .git/objects/[^pi]* -type f | while read line ; do ( echo ${line#.git/objects/} | sed -e s#/##) ; done
 }
 
+function compare_t () {
+    echo "=== compare cat-file -t ===="
+    list_objects | while read hash
+    do
+	if [ $($MINIGIT cat-file -t $hash) == $(git cat-file -t $hash) ] ; then
+            echo ok $hash
+	else
+            echo ng $hash
+	    exit 1
+	fi
+    done
+}
 
-echo "=== compare cat-file -t ===="
-list_objects | while read hash
-do
-    if diff <($MINIGIT cat-file -t $hash) <(git cat-file -t $hash) ; then
-        echo ok $hash
-    else
-        echo ng $hash
-	exit 1
-    fi
-done
+function compare_s () {
+    echo "=== compare cat-file -s ===="
+    list_objects | while read hash
+    do
+	if [ $($MINIGIT cat-file -s $hash)  == $(git cat-file -s $hash) ]  ; then
+            echo ok $hash
+	else
+            echo ng $hash
+	    exit 1
+	fi
+    done
+}
 
-echo "=== compare cat-file -s ===="
-list_objects | while read hash
-do
-    if diff <($MINIGIT cat-file -s $hash) <(git cat-file -s $hash) ; then
-        echo ok $hash
-    else
-        echo ng $hash
-	exit 1
-    fi
-done
+function compare_p () {
+    echo "=== compare cat-file -p ===="
+    list_objects | while read hash
+    do
+	if diff <($MINIGIT cat-file -p $hash) <(git cat-file -p $hash) ; then
+            echo ok $hash
+	else
+            echo ng $hash
+	    exit
+	fi
+    done
+}
 
-exit
+# main
+cd $repo_dir
 
-echo "=== compare cat-file -p ===="
-list_objects | while read hash
-do
-    if diff <($MINIGIT cat-file -p $hash) <(git cat-file -p $hash) ; then
-        echo ok $hash
-    else
-        echo ng $hash
-    fi
-done
-
-
-
+compare_s
+compare_t
+#compare_p
