@@ -12,7 +12,6 @@ our $PROG = 'zlib';
 
 # テスト対象テキストファイル
 my @files = ('hello', 'bocchan');
-my($ret, $orig_text);
 
 for my $file (@files) {
     my $text_file = $file . '.txt';
