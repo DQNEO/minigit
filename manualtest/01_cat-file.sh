@@ -66,6 +66,7 @@ function compare_p () {
 # main
 cd $repo_dir
 
+# minigit cat-file -p はバグがある！
+#compare_p
 compare_s
 compare_t
-#compare_p
