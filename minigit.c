@@ -472,7 +472,7 @@ int cmd_cat_file(int argc, char **argv)
 	// pretty print
 	parse_object_header(filename, &oi);
 	if (strcmp(oi.type, "tree") == 0) {
-	    read_object_body(filename, &oi);
+	    read_object_body(filename, &oi); //ここがバグってるっぽい
 	    pretty_print_tree_object(&oi);
 	} else {
 	    // print blob or commit
