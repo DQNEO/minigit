@@ -26,5 +26,6 @@ prove -r t
 * ls-tree
 
 ## TODO
+* bug in cat-file -p (for tree object)
 * show
 * log -1
