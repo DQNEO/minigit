@@ -67,7 +67,7 @@ void sha1_file_name(const unsigned char *sha1, char *filename)
 
     filename[len+1] = str_sha1[0];
     filename[len+2] = str_sha1[1];
-    
+
     for (i=2;i<40;i++) {
 	filename[len+2+i] = str_sha1[i];
     }
@@ -131,7 +131,7 @@ void read_object_body(char in_file_name[], object_info *oi)
         fprintf(stderr, "Can't open %s\n", in_file_name);
         exit(1);
     }
- 
+
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
@@ -287,7 +287,7 @@ void pretty_print_tree_object(object_info *oi)
 
 	continue;
     }
-  
+
 
 }
 
@@ -337,7 +337,7 @@ void find_file(const char *sha1_input, char *matched_filename)
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
- 
+
     strcat(dir, sha1_input_firsrt2chars);
 
     if(( dp = opendir(dir) ) == NULL ){
@@ -345,13 +345,13 @@ void find_file(const char *sha1_input, char *matched_filename)
 	fprintf(stderr, "sha1_input = %s\n", sha1_input);
 	exit( EXIT_FAILURE );
     }
- 
+
     while((entry = readdir(dp)) != NULL){
 	stat(entry->d_name, &statbuf);
 	if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0)) {
 	    continue;
 	} else {
-	    //printf("entry->d_name =  %s\n", entry->d_name);	    
+	    //printf("entry->d_name =  %s\n", entry->d_name);
 
 	    //ユーザ入力のsha1とファイル名を比較して、
 	    //前者が後者の先頭部分一致すればそれが目的のオブジェクトであるとみなす。
@@ -370,9 +370,9 @@ void find_file(const char *sha1_input, char *matched_filename)
 	  }
 
 	}
- 
+
 	closedir(dp);
- 	
+
 
 }
 
@@ -457,7 +457,7 @@ int cmd_cat_file(int argc, char **argv)
 	filename = found_filename;
     }
 
-    
+
     oi.buf = buf;
 
     if (strcmp(opt, "-s") == 0) {
@@ -493,7 +493,7 @@ void pretty_print_commit_message(char *cp)
 
     int start_of_new_line = 1;
     while (*cp) {
-	
+
 	if (start_of_new_line || *(cp -1) == '\n') {
 	    printf("    ");
 	}
@@ -536,7 +536,7 @@ void parse_commit_object(object_info *oi, commit *pcmt)
 
     while (*cp != '\n') {
 	tree_sha1[i++] = *(cp++);
-    }    
+    }
     tree_sha1[40] = '\0';
 
     cp++;
@@ -609,7 +609,7 @@ void parse_commit_object(object_info *oi, commit *pcmt)
     strcpy(pcmt->author_name, author_name);
     pcmt->message = cp;
 }
- 
+
 int cat_commit_object(const char *sha1_string, char *parent_sha1)
 {
     struct _TAG_OBJECT_INFO oi;
@@ -858,7 +858,7 @@ static void git_write_loose_object(const unsigned char *sha1, char *hdr, int hdr
 	FILE *fp;
 	fp = fopen("/tmp/git_tmpfile", "wb");
 	fd = fileno(fp);
-	
+
 	/* Set it up */
 	memset(&stream, 0, sizeof(stream));
 	git_deflate_init(&stream, zlib_compression_level);
