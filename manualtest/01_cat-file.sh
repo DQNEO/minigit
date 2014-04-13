@@ -34,6 +34,7 @@ do
         echo ok $hash
     else
         echo ng $hash
+	exit 1
     fi
 done
 
@@ -44,8 +45,11 @@ do
         echo ok $hash
     else
         echo ng $hash
+	exit 1
     fi
 done
+
+exit
 
 echo "=== compare cat-file -p ===="
 list_objects | while read hash
