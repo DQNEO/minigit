@@ -150,16 +150,22 @@ void read_object_body(char in_file_name[], object_info *oi)
     z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
     status = Z_OK;
 
-    if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-	z.next_in = (Bytef *) inbuf;  /* 入力ポインタを元に戻す */
-	z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
-    }
+    while (status != Z_STREAM_END) {
+        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
+            z.next_in = (Bytef *) inbuf;  /* 入力ポインタを元に戻す */
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+        }
 
-    /* 展開 */
-    status = inflate(&z, Z_NO_FLUSH);
-    if (status != Z_STREAM_END && status != Z_OK) {
-	fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-	exit(1);
+        /* 展開 */
+        status = inflate(&z, Z_NO_FLUSH);
+        if (status == Z_STREAM_END) break;
+        if (status != Z_OK) {
+            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+            exit(1);
+        }
+
+        // ここにokumura zlibにコードを移植する必要あるかも
+
     }
 
     /* 後始末 */
