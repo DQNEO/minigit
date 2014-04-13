@@ -157,7 +157,7 @@ void read_object_body(char in_file_name[], object_info *oi)
 
     /* 展開 */
     status = inflate(&z, Z_NO_FLUSH);
-    if (status != Z_STREAM_END) {
+    if (status != Z_STREAM_END && status != Z_OK) {
 	fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
 	exit(1);
     }
@@ -217,7 +217,7 @@ void parse_object_header(char in_file_name[], object_info *oi)
 
     /* 展開 */
     status = inflate(&z, Z_NO_FLUSH);
-    if (status != Z_STREAM_END) {
+    if (status != Z_STREAM_END && status != Z_OK) {
 	fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
 	exit(1);
     }
