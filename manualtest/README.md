@@ -7,5 +7,5 @@
 
 任意のGitレポジトリの `find .git/objects/[^pi]* -type f` の結果を、minigit とgit のcat-fileで比較すればテストできる。
 
-### cat-file -tのバグ
+### cat-file -pのバグ
 `minigit cat-file -p manualtest/006b9f78eb6177c5284ba17158f78bf165d7383e.tree` でセグフォる。
