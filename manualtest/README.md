@@ -10,4 +10,4 @@
 ### cat-file -pのバグ
 `minigit cat-file -p manualtest/006b9f78eb6177c5284ba17158f78bf165d7383e.tree` でセグフォる。 (解決済み！)
 
-`minigit cat-file -p manualtest/anualtest/02bb82bb5e082cf9f359e6e33ae94e304991b00c.blob` でinflateエラー
+`minigit cat-file -p manualtest/02bb82bb5e082cf9f359e6e33ae94e304991b00c.blob` でinflateエラー
