@@ -114,17 +114,6 @@ void parse_header(char *header, object_info  *oi)
 }
 
 
-void read_object_body2(char in_file_name[], object_info *oi)
-{
-    FILE *fin;                      /* 入力・出力ファイル */
-
-    if ((fin = fopen(in_file_name, "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", in_file_name);
-        exit(1);
-    }
-
-    _decompress(fin);
-}
 
 
 /**
@@ -1073,9 +1062,15 @@ int cmd_ls_files(int argc, char *argv[])
     return 0;
 }
 
-//okumura function
-void _decompress(FILE *fin)
+void read_object_body2(char in_file_name[], object_info *oi)
 {
+    FILE *fin;                      /* 入力・出力ファイル */
+
+    if ((fin = fopen(in_file_name, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file_name);
+        exit(1);
+    }
+
     z_stream z;
     char inbuf[INBUFSIZ];
     char outbuf[OUTBUFSIZ];
