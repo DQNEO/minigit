@@ -562,11 +562,14 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
     parse_object_header(found_filename, &oi);
     read_object_body(found_filename, &oi);
 
+    commit cmt;
+    commit *pcmt = &cmt;
+
+    parse_commit_object(&oi, pcmt);
+
     // print commit
     printf("commit %s\n", sha1_string);
 
-    commit cmt;
-    commit *pcmt = &cmt;
 
     strcpy(parent_sha1 , pcmt->parent_sha1);
 
@@ -576,7 +579,6 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
     printf("\n");
     pretty_print_commit_message(pcmt->message);
 
-    parse_commit_object(&oi, pcmt);
     return 0;
 }
 
