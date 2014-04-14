@@ -604,6 +604,7 @@ int cmd_log(int argc , char **argv)
 }
 
 void usage() {
+    fprintf(stdout, "minigit v0.0.2 @DQNEO\n");
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
