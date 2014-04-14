@@ -988,7 +988,7 @@ int cmd_ls_files(int argc, char *argv[])
 
 void read_object_body(char in_file_name[], object_info *oi)
 {
-    FILE *fin;                      /* 入力・出力ファイル */
+    FILE *fin;
 
     if ((fin = fopen(in_file_name, "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", in_file_name);
@@ -999,7 +999,6 @@ void read_object_body(char in_file_name[], object_info *oi)
     char inbuf[INBUFSIZ];
     int count, status;
 
-    /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
@@ -1007,7 +1006,6 @@ void read_object_body(char in_file_name[], object_info *oi)
     size_t outbfsiz = oi->header_length + oi->size;
     oi->buf = malloc(outbfsiz);
 
-    /* 初期化 */
     z.next_in = Z_NULL;
     z.avail_in = 0;
     if (inflateInit(&z) != Z_OK) {
@@ -1024,9 +1022,9 @@ void read_object_body(char in_file_name[], object_info *oi)
             z.next_in = (Bytef *)inbuf;  /* 入力ポインタを元に戻す */
             z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
         }
-        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
-        if (status == Z_STREAM_END) break; /* 完了 */
-        if (status != Z_OK) {   /* エラー */
+        status = inflate(&z, Z_NO_FLUSH);
+        if (status == Z_STREAM_END) break;
+        if (status != Z_OK) {
             fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
