@@ -58,6 +58,7 @@ function compare_p () {
             echo ok $hash
 	else
             echo ng $hash
+            exit 1
 	fi
     done
 }
@@ -66,6 +67,6 @@ function compare_p () {
 cd $repo_dir
 
 # minigit cat-file -p はバグがある！
+compare_s
+compare_t
 compare_p
-#compare_s
-#compare_t
