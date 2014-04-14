@@ -22,6 +22,13 @@ minigit cat-file -p 000298
 
 objectfile can be a commit, tree , or blob.
 
+## log
+
+```
+minigit log
+```
+
+
 ## Run test
 
 ```
