@@ -114,6 +114,19 @@ void parse_header(char *header, object_info  *oi)
 }
 
 
+void read_object_body2(char in_file_name[], object_info *oi)
+{
+    FILE *fin;                      /* 入力・出力ファイル */
+
+    if ((fin = fopen(in_file_name, "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", in_file_name);
+        exit(1);
+    }
+
+    _decompress(fin);
+}
+
+
 /**
  * オブジェクトを丸ごと読み込む
  */
@@ -480,15 +493,9 @@ int cmd_cat_file(int argc, char **argv)
         oi.buf = (char *)malloc(oi.size+1000);
 
 	if (strcmp(oi.type, "tree") == 0) {
-	    //read_object_body(filename, &oi); //ここがバグってるっぽい
-	    //pretty_print_tree_object(&oi);
-            FILE *fin;
-            if ((fin = fopen(filename, "r")) == NULL) {
-                fprintf(stderr, "Can't open %s\n", filename);
-                exit(1);
-            }
-            _decompress(fin);
+	    read_object_body2(filename, &oi); //ここがバグってるっぽい
             return 0;
+	    //pretty_print_tree_object(&oi);
 	    //fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	} else {
 	    // print blob or commit
