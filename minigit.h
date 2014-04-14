@@ -84,3 +84,5 @@ static inline int bswap32(int x)
 		__asm__("bswap %0" : "=r" (result) : "0" (x));
 	return result;
 }
+
+void read_object_body(char in_file_name[], object_info *oi);

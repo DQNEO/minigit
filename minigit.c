@@ -113,80 +113,6 @@ void parse_header(char *header, object_info  *oi)
     oi->size = atoi(size);
 }
 
-
-
-
-/**
- * オブジェクトを丸ごと読み込む
- */
-void read_object_body(char in_file_name[], object_info *oi)
-{
-
-    int status;
-
-    z_stream z;                     /* ライブラリとやりとりするための構造体 */
-
-    char inbuf[INBUFSIZ];           /* 入力バッファ */
-    char *outbuf = oi->buf;
-    FILE *fin;                      /* 入力・出力ファイル */
-
-    if ((fin = fopen(in_file_name, "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", in_file_name);
-        exit(1);
-    }
-
-
-    /* すべてのメモリ管理をライブラリに任せる */
-    z.zalloc = Z_NULL;
-    z.zfree = Z_NULL;
-    z.opaque = Z_NULL;
-
-    /* 初期化 */
-    z.next_in = Z_NULL;
-    z.avail_in = 0;
-    if (inflateInit(&z) != Z_OK) {
-        fprintf(stderr, "inflateInit: %s\n", (z.msg) ? z.msg : "???");
-        exit(1);
-    }
-
-    z.next_out = (Bytef *) outbuf;        /* 出力ポインタ */
-    z.avail_out = oi->size;    /* 出力バッファ残量 */
-    status = Z_OK;
-
-    while (status != Z_STREAM_END) {
-        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-            z.next_in = (Bytef *) inbuf;  /* 入力ポインタを元に戻す */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
-        }
-
-        /* 展開 */
-        status = inflate(&z, Z_NO_FLUSH);
-        if (status == Z_STREAM_END) break;
-        if (status != Z_OK) {
-            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
-            exit(1);
-        }
-
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            break;
-        }
-
-    }
-
-    /* 後始末 */
-    if (inflateEnd(&z) != Z_OK) {
-        fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
-        exit(1);
-    }
-
-    fclose(fin);
-
-    //printf("bufsize = %d\n", sizeof(outbuf));
-    //printf("avail_out = %d\n", z.avail_out);
-
-    outbuf[OUTBUFSIZ - z.avail_out] = 0;
-}
-
 void parse_object_header(char in_file_name[], object_info *oi)
 {
     int status;
@@ -479,12 +405,9 @@ int cmd_cat_file(int argc, char **argv)
 	// pretty print
 	parse_object_header(filename, &oi);
 
-        oi.buf = (char *)malloc(oi.size+1000);
-
 	if (strcmp(oi.type, "tree") == 0) {
-	    read_object_body2(filename, &oi); //ここがバグってるっぽい
-            return 0;
-	    //pretty_print_tree_object(&oi);
+	    read_object_body(filename, &oi); //ここがバグってるっぽい
+	    pretty_print_tree_object(&oi);
 	    //fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	} else {
 	    // print blob or commit
@@ -1062,7 +985,7 @@ int cmd_ls_files(int argc, char *argv[])
     return 0;
 }
 
-void read_object_body2(char in_file_name[], object_info *oi)
+void read_object_body(char in_file_name[], object_info *oi)
 {
     FILE *fin;                      /* 入力・出力ファイル */
 
@@ -1080,8 +1003,8 @@ void read_object_body2(char in_file_name[], object_info *oi)
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
 
-    size_t outbfsiz = oi->size;
-    oi->buf = malloc(oi->header_length + 1 + outbfsiz);
+    size_t outbfsiz = oi->header_length + oi->size;
+    oi->buf = malloc(outbfsiz);
 
     /* 初期化 */
     z.next_in = Z_NULL;
@@ -1119,11 +1042,13 @@ void read_object_body2(char in_file_name[], object_info *oi)
 
     /* 残りを吐き出す */
     if ((count = outbfsiz - z.avail_out) != 0) {
+        /*
         fprintf(stderr, "rest has\n");
         if (fwrite(oi->buf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
+        */
     }
 
     /* 後始末 */
