@@ -997,7 +997,7 @@ void read_object_body(char in_file_name[], object_info *oi)
 
     z_stream z;
     char inbuf[INBUFSIZ];
-    int count, status;
+    int status;
 
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
