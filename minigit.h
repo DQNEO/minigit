@@ -44,7 +44,7 @@ typedef struct _TAG_COMMIT {
 } commit;
 
 #define INBUFSIZ   1024
-#define OUTBUFSIZ  8192
+#define OUTBUFSIZ  1024
 
 #define PROGNAME "minigit"
 

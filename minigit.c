@@ -113,6 +113,7 @@ void parse_header(char *header, object_info  *oi)
     oi->size = atoi(size);
 }
 
+
 /**
  * オブジェクトを丸ごと読み込む
  */
@@ -475,11 +476,20 @@ int cmd_cat_file(int argc, char **argv)
     } else if (strcmp(opt, "-p") == 0) {
 	// pretty print
 	parse_object_header(filename, &oi);
+
         oi.buf = (char *)malloc(oi.size+1000);
 
 	if (strcmp(oi.type, "tree") == 0) {
-	    read_object_body(filename, &oi); //ここがバグってるっぽい
-	    pretty_print_tree_object(&oi);
+	    //read_object_body(filename, &oi); //ここがバグってるっぽい
+	    //pretty_print_tree_object(&oi);
+            FILE *fin;
+            if ((fin = fopen(filename, "r")) == NULL) {
+                fprintf(stderr, "Can't open %s\n", filename);
+                exit(1);
+            }
+            _decompress(fin);
+            return 0;
+	    //fwrite(oi.buf + oi.header_length , 1, oi.size, stdout);
 	} else {
 	    // print blob or commit
 	    read_object_body(filename, &oi);
@@ -1055,6 +1065,70 @@ int cmd_ls_files(int argc, char *argv[])
     printf("hdr_entries=%x\n", bswap32(hdr->hdr_entries));
     return 0;
 }
+
+//okumura function
+void _decompress(FILE *fin)
+{
+    z_stream z;
+    char inbuf[INBUFSIZ];
+    char outbuf[OUTBUFSIZ];
+    int count, status;
+
+    /* すべてのメモリ管理をライブラリに任せる */
+    z.zalloc = Z_NULL;
+    z.zfree = Z_NULL;
+    z.opaque = Z_NULL;
+
+    /* 初期化 */
+    z.next_in = Z_NULL;
+    z.avail_in = 0;
+    if (inflateInit(&z) != Z_OK) {
+        fprintf(stderr, "inflateInit: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+
+    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
+    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    status = Z_OK;
+
+    while (status != Z_STREAM_END) {
+        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
+            z.next_in = (Bytef *)inbuf;  /* 入力ポインタを元に戻す */
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+        }
+        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
+        if (status == Z_STREAM_END) break; /* 完了 */
+        if (status != Z_OK) {   /* エラー */
+            fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
+            exit(1);
+        }
+        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
+            /* まとめて書き出す */
+            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
+                fprintf(stderr, "Write error\n");
+                exit(1);
+            }
+            z.next_out = (Bytef *)outbuf; /* 出力ポインタを元に戻す */
+            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
+        }
+    }
+
+    /* 残りを吐き出す */
+    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
+        if (fwrite(outbuf, 1, count, stdout) != count) {
+            fprintf(stderr, "Write error\n");
+            exit(1);
+        }
+    }
+
+    /* 後始末 */
+    if (inflateEnd(&z) != Z_OK) {
+        fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
+        exit(1);
+    }
+}
+
+
 
 int main(int argc, char *argv[])
 {
