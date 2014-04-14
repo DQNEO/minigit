@@ -1028,15 +1028,9 @@ void read_object_body(char in_file_name[], object_info *oi)
             fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            /* まとめて書き出す */
+        if (z.avail_out == 0) {
+            /* 出力バッファが尽きればループを抜ける */
             break;
-            if (fwrite(oi->buf, 1, outbfsiz, stdout) != outbfsiz) {
-                fprintf(stderr, "Write error\n");
-                exit(1);
-            }
-            z.next_out = (Bytef *)oi->buf; /* 出力ポインタを元に戻す */
-            z.avail_out = outbfsiz; /* 出力バッファ残量を元に戻す */
         }
     }
 
