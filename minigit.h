@@ -20,14 +20,6 @@
 #include <error.h>
 #include <sys/mman.h>
 
-const char *weekday_names[] = {
-  "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
-};
-
-const char *month_names[] = {
-  "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
-};
-
 typedef struct _TAG_OBJECT_INFO {
     char type[20];
     int  size;

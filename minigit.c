@@ -1,5 +1,14 @@
 #include "minigit.h"
 
+/* このconstをminigit.hに書くとなぜかうまく行かない。 */
+const char *weekday_names[] = {
+  "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
+};
+
+const char *month_names[] = {
+  "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
+};
+
 /**
  * git:date.cのtime_to_tmおよびgm_time_tから借用
  */
