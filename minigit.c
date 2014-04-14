@@ -1042,17 +1042,6 @@ void read_object_body(char in_file_name[], object_info *oi)
         }
     }
 
-    /* 残りを吐き出す */
-    if ((count = outbfsiz - z.avail_out) != 0) {
-        /*
-        fprintf(stderr, "rest has\n");
-        if (fwrite(oi->buf, 1, count, stdout) != count) {
-            fprintf(stderr, "Write error\n");
-            exit(1);
-        }
-        */
-    }
-
     /* 後始末 */
     if (inflateEnd(&z) != Z_OK) {
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
