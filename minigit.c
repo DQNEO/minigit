@@ -1042,6 +1042,8 @@ void read_object_body(char in_file_name[], object_info *oi)
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
     }
+
+    fclose(fin);
 }
 
 
