@@ -1073,13 +1073,15 @@ void read_object_body2(char in_file_name[], object_info *oi)
 
     z_stream z;
     char inbuf[INBUFSIZ];
-    char outbuf[OUTBUFSIZ];
     int count, status;
 
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
+
+    size_t outbfsiz = oi->size;
+    oi->buf = malloc(oi->header_length + 1 + outbfsiz);
 
     /* 初期化 */
     z.next_in = Z_NULL;
@@ -1089,8 +1091,8 @@ void read_object_body2(char in_file_name[], object_info *oi)
         exit(1);
     }
 
-    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
-    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    z.next_out = (Bytef *)oi->buf;        /* 出力ポインタ */
+    z.avail_out = outbfsiz;    /* 出力バッファ残量 */
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
@@ -1106,18 +1108,19 @@ void read_object_body2(char in_file_name[], object_info *oi)
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
+            if (fwrite(oi->buf, 1, outbfsiz, stdout) != outbfsiz) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = (Bytef *)outbuf; /* 出力ポインタを元に戻す */
-            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
+            z.next_out = (Bytef *)oi->buf; /* 出力ポインタを元に戻す */
+            z.avail_out = outbfsiz; /* 出力バッファ残量を元に戻す */
         }
     }
 
     /* 残りを吐き出す */
-    if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, stdout) != count) {
+    if ((count = outbfsiz - z.avail_out) != 0) {
+        fprintf(stderr, "rest has\n");
+        if (fwrite(oi->buf, 1, count, stdout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
