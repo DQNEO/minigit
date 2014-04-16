@@ -863,21 +863,23 @@ int main(int argc, char *argv[])
     }
 
     char *sub_cmd = argv[1];
+    argc--;
+    argv++;
 
     if (strcmp(sub_cmd, "cat-file") == 0) {
-	return cmd_cat_file(argc - 1, argv + 1);
+	return cmd_cat_file(argc, argv);
     } else if (strcmp(sub_cmd, "log") == 0) {
-	return cmd_log(argc - 1, argv + 1);
+	return cmd_log(argc, argv);
     } else if (strcmp(sub_cmd, "rev-parse") == 0) {
-	return cmd_rev_parse(argc - 1, argv + 1);
+	return cmd_rev_parse(argc, argv);
     } else if (strcmp(sub_cmd, "init") == 0) {
-	return cmd_init(argc - 1, argv + 1);
+	return cmd_init(argc, argv);
     } else if (strcmp(sub_cmd, "hash-object") == 0) {
-	return cmd_hash_object(argc - 1, argv + 1);
+	return cmd_hash_object(argc, argv);
     } else if (strcmp(sub_cmd, "commit") == 0) {
-	return cmd_commit(argc - 1, argv + 1);
+	return cmd_commit(argc, argv);
     } else if (strcmp(sub_cmd, "ls-files") == 0) {
-	return cmd_ls_files(argc - 1, argv + 1);
+	return cmd_ls_files(argc, argv);
     } else {
         fprintf(stderr, "Unknown command: %s\n", sub_cmd);
 	usage();
