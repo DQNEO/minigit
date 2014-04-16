@@ -82,3 +82,8 @@ void read_object_body(char in_file_name[], object_info *oi);
 
 char *sha1_to_hex(const unsigned char *sha1);
 void calc_sha1(const char *type, const void *body, unsigned long len, unsigned char *sha1);
+
+struct tm *time_to_tm(unsigned long time, int tz);
+
+extern const char *weekday_names[];
+extern const char *month_names[];
