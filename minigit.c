@@ -88,8 +88,12 @@ void validate_sha1(const char *sha1_input)
     }
 }
 
-void find_file(const char *sha1_input, char *matched_filename)
+/**
+ * @return 0:OK -1:not found
+ */
+int find_file(const char *sha1_input, char *matched_filename)
 {
+    int ret = -1;
     validate_sha1(sha1_input);
 
     char sha1_input_firsrt2chars[2];
@@ -131,6 +135,7 @@ void find_file(const char *sha1_input, char *matched_filename)
 		  strcat(matched_filename, entry->d_name);
 		  //printf("matched_filename = %s\n", matched_filename);
 		  //filename = matched_filename;
+                  ret = 0;
 		  break;
 	      }
 
@@ -141,7 +146,7 @@ void find_file(const char *sha1_input, char *matched_filename)
 
 	closedir(dp);
 
-
+        return ret;
 }
 
 int _rev_parse(const char *_rev, char *sha1_string)
@@ -215,9 +220,12 @@ int cmd_cat_file(int argc, char **argv)
 	filename = object_name;
     } else {
 	//引数をsha1(の短縮文字列)とみなす
-	char found_filename[256];
+	char found_filename[256] = "\0";
 	char *sha1_input = object_name;
-	find_file(sha1_input, found_filename);
+        if (find_file(sha1_input, found_filename) == -1) {
+            fprintf(stderr, "loose object file not found:%s\n", object_name);
+            exit(1);
+        }
 	// .git/objects/01/2345... を探索すする
 	// なければエラー終了
 	//printf("final filename = %s\n", found_filename);
