@@ -172,7 +172,7 @@ int _rev_parse(const char *_rev, char *sha1_string)
     FILE *fp;
 
     if ((fp = fopen(filename, "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", filename);
+        fprintf(stderr, "_rev_parse:Can't open %s\n", filename);
         exit(1);
     }
 
