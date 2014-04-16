@@ -395,7 +395,10 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
     //引数をsha1(の短縮文字列)とみなす
     char found_filename[256];
     const char *sha1_input = sha1_string;
-    find_file(sha1_input, found_filename);
+    if (find_file(sha1_input, found_filename) == -1) {
+        fprintf(stderr, "file not found: %s\n", found_filename);
+        exit(1);
+    }
 
     oi.buf = buf;
     parse_object_header(found_filename, &oi);
