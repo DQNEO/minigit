@@ -420,6 +420,7 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
     //printf("Parent:   %s\n", pcmt->parent_sha1);
     printf("\n");
     pretty_print_commit_message(pcmt->message);
+    printf("\n");
 
     return 0;
 }
@@ -440,10 +441,8 @@ int cmd_log(int argc , char **argv)
 
     char parent_sha1[256] = {};
 
-    cat_commit_object(commit_sha1, parent_sha1);
-    while (parent_sha1[0]) {
-	printf("\n");
-	cat_commit_object(parent_sha1, parent_sha1);
+    while(cat_commit_object(commit_sha1, parent_sha1) != -1){
+        strcpy(commit_sha1, parent_sha1);
     }
     return 0;
 }
