@@ -87,3 +87,9 @@ struct tm *time_to_tm(unsigned long time, int tz);
 
 extern const char *weekday_names[];
 extern const char *month_names[];
+
+void git_write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen,
+			      const void *buf, unsigned long len, time_t mtime);
+
+void sha1_file_name(const unsigned char *sha1, char *filename);
+
