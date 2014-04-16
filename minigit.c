@@ -862,22 +862,24 @@ int main(int argc, char *argv[])
 	usage();
     }
 
-    if (strcmp(argv[1], "cat-file") == 0) {
+    char *sub_cmd = argv[1];
+
+    if (strcmp(sub_cmd, "cat-file") == 0) {
 	return cmd_cat_file(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "log") == 0) {
+    } else if (strcmp(sub_cmd, "log") == 0) {
 	return cmd_log(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "rev-parse") == 0) {
+    } else if (strcmp(sub_cmd, "rev-parse") == 0) {
 	return cmd_rev_parse(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "init") == 0) {
+    } else if (strcmp(sub_cmd, "init") == 0) {
 	return cmd_init(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "hash-object") == 0) {
+    } else if (strcmp(sub_cmd, "hash-object") == 0) {
 	return cmd_hash_object(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "commit") == 0) {
+    } else if (strcmp(sub_cmd, "commit") == 0) {
 	return cmd_commit(argc - 1, argv + 1);
-    } else if (strcmp(argv[1], "ls-files") == 0) {
+    } else if (strcmp(sub_cmd, "ls-files") == 0) {
 	return cmd_ls_files(argc - 1, argv + 1);
     } else {
-        fprintf(stderr, "Unknown command: %s\n", argv[1]);
+        fprintf(stderr, "Unknown command: %s\n", sub_cmd);
 	usage();
     }
 
