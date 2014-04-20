@@ -71,7 +71,7 @@ int calc_padding(int n)
 
 int cmd_ls_files(int argc, char **argv)
 {
-    char *index_file;
+    char *index_file_name;
     struct stat st;
     int fd;
     void *map;
@@ -86,14 +86,14 @@ int cmd_ls_files(int argc, char **argv)
 	exit(1);
     }
 
-    index_file = argv[1];
-    if (stat(index_file, &st) == -1) {
-	fprintf(stderr, "unable to stat '%s'\n", index_file);
+    index_file_name = argv[1];
+    if (stat(index_file_name, &st) == -1) {
+	fprintf(stderr, "unable to stat '%s'\n", index_file_name);
 	exit(1);
     }
 
-    if ((fd = open(index_file, O_RDONLY)) == -1) {
-	fprintf(stderr, "unable to open file '%s'\n", index_file);
+    if ((fd = open(index_file_name, O_RDONLY)) == -1) {
+	fprintf(stderr, "unable to open file '%s'\n", index_file_name);
 	exit(1);
     }
 
