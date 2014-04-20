@@ -6,6 +6,12 @@ git clone git://github.com/DQNEO/minigit.git
 cd minigit
 make
 ```
+## MOTIVATION
+
+`git` is a huge software, but the internal concept and data structure are very simple.
+
+So I thought we can easily re-invent `git` command by the C language.
+
 
 ## Usage
 
