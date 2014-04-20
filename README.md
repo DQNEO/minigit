@@ -45,9 +45,6 @@ or
 prove -r t
 ```
 
-## DONE
-* enable to take sha1 argument
-* ls-tree
 
 ## How to get many loose object files
 
