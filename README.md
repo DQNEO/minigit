@@ -1,8 +1,11 @@
 # minigit - yet another git implementation
 
-## INSTALL
-
+## INSTALLATION
+```sh
+git clone git://github.com/DQNEO/minigit.git
+cd minigit
 make
+```
 
 ## Usage
 
