@@ -84,13 +84,6 @@ int cmd_ls_files(int argc, char **argv)
     hdr = map;
     ce = (struct cache_entry *)(hdr + 1);
 
-    /* for debug  */
-    /* 
-    printf("==== header ===\n");
-    printf("signature = %s\n", hdr->dirc); // => "DIRC"  44 49 52 43
-    printf("version = %d\n", bswap32(hdr->version)); // => 2
-    printf("entries = %d\n", bswap32(hdr->entries)); // => number of entries
-    */
     count_entries = bswap32(hdr->entries);
 
     for (i=0; i < count_entries; i++) {
