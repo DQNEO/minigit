@@ -1,5 +1,6 @@
 ## TODO
 * subcommands
+ * add
  * commit (not dummy commit)
  * show
  * log -1
