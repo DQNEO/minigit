@@ -110,8 +110,10 @@ int cmd_ls_files(int argc, char **argv)
     return 0;
 }
 
+/*
 int main(int argc, char **argv)
 {
   return cmd_ls_files(argc, argv);
 }
+ */
 
