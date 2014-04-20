@@ -59,24 +59,6 @@ struct cache_header {
 	int hdr_entries;
 };
 
-static inline int default_swab32(int val)
-{
-	return (((val & 0xff000000) >> 24) |
-		((val & 0x00ff0000) >>  8) |
-		((val & 0x0000ff00) <<  8) |
-		((val & 0x000000ff) << 24));
-}
-
-static inline int bswap32(int x)
-{
-	int result;
-	if (__builtin_constant_p(x))
-		result = default_swab32(x);
-	else
-		__asm__("bswap %0" : "=r" (result) : "0" (x));
-	return result;
-}
-
 void parse_object_header(char in_file_name[], object_info *oi);
 void read_object_body(char in_file_name[], object_info *oi);
 
@@ -99,7 +81,7 @@ int cmd_rev_parse(int argc, char **argv);
 int cmd_init(int argc, char **argv);
 int cmd_commit(int argc, char **argv);
 int cmd_hash_object(int argc, char **argv);
-int cmd_ls_files(int argc, char **argv);
+int cmd_ls_files_old(int argc, char **argv);
 
 int _rev_parse(const char *_rev, char *sha1_string);
 int cat_commit_object(const char *sha1_string, char *parent_sha1);
