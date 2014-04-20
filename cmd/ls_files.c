@@ -3,7 +3,7 @@
  *
  * ".git/index" is a binary file.
  * the content is like below:
- * 
+ *
  * $ hexdump -C .git/index | head
  * 00000000  44 49 52 43 00 00 00 02  00 00 00 28 52 5b a4 34  |DIRC.......(R[.4|
  * 00000010  2c 67 bf 8a 52 5b a4 34  2c 67 bf 8a 00 00 fd 00  |,g..R[.4,g......|
