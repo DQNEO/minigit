@@ -20,12 +20,6 @@
  *
  */
 #include "header.h"
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
 
 struct cache_entry {
     unsigned int ce_ctime_sec;
