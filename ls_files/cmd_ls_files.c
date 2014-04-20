@@ -81,7 +81,7 @@ int cmd_ls_files(int argc, char **argv)
     int count_entries;
     int i;
 
-    if (argc != 2) {
+    if (argc < 2) {
 	fprintf(stderr, "Usage:prog .git/index\n");
 	exit(1);
     }
