@@ -401,7 +401,7 @@ int main(int argc, char *argv[])
     } else if (strcmp(sub_cmd, "commit") == 0) {
 	return cmd_commit(argc, argv);
     } else if (strcmp(sub_cmd, "ls-files") == 0) {
-	return cmd_ls_files(argc, argv);
+	return cmd_ls_files_old(argc, argv);
     } else {
         fprintf(stderr, "Unknown command: %s\n", sub_cmd);
 	usage();
