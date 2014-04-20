@@ -57,3 +57,16 @@ you can get as many loose objects as you like by `git unpack-objects` :)
 
 http://qiita.com/DQNEO/items/b6cb03c60b510dd3c934
 
+# AUTHOR
+
+DQNEO
+
+# LICENSE
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as git itself.
+
+# SEE ALSO
+
+https://github.com/git/git
+
