@@ -41,10 +41,6 @@ prove -r t
 * enable to take sha1 argument
 * ls-tree
 
-## TODO
-* show
-* log -1
-
 ## How to get many loose object files
 
 you can get loose objects as many as you like by `git unpack-objects` :)
