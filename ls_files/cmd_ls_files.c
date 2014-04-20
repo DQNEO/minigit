@@ -71,7 +71,7 @@ int calc_padding(int n)
 
 int cmd_ls_files(int argc, char **argv)
 {
-    char *index_file_name;
+    char index_file_name[256];
     struct stat st;
     int fd;
     void *map;
@@ -82,11 +82,11 @@ int cmd_ls_files(int argc, char **argv)
     int i;
 
     if (argc < 2) {
-	fprintf(stderr, "Usage:prog .git/index\n");
-	exit(1);
+        strcpy(index_file_name, ".git/index");
+    } else {
+        strcpy(index_file_name, argv[1]);
     }
 
-    index_file_name = argv[1];
     if (stat(index_file_name, &st) == -1) {
 	fprintf(stderr, "unable to stat '%s'\n", index_file_name);
 	exit(1);
