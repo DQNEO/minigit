@@ -19,7 +19,6 @@
  * 00000050  6e 6f 72 65 00 00 00 00  00 00 00 00 52 65 2a 2d  |nore........Re*-|
  *
  */
-#include "header.h"
 #include "../minigit.h"
 
 static inline unsigned int default_swab32(unsigned int val)
