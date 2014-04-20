@@ -93,3 +93,15 @@ void git_write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen,
 
 void sha1_file_name(const unsigned char *sha1, char *filename);
 
+int cmd_cat_file(int argc, char **argv);
+int cmd_log(int argc, char **argv);
+int cmd_rev_parse(int argc, char **argv);
+int cmd_init(int argc, char **argv);
+int cmd_commit(int argc, char **argv);
+int cmd_hash_object(int argc, char **argv);
+int cmd_ls_files(int argc, char **argv);
+
+int _rev_parse(const char *_rev, char *sha1_string);
+int cat_commit_object(const char *sha1_string, char *parent_sha1);
+int find_file(const char *sha1_input, char *matched_filename);
+void pretty_print_tree_object(object_info *oi);
