@@ -53,12 +53,6 @@ typedef struct git_zstream {
 } git_zstream;
 #define git_SHA_CTX	SHA_CTX
 
-struct cache_header {
-	char hdr_signature[4];
-	int hdr_version;
-	int hdr_entries;
-};
-
 void parse_object_header(char in_file_name[], object_info *oi);
 void read_object_body(char in_file_name[], object_info *oi);
 
