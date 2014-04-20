@@ -20,6 +20,7 @@
  *
  */
 #include "header.h"
+#include "../minigit.h"
 
 static inline unsigned int default_swab32(unsigned int val)
 {
