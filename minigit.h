@@ -59,24 +59,6 @@ struct cache_header {
 	int hdr_entries;
 };
 
-static inline int default_swab32(int val)
-{
-	return (((val & 0xff000000) >> 24) |
-		((val & 0x00ff0000) >>  8) |
-		((val & 0x0000ff00) <<  8) |
-		((val & 0x000000ff) << 24));
-}
-
-static inline int bswap32(int x)
-{
-	int result;
-	if (__builtin_constant_p(x))
-		result = default_swab32(x);
-	else
-		__asm__("bswap %0" : "=r" (result) : "0" (x));
-	return result;
-}
-
 void parse_object_header(char in_file_name[], object_info *oi);
 void read_object_body(char in_file_name[], object_info *oi);
 
@@ -105,3 +87,25 @@ int _rev_parse(const char *_rev, char *sha1_string);
 int cat_commit_object(const char *sha1_string, char *parent_sha1);
 int find_file(const char *sha1_input, char *matched_filename);
 void pretty_print_tree_object(object_info *oi);
+
+struct cache_entry {
+    unsigned int ce_ctime_sec;
+    unsigned int ce_ctime_nsec;
+    unsigned int ce_mtime_sec;
+    unsigned int ce_mtime_nsec;
+    unsigned int ce_dev;
+    unsigned int ce_ino;
+    unsigned int ce_mode;
+    unsigned int ce_uid;
+    unsigned int ce_gid;
+    unsigned int ce_size;
+    unsigned char sha1[21];
+    char namelen;
+    char name[1];
+};
+
+struct index_header {
+    char dirc[4];
+    unsigned int version;
+    unsigned int entries;
+};
