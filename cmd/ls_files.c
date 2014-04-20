@@ -1,12 +1,6 @@
 /**
  * Parser of .git/index file
  *
- * This C program parses any .git/index file.
- * It workds just the same as "git ls-files --stage" command.
- * 
- * Usage:
- *   ./parse_git_index  path/to/.git/index
- * 
  * ".git/index" is a binary file.
  * the content is like below:
  * 
