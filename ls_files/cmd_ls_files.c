@@ -19,7 +19,7 @@
  * 00000050  6e 6f 72 65 00 00 00 00  00 00 00 00 52 65 2a 2d  |nore........Re*-|
  *
  */
-#include <stdio.h>
+#include "header.h"
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
