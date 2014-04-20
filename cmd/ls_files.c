@@ -51,6 +51,9 @@ int calc_padding(int n)
     return ret;
 }
 
+/**
+ * ls-files --stage
+ */
 int cmd_ls_files(int argc, char **argv)
 {
     char index_file_name[256];
@@ -63,11 +66,12 @@ int cmd_ls_files(int argc, char **argv)
     int count_entries;
     int i;
 
-    if (argc < 2) {
-        strcpy(index_file_name, ".git/index");
-    } else {
-        strcpy(index_file_name, argv[1]);
+    if (argc != 2 || strcmp(argv[1], "--stage") != 0) {
+        fprintf(stderr, "currently we accept only --stage option\n");
+	exit(1);
     }
+
+    strcpy(index_file_name, ".git/index");
 
     if (stat(index_file_name, &st) == -1) {
 	fprintf(stderr, "unable to stat '%s'\n", index_file_name);
