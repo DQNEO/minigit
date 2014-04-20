@@ -6,4 +6,5 @@
  * log -1
 * core
  * detect .git directory wherever current directory is.
-
+* test
+ ** fix test `prove -r t` to work
