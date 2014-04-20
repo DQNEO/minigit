@@ -59,10 +59,11 @@ int cmd_ls_files(int argc, char **argv)
     char *p_next_entry;
     int count_entries;
     int i;
+    int option_stage = 0;
 
-    if (argc != 2 || strcmp(argv[1], "--stage") != 0) {
-        fprintf(stderr, "currently we accept only --stage option\n");
-	exit(1);
+    // --stage or not
+    if (argc == 2 && strcmp(argv[1], "--stage") == 0) {
+        option_stage = 1;
     }
 
     strcpy(index_file_name, ".git/index");
@@ -87,11 +88,15 @@ int cmd_ls_files(int argc, char **argv)
     count_entries = bswap32(hdr->entries);
 
     for (i=0; i < count_entries; i++) {
-	printf("%o %s 0\t%s\n",
-	       bswap32(ce->ce_mode),
-	       sha1_to_hex(ce->sha1),
-	       ce->name
+        if (option_stage) {
+            printf("%o %s 0\t%s\n",
+                   bswap32(ce->ce_mode),
+                   sha1_to_hex(ce->sha1),
+                   ce->name
 	    );
+        } else {
+            printf("%s\n", ce->name);
+        }
 
 	p_next_entry = ce->name + ce->namelen + calc_padding(ce->namelen);
 	ce = (struct cache_entry *)p_next_entry;
