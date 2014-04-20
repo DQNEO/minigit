@@ -47,7 +47,7 @@ prove -r t
 
 ## How to get arbitrary loose object files
 
-you can get loose objects as many as you like by `git unpack-objects` :)
+you can get as many loose objects as you like by `git unpack-objects` :)
 
 http://qiita.com/DQNEO/items/b6cb03c60b510dd3c934
 
