@@ -69,7 +69,7 @@ int calc_padding(int n)
     return ret;
 }
 
-int main(int argc, char **argv)
+int cmd_ls_files(int argc, char **argv)
 {
     char *index_file;
     struct stat st;
@@ -127,3 +127,9 @@ int main(int argc, char **argv)
     close(fd);
     return 0;
 }
+
+int main(int argc, char **argv)
+{
+  return cmd_ls_files(argc, argv);
+}
+
