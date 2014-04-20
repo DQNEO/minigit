@@ -28,6 +28,11 @@ objectfile can be a commit, tree , or blob.
 minigit log
 ```
 
+## ls-files
+```
+minigit ls-files
+minigit ls-files --stage
+```
 
 ## Run test
 
