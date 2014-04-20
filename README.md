@@ -45,8 +45,7 @@ or
 prove -r t
 ```
 
-
-## How to get many loose object files
+## How to get arbitrary loose object files
 
 you can get loose objects as many as you like by `git unpack-objects` :)
 
