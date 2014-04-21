@@ -22,12 +22,12 @@ int is_git_directory(const char *suspect)
   return 1; // true
 }
 
-int main() {
-  char cwd[PATH_MAX + 1];
 
+int find_git_root_directory(char* cwd, size_t cwd_size)
+{
   int offset;
 
-  if (!getcwd(cwd, sizeof(cwd) - 1)) {
+  if (!getcwd(cwd, cwd_size - 1)) {
     fprintf(stderr, "Unable to read cwd");
     return 1;
   }
@@ -43,5 +43,11 @@ int main() {
     cwd[offset] = '\0';
   }
 
+  return 0;
+}
+
+int main() {
+  char path[PATH_MAX + 1];
+  find_git_root_directory(path, sizeof(path));
   return 0;
 }
