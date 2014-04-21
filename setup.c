@@ -6,9 +6,23 @@
 
 #define PATH_MAX 1024
 
+/**
+ * @return bool
+ */
+int is_git_directory(const char *suspect)
+{
+  char path_to_gitdir[PATH_MAX + 1];
+  strcpy(path_to_gitdir, suspect);
+  strcpy(path_to_gitdir + strlen(suspect), "/.git");
+  if (access(path_to_gitdir, 0)) {
+    return 0; // false
+  }
+
+  return 1; // true
+}
+
 int main() {
   char cwd[PATH_MAX + 1];
-  char path_to_gitdir[PATH_MAX + 1];
 
   int offset;
 
@@ -19,15 +33,10 @@ int main() {
   offset = strlen(cwd);
 
   while (offset > 1) {
-    strcpy(path_to_gitdir, cwd);
-    strcpy(path_to_gitdir + strlen(cwd), "/.git");
-    if (! access(path_to_gitdir, 0)) {
-      printf(".git found: %s\n", path_to_gitdir);
+    if (is_git_directory(cwd)) {
+      printf(".git found: %s/.git\n", cwd);
       return 0;
     }
-
-    //printf("cwd=%s\n", cwd);
-    //printf("gitdir=%s\n", path_to_gitdir);
 
     while (offset-- && cwd[offset] != '/') ;
     cwd[offset] = '\0';
