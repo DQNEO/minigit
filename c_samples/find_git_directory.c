@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define PATH_MAX 1024
+#define X_OK 0
 
 /**
  * @return bool
@@ -14,7 +15,7 @@ int is_git_directory(const char *suspect)
   char path_to_gitdir[PATH_MAX + 1];
   strcpy(path_to_gitdir, suspect);
   strcpy(path_to_gitdir + strlen(suspect), "/.git");
-  if (access(path_to_gitdir, 0)) {
+  if (access(path_to_gitdir, X_OK)) {
     return 0; // false
   }
 
