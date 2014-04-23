@@ -1,5 +1,9 @@
 /**
  * cwdから親へたどっていって.gitディレクトリを探す
+ *
+ * 元のソースでは、
+ * setup.c:L643-L664 あたり
+ * getcwdで取得した文字列を/区切りで順番にchdirして調査している。
  */
 #include <stdio.h>
 #include <string.h>
