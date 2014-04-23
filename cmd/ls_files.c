@@ -50,7 +50,8 @@ int calc_padding(int n)
  */
 int cmd_ls_files(int argc, char **argv)
 {
-    char index_file_name[256];
+    char index_file_name[PATH_MAX + 1];;
+
     struct stat st;
     int fd;
     void *map;
@@ -66,7 +67,8 @@ int cmd_ls_files(int argc, char **argv)
         option_stage = 1;
     }
 
-    strcpy(index_file_name, ".git/index");
+    find_git_root_directory(index_file_name, sizeof(index_file_name));
+    strcpy(index_file_name + strlen(index_file_name), "/.git/index");
 
     if (stat(index_file_name, &st) == -1) {
 	fprintf(stderr, "unable to stat '%s'\n", index_file_name);

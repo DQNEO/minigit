@@ -83,3 +83,6 @@ int find_file(const char *sha1_input, char *matched_filename);
 void pretty_print_tree_object(object_info *oi);
 
 #include "cache.h"
+
+int is_git_directory(const char *suspect);
+int find_git_root_directory(char* cwd, size_t cwd_size);
