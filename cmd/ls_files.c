@@ -45,44 +45,6 @@ int calc_padding(int n)
     return ret;
 }
 
-/**
- * @return bool
- */
-int is_git_directory(const char *suspect)
-{
-  char path_to_gitdir[PATH_MAX + 1];
-  strcpy(path_to_gitdir, suspect);
-  strcpy(path_to_gitdir + strlen(suspect), "/.git");
-  if (access(path_to_gitdir, X_OK)) {
-    return 0; // false
-  }
-
-  return 1; // true
-}
-
-
-int find_git_root_directory(char* cwd, size_t cwd_size)
-{
-  int offset;
-
-  if (!getcwd(cwd, cwd_size - 1)) {
-    fprintf(stderr, "Unable to read cwd");
-    return 1;
-  }
-  offset = strlen(cwd);
-
-  while (offset > 1) {
-    if (is_git_directory(cwd)) {
-      printf(".git found: %s/.git\n", cwd);
-      return 0;
-    }
-
-    while (offset-- && cwd[offset] != '/') ;
-    cwd[offset] = '\0';
-  }
-
-  return 0;
-}
 
 /**
  * ls-files --stage
