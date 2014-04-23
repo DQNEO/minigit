@@ -86,4 +86,3 @@ void pretty_print_tree_object(object_info *oi);
 
 int is_git_directory(const char *suspect);
 int find_git_root_directory(char* cwd, size_t cwd_size);
-

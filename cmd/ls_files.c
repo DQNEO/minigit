@@ -45,7 +45,6 @@ int calc_padding(int n)
     return ret;
 }
 
-
 /**
  * ls-files --stage
  */
