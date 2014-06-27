@@ -399,7 +399,7 @@ void usage() {
 }
 
 void show_version() {
-    fprintf(stdout, "%s v0.0.2 @DQNEO\n", PROGNAME);
+    fprintf(stdout, "%s v0.0.2 by DQNEO\n", PROGNAME);
 }
 
 
