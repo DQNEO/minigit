@@ -11,7 +11,6 @@ my ($cmd, $ret, $exp);
 my @commands = (
     'rev-parse',
     'rev-parse HEAD',
-    'rev-parse br_caa88',    
     );
 
 for my $cmd (@commands) {
