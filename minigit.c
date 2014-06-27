@@ -390,14 +390,16 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
 
 
 void usage() {
-    fprintf(stdout, "%s v0.0.2 @DQNEO\n", PROGNAME);
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
     fprintf(stdout, "  log: (HEAD|branchname)\n");
     fprintf(stdout, "  ls-files [--stage]\n");
     fprintf(stdout, "  hash-object [-w] <file>\n");
-    exit(1);
+}
+
+void show_version() {
+    fprintf(stdout, "%s v0.0.2 @DQNEO\n", PROGNAME);
 }
 
 
@@ -441,9 +443,16 @@ int main(int argc, char *argv[])
 	return cmd_commit(argc, argv);
     } else if (strcmp(sub_cmd, "ls-files") == 0) {
 	return cmd_ls_files(argc, argv);
+    } else if (strcmp(sub_cmd, "--version") == 0) {
+	show_version();
+	exit(1);
+    } else if (strcmp(sub_cmd, "--help") == 0) {
+	usage();
+	exit(1);
     } else {
         fprintf(stderr, "%s: '%s' is not a %s command.\n\n", PROGNAME, sub_cmd, PROGNAME);
 	usage();
+	exit(1);
     }
 
     return 0;
