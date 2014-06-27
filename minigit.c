@@ -390,7 +390,7 @@ int cat_commit_object(const char *sha1_string, char *parent_sha1)
 
 
 void usage() {
-    fprintf(stdout, "minigit v0.0.2 @DQNEO\n");
+    fprintf(stdout, "%s v0.0.2 @DQNEO\n", PROGNAME);
     fprintf(stdout, "Usage: %s <command> [<args>]\n" , PROGNAME);
     fprintf(stdout, "  cat-file: (-s|-t|-p) <object>\n");
     fprintf(stdout, "  rev-parse (HEAD|branchanme)\n");
