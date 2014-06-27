@@ -442,7 +442,7 @@ int main(int argc, char *argv[])
     } else if (strcmp(sub_cmd, "ls-files") == 0) {
 	return cmd_ls_files(argc, argv);
     } else {
-        fprintf(stderr, "Unknown command: %s\n", sub_cmd);
+        fprintf(stderr, "%s: '%s' is not a %s command.\n\n", PROGNAME, sub_cmd, PROGNAME);
 	usage();
     }
 
