@@ -1,4 +1,6 @@
-# minigit - yet another git implementation
+# minigit - a minimal implementation of git.
+
+This project is designed for education of git internals.
 
 ## INSTALLATION
 ```sh
