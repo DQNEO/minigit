@@ -8,13 +8,12 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
 
-z_stream z;
-
-char inbuf[INBUFSIZ];
-char outbuf[OUTBUFSIZ];
-
 void _compress(FILE *fin, FILE *fout)
 {
+    z_stream z;
+
+    char inbuf[INBUFSIZ];
+    char outbuf[OUTBUFSIZ];
     int count, flush, status;
 
     /* すべてのメモリ管理をライブラリに任せる */
@@ -79,6 +78,9 @@ void _compress(FILE *fin, FILE *fout)
 
 void _decompress(FILE *fin, FILE *fout)
 {
+    z_stream z;
+    char inbuf[INBUFSIZ];
+    char outbuf[OUTBUFSIZ];
     int count, status;
 
     /* すべてのメモリ管理をライブラリに任せる */
