@@ -81,7 +81,7 @@ void _decompress(FILE *fin)
     char inbuf[INBUFSIZ];
     char outbuf[OUTBUFSIZ];
     int count, status;
-
+    FILE *fout = stdout;
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
@@ -112,7 +112,7 @@ void _decompress(FILE *fin)
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, stdout) != OUTBUFSIZ) {
+            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
@@ -123,7 +123,7 @@ void _decompress(FILE *fin)
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, stdout) != count) {
+        if (fwrite(outbuf, 1, count, fout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
