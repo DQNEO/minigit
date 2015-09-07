@@ -140,7 +140,7 @@ void do_decompress(void)        /* 展開（復元） */
 void usage()
 {
     fprintf(stderr, "Usage: comptest flag infile outfile\n");
-    fprintf(stderr, "  flag: c=compress d=decompress\n");
+    fprintf(stderr, "  flag: -c=compress -d=decompress\n");
 }
 
 int main(int argc, char *argv[])
@@ -151,9 +151,9 @@ int main(int argc, char *argv[])
         usage();
         exit(0);
     }
-    if (argv[1][0] == 'c') {
+    if (strcmp(argv[1],"-c") == 0) {
         c = 1;
-    } else if (argv[1][0] == 'd') {
+    } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
