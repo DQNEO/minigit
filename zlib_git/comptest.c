@@ -159,6 +159,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Unknown flag: %s\n", argv[1]);
         exit(1);
     }
+
+
     if ((fin = fopen(argv[2], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
@@ -168,6 +170,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     if (c) do_compress(); else do_decompress();
+
     fclose(fin);
     fclose(fout);
     return 0;
