@@ -152,6 +152,7 @@ int main(int argc, char *argv[])
         usage();
         exit(0);
     }
+
     if (strcmp(argv[1],"-c") == 0) {
         c = 1;
     } else if (strcmp(argv[1], "-d") == 0) {
