@@ -11,7 +11,6 @@
 void _compress(FILE *fin, FILE *fout)
 {
     z_stream z;
-
     char inbuf[INBUFSIZ];
     char outbuf[OUTBUFSIZ];
     int count, flush, status;
