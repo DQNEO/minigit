@@ -150,27 +150,27 @@ int main(int argc, char *argv[])
     FILE *fin, *fout;
 
     if (argc == 1) {
-	usage();
+        usage();
     } else if (strcmp(argv[1],"-c") == 0) {
         c = 1;
     } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
-	usage();
+        usage();
     }
     if ((fin = fopen(argv[2], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
     if (c) {
-	if ((fout = fopen(argv[3], "w")) == NULL) {
-	    fprintf(stderr, "Can't open %s\n", argv[3]);
-	    exit(1);
-	}
-      _compress(fin, fout);
-      fclose(fout);
+        if ((fout = fopen(argv[3], "w")) == NULL) {
+            fprintf(stderr, "Can't open %s\n", argv[3]);
+            exit(1);
+        }
+        _compress(fin, fout);
+        fclose(fout);
     } else {
-      _decompress(fin);
+        _decompress(fin);
     }
 
     fclose(fin);
