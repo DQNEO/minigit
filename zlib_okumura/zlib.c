@@ -75,13 +75,12 @@ void _compress(FILE *fin, FILE *fout)
     }
 }
 
-void _decompress(FILE *fin)
+void _decompress(FILE *fin, FILE *fout)
 {
     z_stream z;
     char inbuf[INBUFSIZ];
     char outbuf[OUTBUFSIZ];
     int count, status;
-    FILE *fout = stdout;
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
@@ -164,17 +163,17 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
     }
+    if ((fout = fopen(argv[3], "w")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", argv[3]);
+        exit(1);
+    }
     if (c) {
-        if ((fout = fopen(argv[3], "w")) == NULL) {
-            fprintf(stderr, "Can't open %s\n", argv[3]);
-            exit(1);
-        }
         _compress(fin, fout);
-        fclose(fout);
     } else {
-        _decompress(fin);
+        _decompress(fin, fout);
     }
 
     fclose(fin);
+    fclose(fout);
     return 0;
 }
