@@ -160,7 +160,6 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-
     if ((fin = fopen(argv[2], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
