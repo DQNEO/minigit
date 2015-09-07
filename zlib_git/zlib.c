@@ -13,7 +13,7 @@ char inbuf[INBUFSIZ];
 char outbuf[OUTBUFSIZ];
 FILE *fin, *fout;
 
-void do_compress(void)
+void _compress(void)
 {
     int count, flush, status;
 
@@ -77,7 +77,7 @@ void do_compress(void)
     }
 }
 
-void do_decompress(void)
+void _decompress(void)
 {
     int count, status;
 
@@ -167,9 +167,9 @@ int main(int argc, char *argv[])
         exit(1);
     }
     if (c) {
-        do_compress();
+        _compress();
     } else {
-        do_decompress();
+        _decompress();
     }
 
     fclose(fin);
