@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
-        fprintf(stderr, "Unknown flag: %s\n", argv[1]);
+        usage();
         exit(1);
     }
 
