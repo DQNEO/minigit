@@ -12,9 +12,8 @@ z_stream z;
 
 char inbuf[INBUFSIZ];
 char outbuf[OUTBUFSIZ];
-FILE *fin, *fout;
 
-void _compress(void)
+void _compress(FILE *fin, FILE *fout)
 {
     int count, flush, status;
 
@@ -78,7 +77,7 @@ void _compress(void)
     }
 }
 
-void _decompress(void)
+void _decompress(FILE *fin, FILE *fout)
 {
     int count, status;
 
@@ -145,6 +144,7 @@ void usage()
 int main(int argc, char *argv[])
 {
     int c;
+    FILE *fin, *fout;
 
     if (argc == 1) {
         usage();
@@ -168,9 +168,9 @@ int main(int argc, char *argv[])
         exit(1);
     }
     if (c) {
-        _compress();
+        _compress(fin, fout);
     } else {
-        _decompress();
+        _decompress(fin, fout);
     }
 
     fclose(fin);
