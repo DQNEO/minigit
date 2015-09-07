@@ -3,3 +3,7 @@ zlib:
 
 clean:
 	rm zlib
+
+test: zlib
+	./zlib -c txts/helloworld.txt gen/helloworld && diff gen/helloworld compressed/helloworld && echo ok
+	./zlib -c txts/bocchan.txt gen/bocchan && diff gen/bocchan compressed/bocchan && echo ok
