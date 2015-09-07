@@ -137,13 +137,18 @@ void do_decompress(void)        /* 展開（復元） */
     }
 }
 
+void usage()
+{
+    fprintf(stderr, "Usage: comptest flag infile outfile\n");
+    fprintf(stderr, "  flag: c=compress d=decompress\n");
+}
+
 int main(int argc, char *argv[])
 {
     int c;
 
     if (argc != 4) {
-        fprintf(stderr, "Usage: comptest flag infile outfile\n");
-        fprintf(stderr, "  flag: c=compress d=decompress\n");
+        usage();
         exit(0);
     }
     if (argv[1][0] == 'c') {
