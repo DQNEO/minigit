@@ -168,7 +168,11 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[3]);
         exit(1);
     }
-    if (c) do_compress(); else do_decompress();
+    if (c) {
+        do_compress();
+    } else {
+        do_decompress();
+    }
 
     fclose(fin);
     fclose(fout);
