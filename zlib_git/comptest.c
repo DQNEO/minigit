@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
         c = 0;
     } else {
         usage();
-        exit(1);
+        exit(0);
     }
 
 
