@@ -138,8 +138,9 @@ void _decompress(FILE *fin, FILE *fout)
 
 void usage()
 {
-    fprintf(stderr, "Usage: comptest flag infile outfile\n");
-    fprintf(stderr, "  flag: -c=compress -d=decompress\n");
+    fprintf(stderr, "Usage:\n");
+    fprintf(stderr, "  zlib -c in_file out_file\n");
+    fprintf(stderr, "  zlib -d in_file out_file\n");
 }
 
 int main(int argc, char *argv[])

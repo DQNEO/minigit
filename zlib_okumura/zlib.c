@@ -81,6 +81,7 @@ void _decompress(FILE *fin, FILE *fout)
     char inbuf[INBUFSIZ];
     char outbuf[OUTBUFSIZ];
     int count, status;
+
     /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
@@ -138,8 +139,8 @@ void _decompress(FILE *fin, FILE *fout)
 void usage()
 {
     fprintf(stderr, "Usage:\n");
-    fprintf(stderr, "  zlib -c orig_file compressed_file\n");
-    fprintf(stderr, "  zlib -d compressed_file\n");
+    fprintf(stderr, "  zlib -c in_file out_file\n");
+    fprintf(stderr, "  zlib -d in_file out_file\n");
 }
 
 int main(int argc, char *argv[])
