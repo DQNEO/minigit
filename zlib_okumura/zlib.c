@@ -141,7 +141,6 @@ void usage()
     fprintf(stderr, "Usage:\n");
     fprintf(stderr, "  zlib -c orig_file compressed_file\n");
     fprintf(stderr, "  zlib -d compressed_file\n");
-    exit(0);
 }
 
 int main(int argc, char *argv[])
@@ -151,13 +150,16 @@ int main(int argc, char *argv[])
 
     if (argc == 1) {
         usage();
+        exit(0);
     } else if (strcmp(argv[1],"-c") == 0) {
         c = 1;
     } else if (strcmp(argv[1], "-d") == 0) {
         c = 0;
     } else {
         usage();
+        exit(0);
     }
+
     if ((fin = fopen(argv[2], "r")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         exit(1);
