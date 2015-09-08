@@ -1,5 +1,9 @@
-/* zlib を使う例 */
-/* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
+/**
+ * zlib 圧縮・解凍するツール
+ *
+ * original from http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c
+ * licensed under http://creativecommons.org/licenses/by/4.0/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <zlib.h>
