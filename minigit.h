@@ -17,7 +17,10 @@
 /* zlib sample code  */
 /* http://oku.edu.mie-u.ac.jp/~okumura/compression/comptest.c */
 #include <zlib.h>
+
+#ifndef __APPLE__
 #include <error.h>
+#endif /* __APPLE__ */
 #include <sys/mman.h>
 
 typedef struct _TAG_OBJECT_INFO {
@@ -37,6 +40,10 @@ typedef struct _TAG_COMMIT {
 
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
+
+#ifndef PATH_MAX
+#define PATH_MAX 1024
+#endif
 
 #define PROGNAME "minigit"
 
