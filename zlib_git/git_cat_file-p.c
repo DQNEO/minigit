@@ -81,21 +81,18 @@ void usage()
 
 int main(int argc, char *argv[])
 {
-    FILE *fin, *fout;
+    FILE *fin;
 
     if (argc == 1) {
         usage();
         exit(0);
     }
 
-    if ((fin = fopen(argv[2], "r")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[2]);
+    if ((fin = fopen(argv[1], "r")) == NULL) {
+        fprintf(stderr, "Can't open %s\n", argv[1]);
         exit(1);
     }
-    if ((fout = fopen(argv[3], "w")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[3]);
-        exit(1);
-    }
-    _decompress(fin, fout);
+
+    _decompress(fin, stdout);
     return 0;
 }
