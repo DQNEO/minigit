@@ -41,6 +41,10 @@ typedef struct _TAG_COMMIT {
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
 
+#ifndef PATH_MAX
+#define PATH_MAX 1024
+#endif
+
 #define PROGNAME "minigit"
 
 //borrowed from git
