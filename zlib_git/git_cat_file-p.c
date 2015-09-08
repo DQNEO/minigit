@@ -12,6 +12,19 @@
 #define INBUFSIZ   1024
 #define OUTBUFSIZ  1024
 
+int _write_skipping_header(char *outbuf, size_t size, size_t n ,FILE *fout)
+{
+    static int is_header = 1;
+    int tmp_n = n;
+    if (is_header) {
+        while (*outbuf) {outbuf++; tmp_n--;}
+        fwrite(outbuf, size, tmp_n, fout);
+        is_header = 0;
+        return n;
+    }
+    return fwrite(outbuf, size, n, fout);
+}
+
 void _decompress(FILE *fin, FILE *fout)
 {
     z_stream z;
@@ -49,7 +62,7 @@ void _decompress(FILE *fin, FILE *fout)
         }
         if (z.avail_out == 0) { /* 出力バッファが尽きれば */
             /* まとめて書き出す */
-            if (fwrite(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
+            if (_write_skipping_header(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
@@ -60,7 +73,7 @@ void _decompress(FILE *fin, FILE *fout)
 
     /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
-        if (fwrite(outbuf, 1, count, fout) != count) {
+        if (_write_skipping_header(outbuf, 1, count, fout) != count) {
             fprintf(stderr, "Write error\n");
             exit(1);
         }
