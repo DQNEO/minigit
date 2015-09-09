@@ -32,12 +32,10 @@ void _decompress(FILE *fin, FILE *fout)
     char outbuf[OUTBUFSIZ];
     int count, status;
 
-    /* すべてのメモリ管理をライブラリに任せる */
     z.zalloc = Z_NULL;
     z.zfree = Z_NULL;
     z.opaque = Z_NULL;
 
-    /* 初期化 */
     z.next_in = Z_NULL;
     z.avail_in = 0;
     if (inflateInit(&z) != Z_OK) {
@@ -45,33 +43,31 @@ void _decompress(FILE *fin, FILE *fout)
         exit(1);
     }
 
-    z.next_out = (Bytef *)outbuf;        /* 出力ポインタ */
-    z.avail_out = OUTBUFSIZ;    /* 出力バッファ残量 */
+    z.next_out = (Bytef *)outbuf;
+    z.avail_out = OUTBUFSIZ;
     status = Z_OK;
 
     while (status != Z_STREAM_END) {
-        if (z.avail_in == 0) {  /* 入力残量がゼロになれば */
-            z.next_in = (Bytef *)inbuf;  /* 入力ポインタを元に戻す */
-            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin); /* データを読む */
+        if (z.avail_in == 0) {
+            z.next_in = (Bytef *)inbuf;
+            z.avail_in = fread(inbuf, 1, INBUFSIZ, fin);
         }
-        status = inflate(&z, Z_NO_FLUSH); /* 展開 */
-        if (status == Z_STREAM_END) break; /* 完了 */
-        if (status != Z_OK) {   /* エラー */
+        status = inflate(&z, Z_NO_FLUSH);
+        if (status == Z_STREAM_END) break;
+        if (status != Z_OK) {
             fprintf(stderr, "inflate: %s\n", (z.msg) ? z.msg : "???");
             exit(1);
         }
-        if (z.avail_out == 0) { /* 出力バッファが尽きれば */
-            /* まとめて書き出す */
+        if (z.avail_out == 0) {
             if (_write_skipping_header(outbuf, 1, OUTBUFSIZ, fout) != OUTBUFSIZ) {
                 fprintf(stderr, "Write error\n");
                 exit(1);
             }
-            z.next_out = (Bytef *)outbuf; /* 出力ポインタを元に戻す */
-            z.avail_out = OUTBUFSIZ; /* 出力バッファ残量を元に戻す */
+            z.next_out = (Bytef *)outbuf;
+            z.avail_out = OUTBUFSIZ;
         }
     }
 
-    /* 残りを吐き出す */
     if ((count = OUTBUFSIZ - z.avail_out) != 0) {
         if (_write_skipping_header(outbuf, 1, count, fout) != count) {
             fprintf(stderr, "Write error\n");
@@ -79,7 +75,6 @@ void _decompress(FILE *fin, FILE *fout)
         }
     }
 
-    /* 後始末 */
     if (inflateEnd(&z) != Z_OK) {
         fprintf(stderr, "inflateEnd: %s\n", (z.msg) ? z.msg : "???");
         exit(1);
