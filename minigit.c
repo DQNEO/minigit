@@ -446,14 +446,14 @@ int main(int argc, char *argv[])
         return cmd_ls_files(argc, argv);
     } else if (strcmp(sub_cmd, "--version") == 0) {
         show_version();
-        exit(1);
+        exit(0);
     } else if (strcmp(sub_cmd, "--help") == 0) {
         usage();
-        exit(1);
+        exit(0);
     } else {
         fprintf(stderr, "%s: '%s' is not a %s command.\n\n", PROGNAME, sub_cmd, PROGNAME);
         usage();
-        exit(1);
+        exit(0);
     }
 
     return 0;
