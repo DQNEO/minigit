@@ -5,18 +5,18 @@ int cmd_hash_object(int argc, char *argv[])
     char *filename;
     int do_write;
     if (strcmp(argv[1], "-w") == 0) {
-	do_write = 1;
-	filename = argv[2];
+        do_write = 1;
+        filename = argv[2];
     } else {
-	do_write = 0;
-	filename = argv[1];
+        do_write = 0;
+        filename = argv[1];
     }
 
     unsigned char sha1[41];
     struct stat st;
 
     if (lstat(filename, &st)) {
-	fprintf(stderr, "unable to lstat %s\n", filename);
+        fprintf(stderr, "unable to lstat %s\n", filename);
     }
 
     unsigned char *buf;
@@ -30,13 +30,13 @@ int cmd_hash_object(int argc, char *argv[])
     calc_sha1("blob", buf, st.st_size, sha1);
 
     if (do_write) {
-	char hdr[1024];
-	char *obj_type = "blob";
-	sprintf(hdr, "%s %ld", obj_type ,(long) st.st_size);
+        char hdr[1024];
+        char *obj_type = "blob";
+        sprintf(hdr, "%s %ld", obj_type ,(long) st.st_size);
 
-	int hdrlen = strlen(hdr) + 1;
-	git_write_loose_object(sha1, hdr, hdrlen, buf, st.st_size, 0);
-	//write_loose_object(sha1, hdr, hdrlen, buf, st.st_size);
+        int hdrlen = strlen(hdr) + 1;
+        git_write_loose_object(sha1, hdr, hdrlen, buf, st.st_size, 0);
+        //write_loose_object(sha1, hdr, hdrlen, buf, st.st_size);
     }
 
     free(buf);

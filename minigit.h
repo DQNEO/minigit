@@ -50,15 +50,15 @@ typedef struct _TAG_COMMIT {
 //borrowed from git
 //extern int errno;
 typedef struct git_zstream {
-	z_stream z;
-	unsigned long avail_in;
-	unsigned long avail_out;
-	unsigned long total_in;
-	unsigned long total_out;
-	unsigned char *next_in;
-	unsigned char *next_out;
+    z_stream z;
+    unsigned long avail_in;
+    unsigned long avail_out;
+    unsigned long total_in;
+    unsigned long total_out;
+    unsigned char *next_in;
+    unsigned char *next_out;
 } git_zstream;
-#define git_SHA_CTX	SHA_CTX
+#define git_SHA_CTX SHA_CTX
 
 void parse_object_header(char in_file_name[], object_info *oi);
 void read_object_body(char in_file_name[], object_info *oi);
@@ -72,7 +72,7 @@ extern const char *weekday_names[];
 extern const char *month_names[];
 
 void git_write_loose_object(const unsigned char *sha1, char *hdr, int hdrlen,
-			      const void *buf, unsigned long len, time_t mtime);
+                  const void *buf, unsigned long len, time_t mtime);
 
 void sha1_file_name(const unsigned char *sha1, char *filename);
 

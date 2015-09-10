@@ -4,10 +4,10 @@ int cmd_log(int argc , char **argv)
 {
     char rev[256];
     if (argc > 1) {
-	strcpy(rev, argv[1]);
+        strcpy(rev, argv[1]);
     } else {
         // default "HEAD"
-	strcpy(rev, "HEAD");
+        strcpy(rev, "HEAD");
     }
 
     char commit_sha1[256] = {};
