@@ -3,7 +3,7 @@
 int cmd_rev_parse(int argc, char **argv)
 {
     if (argc < 2) {
-	return 0;
+        return 0;
     }
 
     char sha1_string[256];

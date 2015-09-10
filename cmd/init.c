@@ -8,8 +8,8 @@ int cmd_init(int argc, char *argv[])
 
     FILE *fp;
     if ((fp = fopen(".git/HEAD","w")) == NULL) {
-	fprintf(stderr, "unable to create .git/HEAD");
-	exit(1);
+        fprintf(stderr, "unable to create .git/HEAD");
+        exit(1);
     }
 
     fprintf(fp, "ref: refs/heads/master\n");

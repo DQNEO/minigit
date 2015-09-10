@@ -14,9 +14,9 @@ char *sha1_to_hex(const unsigned char *sha1)
     int i;
 
     for (i = 0; i < 20; i++) {
-	unsigned int val = *sha1++;
-	*buf++ = hex[val >> 4];
-	*buf++ = hex[val & 0xf];
+        unsigned int val = *sha1++;
+        *buf++ = hex[val >> 4];
+        *buf++ = hex[val & 0xf];
     }
     *buf = '\0';
 
@@ -55,7 +55,7 @@ void sha1_file_name(const unsigned char *sha1, char *filename)
     filename[len+2] = str_sha1[1];
 
     for (i=2;i<40;i++) {
-	filename[len+2+i] = str_sha1[i];
+        filename[len+2+i] = str_sha1[i];
     }
     filename[len + 42] = '\0';
 }

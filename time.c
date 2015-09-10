@@ -1,11 +1,11 @@
 #include "minigit.h"
 
 const char *weekday_names[] = {
-  "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
+    "Sunday",  "Mondays",  "Tuesdays",  "Wednesdays",  "Thursdays",  "Fridays",  "Saturdays"
 };
 
 const char *month_names[] = {
-  "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
+    "January",  "February",  "March",  "April",  "May",  "June",  "July",  "August",  "September",  "October",  "November",  "December"
 };
 
 /**

@@ -17,20 +17,20 @@
 
 static inline unsigned int default_swab32(unsigned int val)
 {
-	return (((val & 0xff000000) >> 24) |
-		((val & 0x00ff0000) >>  8) |
-		((val & 0x0000ff00) <<  8) |
-		((val & 0x000000ff) << 24));
+    return (((val & 0xff000000) >> 24) |
+            ((val & 0x00ff0000) >>  8) |
+            ((val & 0x0000ff00) <<  8) |
+            ((val & 0x000000ff) << 24));
 }
 
 static inline unsigned int bswap32(unsigned int x)
 {
-	unsigned int result;
-	if (__builtin_constant_p(x))
-		result = default_swab32(x);
-	else
-		__asm__("bswap %0" : "=r" (result) : "0" (x));
-	return result;
+    unsigned int result;
+    if (__builtin_constant_p(x))
+        result = default_swab32(x);
+    else
+        __asm__("bswap %0" : "=r" (result) : "0" (x));
+    return result;
 }
 
 int calc_padding(int n)
@@ -71,13 +71,13 @@ int cmd_ls_files(int argc, char **argv)
     strcpy(index_file_name + strlen(index_file_name), "/.git/index");
 
     if (stat(index_file_name, &st) == -1) {
-	fprintf(stderr, "unable to stat '%s'\n", index_file_name);
-	exit(1);
+        fprintf(stderr, "unable to stat '%s'\n", index_file_name);
+        exit(1);
     }
 
     if ((fd = open(index_file_name, O_RDONLY)) == -1) {
-	fprintf(stderr, "unable to open file '%s'\n", index_file_name);
-	exit(1);
+        fprintf(stderr, "unable to open file '%s'\n", index_file_name);
+        exit(1);
     }
 
     // git original code is here:
@@ -95,13 +95,13 @@ int cmd_ls_files(int argc, char **argv)
                    bswap32(ce->ce_mode),
                    sha1_to_hex(ce->sha1),
                    ce->name
-	    );
+                );
         } else {
             printf("%s\n", ce->name);
         }
 
-	p_next_entry = ce->name + ce->namelen + calc_padding(ce->namelen);
-	ce = (struct cache_entry *)p_next_entry;
+        p_next_entry = ce->name + ce->namelen + calc_padding(ce->namelen);
+        ce = (struct cache_entry *)p_next_entry;
     }
 
     close(fd);
