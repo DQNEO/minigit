@@ -134,13 +134,13 @@ int find_file(const char *sha1_input, char *matched_filename)
     int ret = -1;
     validate_sha1(sha1_input);
 
-    char sha1_input_firsrt2chars[2];
+    char sha1_input_firsrt2chars[3];
     const char *sha1_input_from3rd = &sha1_input[2];
 
     //printf("3rd = %s\n", sha1_input_from3rd);
     sha1_input_firsrt2chars[0] = sha1_input[0];
     sha1_input_firsrt2chars[1] = sha1_input[1];
-    sha1_input_firsrt2chars[2] = 0;
+    sha1_input_firsrt2chars[2] = '\0';
     //printf("sha1 first2 = %s\n", sha1_input_firsrt2chars);
 
     char dir[256] = ".git/objects/";
