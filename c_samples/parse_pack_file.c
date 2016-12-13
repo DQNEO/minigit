@@ -10,9 +10,14 @@ void parse_file(char *filename)
     FILE *file;
     file = fopen(filename, "r");
 
-    char ptr[256];
-    fread(ptr, 4,1, file);
-    printf("%s\n", ptr); // 'PACK'
+    char signature[5];
+    char version[5];
+    fread(signature, 4,1, file);
+    printf("signature=%s\n", signature); // 'PACK'
+
+    fread(version, 4,1, file);
+    printf("version=%d\n", version[3]); 
+
     fclose(file);
 }
 
