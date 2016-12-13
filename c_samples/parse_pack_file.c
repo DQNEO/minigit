@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <arpa/inet.h>
 
 void parse_file(char *filename)
 {
@@ -12,12 +13,16 @@ void parse_file(char *filename)
 
     char signature[5];
     char version[5];
+    uint32_t *num;
     fread(signature, 4,1, file);
     printf("signature=%s\n", signature); // 'PACK'
 
     fread(version, 4,1, file);
     printf("version=%d\n", version[3]); 
 
+    fread(num, 4,1, file);
+    printf("num=%d\n", ntohl(*num)); 
+    
     fclose(file);
 }
 
