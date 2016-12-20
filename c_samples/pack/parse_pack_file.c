@@ -14,7 +14,7 @@ struct pack_header {
 
 int read_pack_header(FILE *file, struct pack_header *hdr)
 {
-    fread(hdr, 12,1,file);
+    fread(hdr, sizeof(struct pack_header),1,file);
     return 0;
 }
 
